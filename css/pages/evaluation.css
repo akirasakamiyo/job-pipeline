@@ -1,0 +1,14 @@
+/* =====================================================================
+   pages/evaluation.css — Evaluasi Akhir (2.0)
+   Kartu soal & hasil memakai .quiz-card / .quiz-result dari learn.css.
+   ===================================================================== */
+#main { display: flex; flex-direction: column; gap: var(--s-5); padding-bottom: var(--s-7); }
+.page-head { padding-bottom: 0; }
+.eval-grid { display: grid; gap: var(--s-4); }
+@media (min-width: 900px) { .eval-grid { grid-template-columns: 1fr 1fr; align-items: start; } }
+.eval-info { display: grid; gap: var(--s-3); }
+.eval-modules { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.eval-modules li { display: flex; align-items: center; gap: var(--s-3); font-size: var(--fs-sm); }
+.eval-modules .chip { margin-left: auto; }
+.eval-modules a { display: inline-flex; align-items: center; min-height: 40px; font-weight: 700; color: var(--ink); }
+.eval-stage { min-height: 280px; }

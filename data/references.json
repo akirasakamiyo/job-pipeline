@@ -1,69 +1,101 @@
 {
   "version": 1,
-  "note": "Referensi dari daftar yang diberikan pemilik proyek. Detail bibliografi & URL belum bisa diverifikasi dari lingkungan pengembangan (akses jaringan diblokir). Field 'verified' = false → tampil label 'Perlu verifikasi'. Isi 'url' hanya dengan beranda resmi sumber; ganti dengan tautan artikel spesifik setelah dicek.",
+  "note": "Referensi dari daftar pemilik proyek. URL & detail bibliografi belum bisa diverifikasi dari lingkungan pengembangan (akses jaringan diblokir). verified=false → tampil label 'Perlu verifikasi'. 'kind': research = temuan studi/buku; practice = panduan praktis yang bisa berbeda antarperusahaan. Jangan menambah judul artikel atau URL spesifik sebelum dicek langsung.",
   "references": [
     {
       "id": "ladders-2018",
-      "citation": "Ladders, Inc. (2018). Eye-tracking study tentang cara rekruter memindai CV.",
-      "about": "Dipakai di Modul 2: cara rekruter memindai CV.",
+      "citation": "Ladders, Inc. (2018). Eye-Tracking Study — studi pelacakan mata tentang cara rekruter memindai resume.",
+      "about": "Modul 2: dikutip untuk rata-rata ±7,4 detik pemindaian awal resume dalam studi tersebut—bukan aturan bagi semua rekruter.",
       "url": "https://www.theladders.com",
       "urlLabel": "theladders.com (beranda)",
-      "modules": ["cv"],
-      "verified": false
+      "modules": [
+        "cv"
+      ],
+      "verified": false,
+      "kind": "research"
     },
     {
       "id": "hbr",
-      "citation": "Harvard Business Review — artikel tentang lamaran kerja, networking, dan komunikasi profesional.",
-      "about": "Dipakai di Modul 3 & 4: networking dan komunikasi profesional. Judul artikel spesifik perlu ditambahkan.",
+      "citation": "Harvard Business Review — artikel tentang cold email dan cover letter.",
+      "about": "Modul 3 & 4: menulis pesan perkenalan (outreach) dan surat/email lamaran. Judul artikel spesifik perlu ditambahkan setelah diverifikasi.",
       "url": "https://hbr.org",
       "urlLabel": "hbr.org (beranda)",
-      "modules": ["li", "tx"],
-      "verified": false
+      "modules": [
+        "li",
+        "tx"
+      ],
+      "verified": false,
+      "kind": "practice"
     },
     {
       "id": "linkedin-talent",
-      "citation": "LinkedIn Talent Solutions — materi tentang profil, rekrutmen, dan perilaku rekruter.",
-      "about": "Dipakai di Modul 3: optimasi profil LinkedIn.",
+      "citation": "LinkedIn Talent Solutions — Talent Trends dan panduan profil LinkedIn.",
+      "about": "Modul 3: struktur dan optimasi profil LinkedIn serta perspektif perekrut.",
       "url": "https://business.linkedin.com/talent-solutions",
       "urlLabel": "business.linkedin.com/talent-solutions",
-      "modules": ["li"],
-      "verified": false
+      "modules": [
+        "li"
+      ],
+      "verified": false,
+      "kind": "practice"
     },
     {
       "id": "google-learning-center",
-      "citation": "Google Workspace Learning Center — panduan Gmail & Google Drive.",
-      "about": "Dipakai di Modul 1 & 5: Gmail, tanda tangan, Drive, izin berbagi, dan Google Sheets.",
+      "citation": "Google Workspace Learning Center — panduan Gmail, Google Drive, dan Google Sheets.",
+      "about": "Modul 1, 4 & 5: pengaturan Gmail, izin berbagi Drive, jadwal kirim email, dan tracker di Google Sheets.",
       "url": "https://support.google.com/a/users",
       "urlLabel": "support.google.com/a/users",
-      "modules": ["id", "tr"],
-      "verified": false
+      "modules": [
+        "id",
+        "tx",
+        "tr"
+      ],
+      "verified": false,
+      "kind": "practice"
     },
     {
       "id": "glints",
-      "citation": "Glints Indonesia — Career Blog.",
-      "about": "Konteks lamaran kerja di Indonesia (CV, email lamaran, follow-up).",
+      "citation": "Glints Indonesia — panduan melamar kerja melalui email.",
+      "about": "Konteks lamaran kerja di Indonesia: CV, email lamaran, dan follow-up.",
       "url": "https://glints.com/id",
       "urlLabel": "glints.com/id (beranda)",
-      "modules": ["cv", "tx", "tr"],
-      "verified": false
+      "modules": [
+        "cv",
+        "tx",
+        "tr"
+      ],
+      "verified": false,
+      "kind": "practice"
     },
     {
       "id": "jobstreet",
-      "citation": "JobStreet Indonesia — Career Advice.",
-      "about": "Konteks lamaran kerja di Indonesia (CV, email lamaran, follow-up).",
+      "citation": "JobStreet Indonesia — panduan kesalahan umum pelamar kerja.",
+      "about": "Konteks Indonesia: red flag lamaran, CV, dan follow-up.",
       "url": "https://id.jobstreet.com",
       "urlLabel": "id.jobstreet.com (beranda)",
-      "modules": ["cv", "tx", "tr"],
-      "verified": false
+      "modules": [
+        "cv",
+        "tx",
+        "tr"
+      ],
+      "verified": false,
+      "kind": "practice"
     },
     {
       "id": "mayer-2020",
       "citation": "Mayer, R. E. (2020). Multimedia Learning (edisi ke-3). Cambridge University Press.",
-      "about": "Dasar desain pembelajaran platform ini (segmenting, signaling, multimedia).",
+      "about": "Dasar desain pembelajaran platform ini: segmenting, signaling, dan prinsip multimedia.",
       "url": null,
       "urlLabel": null,
-      "modules": ["id", "cv", "li", "tx", "tr"],
-      "verified": false
+      "modules": [
+        "id",
+        "cv",
+        "li",
+        "tx",
+        "tr"
+      ],
+      "verified": false,
+      "kind": "research"
     }
   ]
 }

@@ -84,11 +84,11 @@ export function renderRecall(block) {
 
   block.options.forEach((text, i) => {
     const input = h('input', { type: 'radio', name, value: String(i) });
+    // 2.0: ikon benar/salah baru ditambahkan SETELAH menjawab (kunci tidak ada di DOM)
     const option = h('label', { class: 'option' },
       input,
       h('span', { class: 'option__key' }, 'ABCD'[i]),
-      h('span', {}, text),
-      icon(i === block.answer ? 'check' : 'x', 'option__mark'));
+      h('span', {}, text));
     input.addEventListener('change', () => check(i, option));
     options.append(option);
   });
@@ -98,6 +98,7 @@ export function renderRecall(block) {
     options.classList.add('is-locked');
     $$('.option', options).forEach((opt, i) => {
       $('input', opt).disabled = true;
+      opt.append(icon(i === block.answer ? 'check' : 'x', 'option__mark'));
       if (i === block.answer) opt.classList.add('is-correct');
     });
     if (!correct) chosenEl.classList.add('is-wrong');
@@ -113,6 +114,7 @@ export function renderRecall(block) {
     options.classList.remove('is-locked');
     $$('.option', options).forEach((opt) => {
       opt.classList.remove('is-correct', 'is-wrong');
+      $('.option__mark', opt)?.remove();
       const input = $('input', opt);
       input.disabled = false;
       input.checked = false;
@@ -229,20 +231,68 @@ const BUILDERS = {
       ],
     };
   },
+  // 2.0: format seragam dengan generator & materi — Posisi - Nama Lengkap - Keahlian
   subject: (v) => {
     const role = (v.role || '').trim();
     const name = (v.name || '').trim();
-    const code = (v.code || '').trim();
-    const output = role || name ? [code, `Lamaran ${role}`.trim(), name].filter(Boolean).join(' – ') : '';
+    const skill = (v.skill || '').trim();
+    const output = [role, name, skill].filter(Boolean).join(' - ');
     return {
       output,
       checks: [
         { ok: Boolean(role), text: 'Menyebut posisi' },
-        { ok: Boolean(name), text: 'Menyebut nama lengkap' },
+        { ok: name.split(/\s+/).filter(Boolean).length >= 2, text: 'Menyebut nama lengkap (minimal dua kata)' },
+        { ok: Boolean(skill), text: 'Menyebut keahlian utama' },
         { ok: !output || output !== output.toUpperCase(), text: 'Tidak memakai huruf kapital semua' },
-        { ok: !/urgent|segera|mohon dibaca|[!?]{2,}/i.test(output), text: 'Tanpa kata mendesak atau tanda seru berlebihan' },
+        { ok: !/urgent|segera|mohon dibaca|penting|[!?]{2,}/i.test(output), text: 'Tanpa kata mendesak atau tanda seru berlebihan' },
         { ok: !/\p{Extended_Pictographic}/u.test(output), text: 'Tanpa emoji' },
         { ok: output.length <= 70, text: 'Ringkas agar tidak terpotong di layar HP', soft: true },
+      ],
+    };
+  },
+  // 2.0: Professional Email Checker (Modul 1)
+  emailcheck: (v) => {
+    const email = (v.email || '').trim().toLowerCase();
+    const [local = '', domain = ''] = email.split('@');
+    const nameParts = (v.name || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(/\s+/).filter((w) => w.length >= 3);
+    const valid = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email);
+    const institution = /\.(ac|sch|edu)\.|\.edu$|student|mahasiswa/.test(domain + local);
+    const silly = /(cute|imut|ganteng|cantik|keren|sayang|gamer|lover|kece|manja|baby|princess|kiyut|xx|lol)/.test(local);
+    return {
+      output: email ? (valid ? email : `${email} (format belum valid)`) : '',
+      checks: [
+        { ok: valid, text: 'Format alamat email valid' },
+        { ok: valid && nameParts.some((p) => local.includes(p)), text: 'Memuat nama aslimu' },
+        { ok: !silly, text: 'Tanpa julukan atau kata yang tidak profesional' },
+        { ok: !/\d{3,}/.test(local), text: 'Tanpa deretan angka (mis. tahun lahir)' },
+        { ok: (local.match(/[._-]/g) || []).length <= 2, text: 'Pemisah (titik/garis bawah) tidak berlebihan' },
+        { ok: valid && !institution, text: 'Bukan email sekolah/kampus/kantor yang bisa dinonaktifkan' },
+        { ok: local.length > 0 && local.length <= 30, text: 'Mudah diketik (≤ 30 karakter sebelum @)', soft: true },
+      ],
+    };
+  },
+  // 2.0: Warm Outreach Message Generator (Modul 3)
+  outreach: (v) => {
+    const r = (v.recipient || '').trim();
+    const n = (v.name || '').trim();
+    const ctx = (v.context || '').trim();
+    const reason = (v.reason || '').trim();
+    const pos = (v.position || '').trim();
+    if (!r && !n && !ctx && !reason) return { output: '', checks: [{ ok: false, text: 'Isi kolom di atas untuk menyusun pesan' }] };
+    const output = [
+      `Halo ${r || '[nama penerima]'}, saya ${n || '[namamu]'}.`,
+      ctx ? `Saya mengikuti ${ctx} dan merasa banyak belajar dari sana.` : '',
+      pos ? `Saya baru saja melamar posisi ${pos} dan ${reason ? `ingin ${reason.replace(/^ingin\s+/i, '')}` : 'ingin mengenal tim lebih dekat'}.` : (reason ? `Saya ${/^ingin/i.test(reason) ? reason : `ingin ${reason}`}.` : ''),
+      'Jika berkenan, apakah saya boleh menanyakan satu hal singkat tentang hal tersebut? Terima kasih atas waktunya.',
+    ].filter(Boolean).join(' ');
+    return {
+      output,
+      checks: [
+        { ok: Boolean(r), text: 'Menyapa dengan nama penerima' },
+        { ok: Boolean(ctx), text: 'Menyebut hal spesifik tentang mereka/perusahaan' },
+        { ok: Boolean(reason), text: 'Tujuan menghubungi jelas' },
+        { ok: !/referral|rekomendasi(kan)? saya|masukkan saya|tolong terima/i.test(output), text: 'Tidak meminta referral di pesan pertama' },
+        { ok: output.length <= 300, text: 'Cukup singkat untuk catatan koneksi (±300 karakter)', soft: true },
       ],
     };
   },
@@ -280,7 +330,7 @@ export function renderBuilder(block, ctx) {
     toast(ok ? 'Hasil disalin ke clipboard.' : 'Gagal menyalin. Salin manual, ya.', { type: ok ? 'success' : 'error' });
   });
 
-  const label = { filename: 'Pembuat nama file', headline: 'Penyusun headline', subject: 'Penyusun subjek email' }[block.kind];
+  const label = { filename: 'Pembuat nama file', headline: 'Penyusun headline', subject: 'Penyusun subjek email', emailcheck: 'Professional Email Checker', outreach: 'Warm Outreach Message Generator' }[block.kind];
   update();
   return h('div', { class: 'card card--flat builder exercise' },
     h('p', { class: 'eyebrow' }, icon('wand'), label),

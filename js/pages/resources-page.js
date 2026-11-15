@@ -37,7 +37,9 @@ export async function init() {
         url: safeUrl(r.url), urlLabel: r.urlLabel || r.source, modules: [r.module], verified: r.verified === true,
       })),
       ...refs.references.map((r) => ({
-        id: r.id, kind: 'ref', title: r.citation, about: r.about || '', source: 'Referensi materi',
+        id: r.id, kind: 'ref', title: r.citation, about: r.about || '',
+        // 2.0: bedakan temuan riset dan panduan praktis
+        source: r.kind === 'research' ? 'Referensi materi · fakta riset (studi/buku)' : 'Referensi materi · saran praktis (bisa berbeda antarperusahaan)',
         url: r.url ? safeUrl(r.url) : null, urlLabel: r.urlLabel, modules: r.modules || [], verified: r.verified === true,
       })),
     ];

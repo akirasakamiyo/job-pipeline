@@ -1128,3 +1128,231 @@
 
 /* ---------- Tooltip trigger: kursor bantuan pada elemen non-tombol ---------- */
 [data-tooltip]:not(button):not(a) { cursor: help; }
+
+/* =====================================================================
+   MOCK EMAIL — dipindah dari pages/learn.css (2.0): dipakai materi
+   modul & Email Writing Simulator di halaman Latihan
+   ===================================================================== */
+.mail {
+  margin: 0;
+  border: var(--bw) solid var(--ink);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--sh-sticker);
+  overflow: hidden;
+  font-size: var(--fs-sm);
+}
+.mail__caption {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px var(--s-4);
+  background: var(--paper-2);
+  border-bottom: 1.5px solid var(--ink);
+  font: 700 11px/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase;
+}
+.mail__caption .icon { width: 16px; height: 16px; }
+.mail__meta { display: grid; margin: 0; padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--line); gap: 4px; }
+.mail__meta div { display: grid; grid-template-columns: 64px 1fr; gap: var(--s-2); }
+.mail__meta dt { color: var(--ink-soft); font-weight: 600; }
+.mail__meta dd { margin: 0; overflow-wrap: anywhere; }
+.mail__subject dd { font-weight: 800; }
+.mail__body { display: grid; gap: var(--s-3); padding: var(--s-4); line-height: 1.6; }
+.mail__signature { display: grid; gap: 2px; padding-top: var(--s-2); color: var(--ink-2); }
+.mail__signame { font-weight: 800; color: var(--ink); }
+.mail__sigline { color: var(--ink-mute); }
+.mail__attachments { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0; padding: 0 var(--s-4) var(--s-4); list-style: none; }
+.mail__attachments li { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: var(--r-sm); background: var(--m-cv-tint); font-weight: 700; font-size: var(--fs-xs); overflow-wrap: anywhere; }
+.mail__attachments .icon { width: 15px; height: 15px; flex: none; color: var(--m-cv-text); }
+.mail--signature .mail__signature, .mail--paragraph p { padding: var(--s-4); }
+.mail--paragraph { display: grid; }
+.mail__bubble {
+  display: grid; gap: var(--s-2);
+  margin: var(--s-4);
+  padding: var(--s-4);
+  border-radius: 18px 18px 18px 4px;
+  background: var(--mod-tint);
+  line-height: 1.55;
+}
+
+
+/* =====================================================================
+   PIPELINE 2.0 — AKTIVITAS INTERAKTIF
+   activity-card · scenario · match · order · spot · keywords ·
+   worksheet · simulator · fakta riset / saran praktis · tool link
+   ===================================================================== */
+.activity-card { display: grid; gap: var(--s-4); min-width: 0; }
+.activity-card__head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: var(--s-2) var(--s-4); }
+.activity-card__head .eyebrow { display: inline-flex; align-items: center; gap: 6px; }
+.activity-card__head .eyebrow .icon { width: 15px; height: 15px; }
+.activity-card__title { font-weight: 800; font-size: var(--fs-lg); line-height: 1.3; margin-top: 2px; }
+.activity-card__best { display: inline-flex; font-size: var(--fs-xs); font-weight: 700; color: var(--ink-soft); }
+.activity-card__best > span { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: var(--r-pill); background: var(--paper-2); }
+.activity-card__best .icon { width: 14px; height: 14px; }
+.activity-result { align-items: flex-start; }
+
+/* ---------- Scenario ---------- */
+.scenario__list { display: grid; gap: var(--s-4); margin: 0; padding: 0; list-style: none; }
+.scenario__case { display: grid; gap: var(--s-3); padding: var(--s-4); border: 1.5px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+.scenario__case.is-correct { border-color: var(--success); }
+.scenario__case.is-wrong { border-color: var(--danger); }
+.scenario__situation { font-weight: 650; line-height: 1.5; }
+.scenario__num { display: block; margin-bottom: 4px; font: 700 10px/1.4 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--mod-text, var(--ink-soft)); }
+.scenario__options { display: grid; gap: var(--s-2); }
+.scenario__option {
+  display: flex; align-items: center; gap: var(--s-3);
+  min-height: 48px; padding: 10px var(--s-3);
+  border: var(--bw) solid var(--line); border-radius: var(--r-md);
+  background: var(--surface); color: var(--ink);
+  font: inherit; font-weight: 600; text-align: left; cursor: pointer;
+  transition: border-color var(--dur-2), background-color var(--dur-2);
+}
+.scenario__option:hover:not(:disabled) { border-color: var(--ink-2); }
+.scenario__option:disabled { cursor: default; }
+.scenario__option.is-correct { border-color: var(--success); background: var(--success-tint); }
+.scenario__option.is-correct .option__key { background: var(--success); border-color: var(--success); color: #fff; }
+.scenario__option.is-wrong { border-color: var(--danger); background: var(--danger-tint); }
+.scenario__option.is-wrong .option__key { background: var(--danger); border-color: var(--danger); color: #fff; }
+.scenario__why { display: flex; gap: var(--s-2); padding: var(--s-3); border-radius: var(--r-sm); background: var(--paper); font-size: var(--fs-sm); }
+.scenario__why .icon { flex: none; margin-top: 2px; }
+.scenario__case.is-correct .scenario__why .icon { color: var(--success-text); }
+.scenario__case.is-wrong .scenario__why .icon { color: var(--danger-text); }
+
+/* ---------- Match ---------- */
+.match__pool { display: flex; flex-wrap: wrap; gap: var(--s-2); min-height: 48px; padding: var(--s-3); border: 1.5px dashed var(--line-strong); border-radius: var(--r-md); background: var(--paper); }
+.match__card {
+  min-height: 44px; padding: 8px 12px;
+  border: 1.5px solid var(--ink); border-radius: var(--r-sm);
+  background: var(--surface); color: var(--ink);
+  font: inherit; font-size: var(--fs-sm); font-weight: 600; text-align: left; cursor: grab;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.match__card[aria-pressed="true"] { background: var(--signal); }
+.match__card:active { cursor: grabbing; }
+.match__slots { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.match__slot { display: grid; gap: var(--s-2); padding: var(--s-3); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+@media (min-width: 768px) { .match__slot { grid-template-columns: minmax(150px, .7fr) 1.3fr; align-items: center; } .match__fix { grid-column: 2; } }
+.match__term { font-weight: 800; font-size: var(--fs-sm); }
+.match__drop {
+  min-height: 44px; padding: 8px 12px;
+  border: 1.5px dashed var(--line-strong); border-radius: var(--r-sm);
+  background: var(--paper); color: var(--ink-soft);
+  font: inherit; font-size: var(--fs-sm); text-align: left; cursor: pointer;
+}
+.match__drop.is-target, .match__drop.is-over { border-color: var(--cobalt); background: var(--cobalt-tint); color: var(--cobalt-strong); }
+.match__drop.is-filled { border-style: solid; border-color: var(--ink); background: var(--surface); color: var(--ink); font-weight: 600; }
+.match__slot.is-correct .match__drop { border-color: var(--success); background: var(--success-tint); }
+.match__slot.is-wrong .match__drop { border-color: var(--danger); background: var(--danger-tint); }
+.match__fix { display: flex; gap: 6px; font-size: var(--fs-xs); color: var(--success-text); }
+.match__fix .icon { width: 14px; height: 14px; flex: none; margin-top: 2px; }
+
+/* ---------- Order ---------- */
+.order__list { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.order__item { display: flex; align-items: center; gap: var(--s-3); padding: 6px 6px 6px var(--s-3); border: 1.5px solid var(--line); border-radius: var(--r-md); background: var(--surface); cursor: grab; }
+.order__item.is-dragging { opacity: .5; }
+.order__item.is-correct { border-color: var(--success); background: var(--success-tint); }
+.order__item.is-wrong { border-color: var(--danger); background: var(--danger-tint); }
+.order__pos { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #fff; font: 700 12px/1 var(--font-mono); }
+.order__text { flex: 1; min-width: 0; font-weight: 650; font-size: var(--fs-sm); overflow-wrap: anywhere; }
+.order__ctrl { display: flex; gap: 2px; flex: none; }
+.order__ctrl .btn--icon { width: 40px; min-height: 40px; }
+.order__up { rotate: 90deg; }
+.order__down { rotate: 90deg; }
+.order__answer { padding: var(--s-3) var(--s-4); border-radius: var(--r-md); background: var(--paper); }
+
+/* ---------- Spot (temukan kesalahan) ---------- */
+.spot__frame { display: flex; flex-wrap: wrap; gap: 4px; padding: var(--s-4); border: var(--bw) solid var(--ink); border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--sh-sticker); line-height: 1.55; }
+.spot__frame--cv { font-family: var(--font-body); }
+.spot__seg {
+  display: inline; min-height: 32px; padding: 3px 6px;
+  border: 1.5px solid transparent; border-radius: 6px;
+  background: transparent; color: var(--ink);
+  font: inherit; font-size: var(--fs-sm); text-align: left; cursor: pointer;
+}
+.spot__seg.is-line { display: block; width: 100%; }
+.spot__seg:hover:not(:disabled) { background: var(--paper-2); }
+.spot__seg[aria-pressed="true"] { border-color: var(--warning); background: var(--warning-tint); }
+.spot__seg:disabled { cursor: default; }
+.spot__seg.is-found { border-color: var(--success); background: var(--success-tint); }
+.spot__seg.is-missed { border-color: var(--warning); background: var(--warning-tint); border-style: dashed; }
+.spot__seg.is-false { border-color: var(--danger); background: var(--danger-tint); }
+.spot__notes { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.spot__note { display: flex; gap: var(--s-2); padding: var(--s-3); border-radius: var(--r-sm); background: var(--paper); font-size: var(--fs-sm); }
+.spot__note .icon { flex: none; margin-top: 2px; }
+.spot__note.is-found .icon { color: var(--success-text); }
+.spot__note.is-missed .icon { color: var(--warning-text); }
+.spot__note.is-false .icon { color: var(--danger-text); }
+.spot__quote { font-weight: 700; overflow-wrap: anywhere; }
+
+/* ---------- Keywords & lowongan ---------- */
+.keywords__grid { display: grid; gap: var(--s-4); }
+@media (min-width: 900px) { .keywords__grid { grid-template-columns: 1fr 1.2fr; align-items: start; } }
+.posting { margin: 0; display: grid; gap: var(--s-2); padding: var(--s-4); border-radius: var(--r-md); border: 1.5px solid var(--line); background: var(--paper); font-size: var(--fs-sm); }
+.posting__head { display: grid; gap: 2px; }
+.posting__cols { display: grid; gap: var(--s-3); }
+@media (min-width: 768px) { .posting__cols { grid-template-columns: 1fr 1fr; } }
+.keywords__score { display: grid; gap: var(--s-2); }
+.keywords__chips { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.keywords__chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: var(--r-pill); background: var(--paper-2); color: var(--ink-soft); font-size: var(--fs-xs); font-weight: 700; }
+.keywords__chip .icon { width: 13px; height: 13px; }
+.keywords__chip.is-found { background: var(--success-tint); color: var(--success-text); }
+
+/* ---------- Worksheet ---------- */
+.worksheet__fields { display: grid; gap: var(--s-4); }
+@media (min-width: 900px) { .worksheet__fields { grid-template-columns: 1fr 1fr; } .worksheet__fields .field:has(textarea) { grid-column: 1 / -1; } }
+.worksheet__out { display: grid; gap: var(--s-2); justify-items: start; }
+.field__req { color: var(--danger-text); }
+
+/* ---------- Simulator ---------- */
+.sim { display: grid; gap: var(--s-5); min-width: 0; }
+.sim__layout { display: grid; gap: var(--s-5); }
+@media (min-width: 1024px) {
+  .sim__layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+  .sim__side { position: sticky; top: calc(var(--topbar-h) + 16px); }
+}
+.sim__form { display: grid; gap: var(--s-4); min-width: 0; }
+.sim__part { display: inline-block; margin-right: 6px; padding: 1px 6px; border-radius: 4px; background: var(--ink); color: #fff; font: 700 10px/1.6 var(--font-mono); letter-spacing: .04em; }
+.sim__actions { padding-top: var(--s-2); }
+.sim__preview .mail__body p { white-space: pre-line; overflow-wrap: anywhere; }
+.sim__ph { color: var(--ink-mute); }
+.muted { color: var(--ink-mute); }
+.sim__rubric { display: grid; gap: var(--s-4); }
+.sim__rubric:empty { display: none; }
+.sim__rubric:focus { outline: none; }
+.sim__score { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4); padding: var(--s-5); border-radius: var(--r-lg); border: 1.5px solid var(--warning); background: var(--warning-tint); }
+.sim__score.is-pass { border-color: var(--success); background: var(--success-tint); }
+.sim__score > div { flex: 1; min-width: 220px; }
+.sim__group { display: grid; gap: var(--s-2); }
+.sim__group-head { display: flex; justify-content: space-between; gap: var(--s-3); padding-bottom: 4px; border-bottom: 1px dashed var(--line); }
+.sim__criteria { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; font-size: var(--fs-sm); }
+.sim__criteria li { display: flex; gap: var(--s-2); }
+.sim__criteria .icon { flex: none; width: 18px; height: 18px; padding: 2px; margin-top: 2px; border-radius: 50%; color: #fff; stroke-width: 3; }
+.sim__criteria .is-ok .icon { background: var(--success); }
+.sim__criteria .is-part .icon { background: var(--warning); }
+.sim__criteria .is-bad .icon { background: var(--danger); }
+.sim__pts { font: 700 var(--fs-xs)/1 var(--font-mono); color: var(--ink-soft); }
+.sim__tip { color: var(--ink-soft); }
+
+/* ---------- Fakta riset & saran praktis ---------- */
+.research { display: grid; gap: var(--s-2); padding: var(--s-4) var(--s-5); border-radius: var(--r-md); border: 1.5px solid var(--cobalt); background: var(--cobalt-tint); }
+.research__tag, .practice-tag { display: inline-flex; align-items: center; gap: 6px; width: fit-content; padding: 2px 8px; border-radius: var(--r-pill); font: 700 10px/1.6 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.research__tag { background: var(--cobalt-strong); color: #fff; }
+.research__tag .icon { width: 13px; height: 13px; }
+.research__text { font-weight: 650; }
+.research__caveat { font-size: var(--fs-sm); color: var(--ink-2); }
+.research__source { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: var(--fs-xs); color: var(--ink-soft); }
+.callout--practice { --c-line: var(--ink-soft); --c-bg: var(--paper-2); --c-ink: var(--ink); }
+.practice-tag { background: var(--ink); color: #fff; margin-right: 4px; }
+
+/* ---------- Penanda bagian email (anatomi) ---------- */
+.mail__tag { display: inline-grid; place-items: center; width: 20px; height: 20px; margin-right: 6px; border-radius: 50%; background: var(--signal); border: 1.5px solid var(--ink); color: var(--ink); font: 700 10px/1 var(--font-mono); vertical-align: middle; }
+
+/* ---------- Kartu menuju alat ---------- */
+.tool-link { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4); }
+.tool-link .tool-tile__icon { margin: 0; flex: none; }
+.tool-link__body { flex: 1; min-width: 200px; display: grid; gap: 4px; }
+
+/* ---------- CTA Evaluasi Akhir (halaman Latihan) ---------- */
+.eval-cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4); margin-top: var(--s-4); }
+.eval-cta .tool-tile__icon { margin: 0; flex: none; }
+.eval-cta__body { flex: 1; min-width: 220px; display: grid; gap: 2px; }
+.sim__form .field__label { justify-content: flex-start; flex-wrap: wrap; gap: 4px 6px; }
+.worksheet .field__label { justify-content: flex-start; gap: 4px; }

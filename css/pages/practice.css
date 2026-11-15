@@ -11,7 +11,7 @@
 .practice-jump .chip-btn { text-decoration: none; }
 .practice-jump .icon { width: 16px; height: 16px; }
 
-.tool-card { display: grid; gap: var(--s-6); scroll-margin-top: calc(var(--topbar-h) + 16px); }
+.tool-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-6); scroll-margin-top: calc(var(--topbar-h) + 16px); }   /* 2.0: kolom minmax(0) agar konten lebar (simulator/review) tidak meluap di HP */
 .tool-card__head { display: flex; gap: var(--s-4); align-items: flex-start; }
 .tool-card__head .tool-tile__icon { flex: none; margin: 0; width: 52px; height: 52px; border-radius: 16px; }
 .tool-card__head > div { display: grid; gap: 6px; }
@@ -125,3 +125,4 @@
 @media (min-width: 900px) { [data-presend-list]:empty { min-height: 300px; } }
 [data-gen-checks]:empty { min-height: 168px; }
 .quiz-grid:empty { min-height: 240px; }
+[data-simulator]:empty { min-height: 900px; }   /* ruang awal simulator (dimuat saat mendekati layar) — cegah CLS */

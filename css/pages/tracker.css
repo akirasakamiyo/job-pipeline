@@ -71,8 +71,8 @@ button.sum-card[aria-pressed="true"] { border-color: var(--ink); box-shadow: var
 .app-table__actions .btn--icon { width: 40px; min-height: 40px; }
 .app-table .muted { color: var(--ink-mute); }
 
-/* HP & tablet kecil: setiap baris menjadi kartu */
-@media (max-width: 767px) {
+/* HP & tablet: setiap baris menjadi kartu (2.0: sampai 899px karena ada kolom Follow-up) */
+@media (max-width: 899px) {
   .app-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .app-table, .app-table tbody, .app-table tr, .app-table td { display: block; width: 100%; }
   .app-table tbody { display: grid; gap: var(--s-3); }
@@ -115,3 +115,10 @@ button.sum-card[aria-pressed="true"] { border-color: var(--ink); box-shadow: var
 @media (min-width: 600px) { .tracker-summary:empty { min-height: 260px; } }
 @media (min-width: 1100px) { .tracker-summary:empty { min-height: 116px; } }
 [data-list]:empty { min-height: 320px; }
+
+/* 2.0: kolom follow-up */
+.follow { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.follow__due { white-space: nowrap; }
+@media (max-width: 899px) {
+  .app-table__follow { grid-column: span 1; margin-top: var(--s-2); }
+}

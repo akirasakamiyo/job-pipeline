@@ -52,6 +52,8 @@
   <link rel="modulepreload" href="js/core/loader.js">
   <link rel="modulepreload" href="js/core/background.js">
   <link rel="modulepreload" href="js/pages/practice.js">
+  <link rel="modulepreload" href="js/features/simulator.js">
+  <link rel="modulepreload" href="js/features/activities.js">
   <link rel="modulepreload" href="js/features/clipboard.js">
   <link rel="preload" href="data/modules.json" as="fetch" crossorigin>
 </head>
@@ -81,7 +83,9 @@
       <nav class="cluster practice-jump" aria-label="Lompat ke alat" data-intro="fade">
         <a class="chip chip-btn" href="#generator"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-wand"/></svg>Subject Generator</a>
         <a class="chip chip-btn" href="#checklist"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-check"/></svg>Checklist pra-kirim</a>
-        <a class="chip chip-btn" href="#kuis"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-target"/></svg>Kuis modul</a>
+        <a class="chip chip-btn" href="#simulator"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-edit"/></svg>Email Writing Simulator</a>
+        <a class="chip chip-btn" href="#review"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-file"/></svg>CV &amp; Portfolio Review</a>
+        <a class="chip chip-btn" href="#kuis"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-target"/></svg>Kuis &amp; evaluasi</a>
       </nav>
     </header>
 
@@ -153,7 +157,20 @@
       </div>
     </section>
 
-    <!-- ================= 2. CHECKLIST PRA-KIRIM ================= -->
+    <!-- ================= 2. EMAIL WRITING SIMULATOR (2.0) ================= -->
+    <section class="card tool-card" id="simulator" data-module="tx" aria-labelledby="sim-title" data-reveal="up">
+      <header class="tool-card__head">
+        <span class="tool-tile__icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-edit"/></svg></span>
+        <div>
+          <p class="eyebrow">Simulasi · Modul 4</p>
+          <h2 class="h2" id="sim-title">Email Writing Simulator</h2>
+          <p class="text-soft">Susun email lamaran untuk lowongan fiktif, lihat pratinjaunya, lalu nilai dengan rubrik yang transparan. Draf tersimpan otomatis dan sama dengan simulator di Modul 4.</p>
+        </div>
+      </header>
+      <div data-simulator></div>
+    </section>
+
+    <!-- ================= 3. CHECKLIST PRA-KIRIM ================= -->
     <section class="card tool-card" id="checklist" data-module="id" aria-labelledby="pc-title" data-reveal="up">
       <header class="tool-card__head">
         <span class="tool-tile__icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-check"/></svg></span>
@@ -190,16 +207,38 @@
       </div>
     </section>
 
-    <!-- ================= 3. KUIS MODUL ================= -->
+    <!-- ================= 4. CV & PORTFOLIO REVIEW (2.0) ================= -->
+    <section class="card tool-card" id="review" data-module="cv" aria-labelledby="rv-title" data-reveal="up">
+      <header class="tool-card__head">
+        <span class="tool-tile__icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-file"/></svg></span>
+        <div>
+          <p class="eyebrow">Sebelum melamar</p>
+          <h2 class="h2" id="rv-title">CV &amp; Portfolio Review</h2>
+          <p class="text-soft">Periksa kesiapan CV dan portofoliomu. Centang hanya yang <strong>sudah benar-benar kamu periksa</strong>.</p>
+        </div>
+      </header>
+      <div data-review></div>
+    </section>
+
+    <!-- ================= 5. KUIS MODUL & EVALUASI AKHIR ================= -->
     <section class="tool-section" id="kuis" aria-labelledby="quiz-title">
       <div class="section-head" data-reveal="up">
         <div class="section-head__text">
           <p class="eyebrow">Knowledge check</p>
           <h2 class="h2" id="quiz-title">Kuis tiap modul</h2>
-          <p class="text-soft">5 soal pilihan ganda per modul, dengan umpan balik dan pembahasan. Nilai lulus <span data-pass-score>70</span>.</p>
+          <p class="text-soft">8 soal pilihan ganda per modul, dengan umpan balik dan pembahasan. Nilai lulus <span data-pass-score>70</span>. Setelah kelima modul, uji pemahaman lintas modul di Evaluasi Akhir.</p>
         </div>
       </div>
       <div class="quiz-grid" data-quiz-grid data-stagger></div>
+      <article class="card eval-cta" data-module="tr" aria-labelledby="eval-title" data-reveal="up">
+        <span class="tool-tile__icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-trophy"/></svg></span>
+        <div class="eval-cta__body">
+          <p class="eyebrow">Evaluasi lintas modul</p>
+          <h3 class="h3" id="eval-title">Evaluasi Akhir</h3>
+          <p class="text-soft text-sm" data-eval-status>15 soal acak dari kelima modul.</p>
+        </div>
+        <a class="btn btn--primary" href="evaluation.html">Buka evaluasi<svg class="icon icon--trail" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+      </article>
     </section>
   </main>
 

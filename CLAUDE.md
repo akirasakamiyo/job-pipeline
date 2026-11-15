@@ -10,7 +10,8 @@ LMS statis untuk GitHub Pages: HTML5, CSS3, vanilla JS (ES modules), GSAP 3.12.5
   - `tracker-store.js`, `backup.js`.
   - `navigation.js`, `motion.js`, `ui.js`.
 - Materi berbasis data:
-  - Daftar bagian: `data/modules.json`.
+  - Daftar bagian dan pengelompokan materi (`topics`): `data/modules.json`.
+  - Aktivitas interaktif: `js/features/activities.js`. Simulator: `js/features/simulator.js` + `data/simulator.json`. Evaluasi akhir: `data/evaluation.json`.
   - Isi per modul: `data/content/<id>.json`, dirender oleh `js/features/lesson-renderer.js` (lihat daftar tipe blok di file itu).
 - Path selalu relatif, supaya situs jalan di sub-path GitHub Pages.
 
@@ -22,6 +23,8 @@ LMS statis untuk GitHub Pages: HTML5, CSS3, vanilla JS (ES modules), GSAP 3.12.5
 - Jangan ada API key atau secret di frontend.
 - Referensi tidak boleh dikarang. Yang belum dicek diberi `verified:false` atau blok `verify`, sehingga tampil label "Perlu verifikasi".
 - XP dan badge hanya diberikan setelah aktivitas benar-benar selesai. Checklist tidak boleh tercentang otomatis.
+- Kunci jawaban (kuis, cek cepat, aktivitas) tidak boleh ditulis ke DOM sebelum peserta menjawab.
+- Aktivitas bernilai baru: daftarkan id di `SCORED_ACTIVITIES` (state.js) dan `ACTIVITY_INFO` (progress-page.js).
 - Pertahankan design system: token di `css/tokens.css`, pratinjau di `styleguide.html`.
 
 ## Uji

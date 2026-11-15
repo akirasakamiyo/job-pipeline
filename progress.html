@@ -93,6 +93,22 @@
       <div class="prog-stats" data-stats></div>
     </section>
 
+    <!-- 2.0 Skor belajar keseluruhan + aktivitas -->
+    <section class="card prog-section prog-score" aria-labelledby="score-title" data-reveal="up">
+      <div class="section-head">
+        <div class="section-head__text">
+          <p class="eyebrow">Overall learning score</p>
+          <h2 class="h2" id="score-title">Skor belajar keseluruhan</h2>
+          <p class="text-soft text-sm">Dihitung dari skor terbaikmu. Rumusnya transparan: setiap komponen dikalikan bobotnya.</p>
+        </div>
+        <p class="prog-score__total"><span class="num num--xl" data-score-total>0</span><span class="text-soft">/100</span></p>
+      </div>
+      <ul class="score-parts" role="list" data-score-parts></ul>
+      <h3 class="h4 prog-score__sub">Aktivitas latihan</h3>
+      <p class="text-soft text-sm" data-activity-summary></p>
+      <ul class="act-list" role="list" data-activity-list></ul>
+    </section>
+
     <!-- 2. Per modul -->
     <section class="prog-section" aria-labelledby="modules-title">
       <div class="section-head">
@@ -114,6 +130,9 @@
         </div>
       </div>
       <ul class="prog-badges" role="list" data-badge-grid></ul>
+      <h3 class="h4 prog-score__sub">Milestone</h3>
+      <p class="text-soft text-sm">Pencapaian kecil di sepanjang perjalanan (termasuk badge versi sebelumnya).</p>
+      <ul class="prog-badges prog-badges--small" role="list" data-milestone-grid></ul>
     </section>
 
     <!-- 4. Riwayat -->

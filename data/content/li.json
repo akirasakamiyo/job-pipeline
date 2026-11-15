@@ -1,168 +1,960 @@
 {
   "module": "li",
   "objectives": [
-    "Mengoptimalkan bagian-bagian utama profil LinkedIn",
-    "Menyinkronkan headline LinkedIn dengan CV dan target posisi",
-    "Menemukan hiring manager dan meriset perusahaan secara etis",
-    "Menjalankan warm outreach dengan pesan yang personal",
-    "Menerapkan etika networking profesional"
+    "Menjelaskan fungsi LinkedIn dan bedanya dengan CV",
+    "Mengoptimalkan bagian utama profil LinkedIn",
+    "Menyelaraskan headline dan pengalaman LinkedIn dengan CV",
+    "Meriset perusahaan dan kebutuhan posisi dari deskripsi lowongan",
+    "Membedakan HR recruiter dan hiring manager serta menghormati privasi",
+    "Menulis pesan warm outreach sebelum dan sesudah melamar"
   ],
   "sections": {
     "li-1": {
       "blocks": [
-        { "type": "objectives" },
-        { "type": "p", "text": "Melamar tanpa riset ibarat menembak dalam gelap. Modul ini adalah fase **recon**: mengenali target (perusahaan & orangnya) dan menyiapkan profil yang membuat mereka mau membalas." },
-        { "type": "compare", "items": [
-          { "label": "Cold outreach", "tone": "bad", "lines": ["Pesan ke orang asing tanpa konteks", "Langsung meminta pekerjaan/referral", "Peluang dibalas kecil"] },
-          { "label": "Warm outreach", "tone": "good", "lines": ["Didahului riset & interaksi", "Pesan personal dan relevan", "Membangun hubungan dulu"] }
-        ] },
-        { "type": "callout", "tone": "info", "title": "Fitur bisa berubah", "text": "Nama menu dan fitur LinkedIn dapat berubah sewaktu-waktu. Fokus pada prinsipnya, lalu sesuaikan dengan tampilan terbaru." }
+        {
+          "type": "objectives"
+        },
+        {
+          "type": "p",
+          "text": "Melamar tanpa riset ibarat menembak dalam gelap. Modul ini adalah fase **recon**: mengenali target (perusahaan & orangnya) dan menyiapkan profil yang membuat mereka mau membalas."
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "Cold outreach",
+              "tone": "bad",
+              "lines": [
+                "Pesan ke orang asing tanpa konteks",
+                "Langsung meminta pekerjaan/referral",
+                "Peluang dibalas kecil"
+              ]
+            },
+            {
+              "label": "Warm outreach",
+              "tone": "good",
+              "lines": [
+                "Didahului riset & interaksi",
+                "Pesan personal dan relevan",
+                "Membangun hubungan dulu"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Fitur bisa berubah",
+          "text": "Nama menu dan fitur LinkedIn dapat berubah sewaktu-waktu. Fokus pada prinsipnya, lalu sesuaikan dengan tampilan terbaru."
+        }
       ]
     },
     "li-2": {
       "blocks": [
-        { "type": "p", "text": "Profil LinkedIn sering menjadi tempat pertama yang dicek setelah rekruter membaca namamu. Pastikan bagian utamanya lengkap dan konsisten dengan CV." },
-        { "type": "steps", "items": [
-          { "title": "Foto profil", "text": "Wajah terlihat jelas, pencahayaan cukup, latar bersih, berpakaian rapi." },
-          { "title": "Banner", "text": "Gambar sederhana yang sesuai bidangmu—tidak wajib ramai." },
-          { "title": "Headline", "text": "Peran yang dituju + keahlian utama (dibahas di bagian berikutnya)." },
-          { "title": "About", "text": "Cerita singkat: siapa kamu, apa yang kamu kuasai, dan apa yang kamu cari." },
-          { "title": "Experience & Education", "text": "Sama dengan CV, dengan poin pencapaian." },
-          { "title": "Skills & Featured", "text": "Keahlian relevan dan tautan portofolio/proyek terbaik." },
-          { "title": "URL profil", "text": "Rapikan URL agar memakai nama, lalu cantumkan di CV dan tanda tangan email." }
-        ] },
-        { "type": "recall", "q": "Bagian profil mana yang paling tepat untuk menampilkan tautan portofolio?", "options": ["Banner", "Featured", "Foto profil"], "answer": 1, "explain": "Bagian Featured dirancang untuk menampilkan karya, tautan, dan dokumen pilihan." }
+        {
+          "type": "p",
+          "text": "Profil LinkedIn sering menjadi tempat pertama yang dicek setelah rekruter membaca namamu. Pastikan bagian utamanya lengkap dan konsisten dengan CV."
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": "Foto profil",
+              "text": "Wajah terlihat jelas, pencahayaan cukup, latar bersih, berpakaian rapi."
+            },
+            {
+              "title": "Banner",
+              "text": "Gambar sederhana yang sesuai bidangmu—tidak wajib ramai."
+            },
+            {
+              "title": "Headline",
+              "text": "Peran yang dituju + keahlian utama (dibahas di bagian berikutnya)."
+            },
+            {
+              "title": "About",
+              "text": "Cerita singkat: siapa kamu, apa yang kamu kuasai, dan apa yang kamu cari."
+            },
+            {
+              "title": "Experience & Education",
+              "text": "Sama dengan CV, dengan poin pencapaian."
+            },
+            {
+              "title": "Skills & Featured",
+              "text": "Keahlian relevan dan tautan portofolio/proyek terbaik."
+            },
+            {
+              "title": "URL profil",
+              "text": "Rapikan URL agar memakai nama, lalu cantumkan di CV dan tanda tangan email."
+            }
+          ]
+        },
+        {
+          "type": "recall",
+          "q": "Bagian profil mana yang paling tepat untuk menampilkan tautan portofolio?",
+          "options": [
+            "Banner",
+            "Featured",
+            "Foto profil"
+          ],
+          "answer": 1,
+          "explain": "Bagian Featured dirancang untuk menampilkan karya, tautan, dan dokumen pilihan."
+        }
       ]
     },
     "li-3": {
       "blocks": [
-        { "type": "p", "text": "**Headline synchronization** artinya peran yang kamu tulis di LinkedIn, CV, dan tanda tangan email **sama**. Konsistensi memudahkan rekruter memahami arah kariermu." },
-        { "type": "anatomy", "title": "Formula headline", "parts": [
-          { "text": "Frontend Developer", "label": "Peran target", "note": "Sesuai istilah di lowongan" },
-          { "text": " | React, JavaScript", "label": "Keahlian utama", "note": "2–3 yang paling relevan" },
-          { "text": " | Fokus pada web yang cepat & aksesibel", "label": "Nilai/fokus", "note": "Opsional, singkat" }
-        ] },
-        { "type": "compare", "items": [
-          { "label": "Tidak sinkron", "tone": "bad", "lines": ["LinkedIn: \"Mahasiswa | Suka teknologi\"", "CV: \"Web Developer\"", "Email: \"UI Enthusiast\""] },
-          { "label": "Sinkron", "tone": "good", "lines": ["LinkedIn: \"Frontend Developer | React, JavaScript\"", "CV: \"Frontend Developer\"", "Email: \"Frontend Developer\""] }
-        ] },
-        { "type": "verify", "text": "Batas jumlah karakter headline LinkedIn dapat berubah. Cek ketentuan terbaru di Pusat Bantuan LinkedIn sebelum menampilkan angka batasnya." }
+        {
+          "type": "p",
+          "text": "**Headline synchronization** artinya peran yang kamu tulis di LinkedIn, CV, dan tanda tangan email **sama**. Konsistensi memudahkan rekruter memahami arah kariermu."
+        },
+        {
+          "type": "anatomy",
+          "title": "Formula headline",
+          "parts": [
+            {
+              "text": "Frontend Developer",
+              "label": "Peran target",
+              "note": "Sesuai istilah di lowongan"
+            },
+            {
+              "text": " | React, JavaScript",
+              "label": "Keahlian utama",
+              "note": "2–3 yang paling relevan"
+            },
+            {
+              "text": " | Fokus pada web yang cepat & aksesibel",
+              "label": "Nilai/fokus",
+              "note": "Opsional, singkat"
+            }
+          ]
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "Tidak sinkron",
+              "tone": "bad",
+              "lines": [
+                "LinkedIn: \"Mahasiswa | Suka teknologi\"",
+                "CV: \"Web Developer\"",
+                "Email: \"UI Enthusiast\""
+              ]
+            },
+            {
+              "label": "Sinkron",
+              "tone": "good",
+              "lines": [
+                "LinkedIn: \"Frontend Developer | React, JavaScript\"",
+                "CV: \"Frontend Developer\"",
+                "Email: \"Frontend Developer\""
+              ]
+            }
+          ]
+        },
+        {
+          "type": "verify",
+          "text": "Batas jumlah karakter headline LinkedIn dapat berubah. Cek ketentuan terbaru di Pusat Bantuan LinkedIn sebelum menampilkan angka batasnya."
+        }
       ]
     },
     "li-4": {
       "blocks": [
-        { "type": "p", "text": "Mengetahui siapa yang merekrut membantumu menyesuaikan pesan dan, bila tepat, menyapa langsung. Lakukan dengan **sopan dan tidak berlebihan**." },
-        { "type": "steps", "items": [
-          { "title": "Cek unggahan lowongan", "text": "Beberapa lowongan menampilkan nama perekrut atau tim yang memasang lowongan." },
-          { "title": "Halaman perusahaan → orang", "text": "Telusuri karyawan berdasarkan jabatan, mis. \"Engineering Manager\" atau \"Talent Acquisition\"." },
-          { "title": "Pencarian kata kunci", "text": "Gabungkan jabatan + nama perusahaan di kolom pencarian." },
-          { "title": "Verifikasi", "text": "Pastikan orang tersebut masih bekerja di perusahaan dan jabatannya relevan." }
-        ] },
-        { "type": "flags",
-          "green": ["Menyapa satu orang yang paling relevan", "Menyebut lowongan spesifik", "Menghormati jika tidak dibalas"],
-          "red": ["Mengirim pesan yang sama ke puluhan karyawan", "Menghubungi lewat nomor pribadi tanpa izin", "Menagih balasan berkali-kali"] }
+        {
+          "type": "p",
+          "text": "Mengetahui siapa yang merekrut membantumu menyesuaikan pesan dan, bila tepat, menyapa langsung. Lakukan dengan **sopan dan tidak berlebihan**."
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": "Cek unggahan lowongan",
+              "text": "Beberapa lowongan menampilkan nama perekrut atau tim yang memasang lowongan."
+            },
+            {
+              "title": "Halaman perusahaan → orang",
+              "text": "Telusuri karyawan berdasarkan jabatan, mis. \"Engineering Manager\" atau \"Talent Acquisition\"."
+            },
+            {
+              "title": "Pencarian kata kunci",
+              "text": "Gabungkan jabatan + nama perusahaan di kolom pencarian."
+            },
+            {
+              "title": "Verifikasi",
+              "text": "Pastikan orang tersebut masih bekerja di perusahaan dan jabatannya relevan."
+            }
+          ]
+        },
+        {
+          "type": "flags",
+          "green": [
+            "Menyapa satu orang yang paling relevan",
+            "Menyebut lowongan spesifik",
+            "Menghormati jika tidak dibalas"
+          ],
+          "red": [
+            "Mengirim pesan yang sama ke puluhan karyawan",
+            "Menghubungi lewat nomor pribadi tanpa izin",
+            "Menagih balasan berkali-kali"
+          ]
+        }
       ]
     },
     "li-5": {
       "blocks": [
-        { "type": "p", "text": "Riset perusahaan membuat lamaran dan pesanmu **spesifik**, bukan template. Targetkan tiga catatan yang bisa kamu pakai di email lamaran (Modul 4)." },
-        { "type": "list", "items": ["**Produk/layanan** utama dan siapa penggunanya", "**Kabar terbaru**: peluncuran, proyek, atau pencapaian yang diumumkan resmi", "**Nilai & budaya** dari situs karier dan halaman LinkedIn perusahaan", "**Deskripsi lowongan**: keahlian yang paling sering disebut"] },
-        { "type": "callout", "tone": "tip", "title": "Sumber riset", "text": "Situs resmi perusahaan, halaman LinkedIn perusahaan, serta profil perusahaan di portal seperti JobStreet atau Glints." },
-        { "type": "table", "head": ["Catatan riset", "Dipakai di"], "rows": [
-          ["Perusahaan baru meluncurkan fitur pembayaran di aplikasinya", "Kalimat pembuka (hook) email"],
-          ["Lowongan menekankan React & aksesibilitas", "Paragraf value proposition"],
-          ["Nilai perusahaan: belajar berkelanjutan", "Ringkasan profil / wawancara"]
-        ] },
-        { "type": "callout", "tone": "info", "title": "Data contoh", "text": "Isi tabel di atas adalah contoh fiktif untuk menunjukkan cara mencatat." }
+        {
+          "type": "p",
+          "text": "Riset perusahaan membuat lamaran dan pesanmu **spesifik**, bukan template. Targetkan tiga catatan yang bisa kamu pakai di email lamaran (Modul 4)."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Produk/layanan** utama dan siapa penggunanya",
+            "**Kabar terbaru**: peluncuran, proyek, atau pencapaian yang diumumkan resmi",
+            "**Nilai & budaya** dari situs karier dan halaman LinkedIn perusahaan",
+            "**Deskripsi lowongan**: keahlian yang paling sering disebut"
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Sumber riset",
+          "text": "Situs resmi perusahaan, halaman LinkedIn perusahaan, serta profil perusahaan di portal seperti JobStreet atau Glints."
+        },
+        {
+          "type": "table",
+          "head": [
+            "Catatan riset",
+            "Dipakai di"
+          ],
+          "rows": [
+            [
+              "Perusahaan baru meluncurkan fitur pembayaran di aplikasinya",
+              "Kalimat pembuka (hook) email"
+            ],
+            [
+              "Lowongan menekankan React & aksesibilitas",
+              "Paragraf value proposition"
+            ],
+            [
+              "Nilai perusahaan: belajar berkelanjutan",
+              "Ringkasan profil / wawancara"
+            ]
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Data contoh",
+          "text": "Isi tabel di atas adalah contoh fiktif untuk menunjukkan cara mencatat."
+        }
       ]
     },
     "li-6": {
       "blocks": [
-        { "type": "p", "text": "**Warm outreach** adalah pendekatan bertahap: kenal dulu, baru berbicara. Tujuannya **membangun hubungan dan mendapat wawasan**, bukan langsung meminta pekerjaan." },
-        { "type": "steps", "items": [
-          { "title": "Ikuti & amati", "text": "Follow perusahaan dan orang yang relevan; pahami topik yang mereka bagikan." },
-          { "title": "Berinteraksi bermakna", "text": "Beri komentar yang menambah nilai, bukan sekadar \"Mantap!\"." },
-          { "title": "Kirim permintaan koneksi + catatan", "text": "Sebut alasan spesifik mengapa kamu ingin terhubung." },
-          { "title": "Ajak bercakap singkat", "text": "Tanyakan satu hal spesifik tentang peran atau tim mereka." },
-          { "title": "Terima kasih & jaga hubungan", "text": "Ucapkan terima kasih dan kabari bila sarannya kamu terapkan." }
-        ] },
-        { "type": "email", "variant": "message", "to": "Kak Dimas (Frontend Engineer)", "body": ["Halo Kak Dimas, saya Rina, lulusan Teknik Informatika yang sedang mendalami frontend. Saya membaca tulisan Kakak tentang aksesibilitas formulir web dan menerapkan tipsnya di proyek saya. Boleh saya terhubung untuk belajar dari pengalaman Kakak?"] },
-        { "type": "recall", "q": "Kapan waktu yang tepat meminta referral dalam warm outreach?", "options": ["Di pesan pertama ke orang asing", "Setelah ada percakapan dan hubungan yang terbangun", "Tidak boleh sama sekali"], "answer": 1, "explain": "Referral lebih pantas diminta setelah ada interaksi; meminta di pesan pertama terasa transaksional." }
+        {
+          "type": "p",
+          "text": "**Warm outreach** adalah pendekatan bertahap: kenal dulu, baru berbicara. Tujuannya **membangun hubungan dan mendapat wawasan**, bukan langsung meminta pekerjaan."
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": "Ikuti & amati",
+              "text": "Follow perusahaan dan orang yang relevan; pahami topik yang mereka bagikan."
+            },
+            {
+              "title": "Berinteraksi bermakna",
+              "text": "Beri komentar yang menambah nilai, bukan sekadar \"Mantap!\"."
+            },
+            {
+              "title": "Kirim permintaan koneksi + catatan",
+              "text": "Sebut alasan spesifik mengapa kamu ingin terhubung."
+            },
+            {
+              "title": "Ajak bercakap singkat",
+              "text": "Tanyakan satu hal spesifik tentang peran atau tim mereka."
+            },
+            {
+              "title": "Terima kasih & jaga hubungan",
+              "text": "Ucapkan terima kasih dan kabari bila sarannya kamu terapkan."
+            }
+          ]
+        },
+        {
+          "type": "email",
+          "variant": "message",
+          "to": "Kak Dimas (Frontend Engineer)",
+          "body": [
+            "Halo Kak Dimas, saya Rina, lulusan Teknik Informatika yang sedang mendalami frontend. Saya membaca tulisan Kakak tentang aksesibilitas formulir web dan menerapkan tipsnya di proyek saya. Boleh saya terhubung untuk belajar dari pengalaman Kakak?"
+          ]
+        },
+        {
+          "type": "recall",
+          "q": "Kapan waktu yang tepat meminta referral dalam warm outreach?",
+          "options": [
+            "Di pesan pertama ke orang asing",
+            "Setelah ada percakapan dan hubungan yang terbangun",
+            "Tidak boleh sama sekali"
+          ],
+          "answer": 1,
+          "explain": "Referral lebih pantas diminta setelah ada interaksi; meminta di pesan pertama terasa transaksional."
+        }
       ]
     },
     "li-7": {
       "blocks": [
-        { "type": "p", "text": "Etika networking menjaga reputasimu—dunia profesional lebih kecil dari yang dikira." },
-        { "type": "dodont",
-          "do": ["Pesan singkat, jelas, dan personal", "Sebut nama dan alasan menghubungi", "Hormati waktu: satu pertanyaan spesifik", "Ucapkan terima kasih, apa pun hasilnya", "Follow-up sekali dengan sopan bila perlu"],
-          "dont": ["Template massal tanpa nama", "Langsung melampirkan CV ke orang asing", "Pesan bertubi-tubi bila belum dibalas", "Menghubungi di luar platform tanpa izin", "Bahasa terlalu santai atau memaksa"] },
-        { "type": "callout", "tone": "key", "title": "Prinsip memberi dulu", "text": "Bagikan sesuatu yang bernilai—tanggapan tulus, artikel relevan, atau hasil penerapan saran mereka—sebelum meminta bantuan." }
+        {
+          "type": "p",
+          "text": "Etika networking menjaga reputasimu—dunia profesional lebih kecil dari yang dikira."
+        },
+        {
+          "type": "dodont",
+          "do": [
+            "Pesan singkat, jelas, dan personal",
+            "Sebut nama dan alasan menghubungi",
+            "Hormati waktu: satu pertanyaan spesifik",
+            "Ucapkan terima kasih, apa pun hasilnya",
+            "Follow-up sekali dengan sopan bila perlu"
+          ],
+          "dont": [
+            "Template massal tanpa nama",
+            "Langsung melampirkan CV ke orang asing",
+            "Pesan bertubi-tubi bila belum dibalas",
+            "Menghubungi di luar platform tanpa izin",
+            "Bahasa terlalu santai atau memaksa"
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "key",
+          "title": "Prinsip memberi dulu",
+          "text": "Bagikan sesuatu yang bernilai—tanggapan tulus, artikel relevan, atau hasil penerapan saran mereka—sebelum meminta bantuan."
+        }
       ]
     },
     "li-8": {
       "blocks": [
-        { "type": "p", "text": "Warm outreach bergerak dari kenal → percaya → dibantu." },
-        { "type": "flow", "title": "Alur warm outreach", "steps": [
-          { "label": "Riset", "note": "Perusahaan & orangnya" },
-          { "label": "Follow", "note": "Amati topik mereka" },
-          { "label": "Interaksi", "note": "Komentar bermakna" },
-          { "label": "Koneksi + catatan", "note": "Alasan spesifik" },
-          { "label": "Percakapan", "note": "Satu pertanyaan" },
-          { "label": "Referral?", "note": "Hanya bila hubungan terbangun" }
-        ] },
-        { "type": "anatomy", "title": "Anatomi catatan koneksi", "parts": [
-          { "text": "Halo Kak Dimas,", "label": "Sapaan + nama", "note": "Personal" },
-          { "text": " saya Rina (lulusan TI).", "label": "Siapa kamu", "note": "Satu kalimat" },
-          { "text": " Saya membaca tulisan Kakak tentang aksesibilitas…", "label": "Alasan spesifik", "note": "Bukti riset" },
-          { "text": " Boleh saya terhubung?", "label": "Permintaan ringan", "note": "Bukan minta kerja" }
-        ] }
+        {
+          "type": "p",
+          "text": "Warm outreach bergerak dari kenal → percaya → dibantu."
+        },
+        {
+          "type": "flow",
+          "title": "Alur warm outreach",
+          "steps": [
+            {
+              "label": "Riset",
+              "note": "Perusahaan & orangnya"
+            },
+            {
+              "label": "Follow",
+              "note": "Amati topik mereka"
+            },
+            {
+              "label": "Interaksi",
+              "note": "Komentar bermakna"
+            },
+            {
+              "label": "Koneksi + catatan",
+              "note": "Alasan spesifik"
+            },
+            {
+              "label": "Percakapan",
+              "note": "Satu pertanyaan"
+            },
+            {
+              "label": "Referral?",
+              "note": "Hanya bila hubungan terbangun"
+            }
+          ]
+        },
+        {
+          "type": "anatomy",
+          "title": "Anatomi catatan koneksi",
+          "parts": [
+            {
+              "text": "Halo Kak Dimas,",
+              "label": "Sapaan + nama",
+              "note": "Personal"
+            },
+            {
+              "text": " saya Rina (lulusan TI).",
+              "label": "Siapa kamu",
+              "note": "Satu kalimat"
+            },
+            {
+              "text": " Saya membaca tulisan Kakak tentang aksesibilitas…",
+              "label": "Alasan spesifik",
+              "note": "Bukti riset"
+            },
+            {
+              "text": " Boleh saya terhubung?",
+              "label": "Permintaan ringan",
+              "note": "Bukan minta kerja"
+            }
+          ]
+        }
       ]
     },
     "li-9": {
       "blocks": [
-        { "type": "p", "text": "Bandingkan dua pesan ke orang yang sama:" },
-        { "type": "compare", "items": [
-          { "label": "Pesan dingin", "tone": "bad", "lines": ["\"Halo kak, ada lowongan? Bisa referral saya? CV terlampir.\""] },
-          { "label": "Pesan hangat", "tone": "good", "lines": ["\"Halo Kak Dimas, saya Rina. Tips Kakak soal aksesibilitas formulir sudah saya terapkan di proyek pendaftaran acara kampus. Boleh saya bertanya satu hal tentang bagaimana tim Kakak menguji aksesibilitas?\""] }
-        ] },
-        { "type": "email", "variant": "message", "to": "Kak Dimas (Frontend Engineer)", "body": ["Terima kasih atas jawabannya, Kak. Saya mencoba checklist yang Kakak sebutkan dan menemukan dua formulir yang belum punya label. Saya juga melihat tim Kakak membuka posisi Frontend Developer—jika berkenan, apakah ada hal yang sebaiknya saya tonjolkan dalam lamaran?"] },
-        { "type": "callout", "tone": "info", "title": "Data contoh", "text": "Nama dan percakapan di atas fiktif." }
+        {
+          "type": "p",
+          "text": "Bandingkan dua pesan ke orang yang sama:"
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "Pesan dingin",
+              "tone": "bad",
+              "lines": [
+                "\"Halo kak, ada lowongan? Bisa referral saya? CV terlampir.\""
+              ]
+            },
+            {
+              "label": "Pesan hangat",
+              "tone": "good",
+              "lines": [
+                "\"Halo Kak Dimas, saya Rina. Tips Kakak soal aksesibilitas formulir sudah saya terapkan di proyek pendaftaran acara kampus. Boleh saya bertanya satu hal tentang bagaimana tim Kakak menguji aksesibilitas?\""
+              ]
+            }
+          ]
+        },
+        {
+          "type": "email",
+          "variant": "message",
+          "to": "Kak Dimas (Frontend Engineer)",
+          "body": [
+            "Terima kasih atas jawabannya, Kak. Saya mencoba checklist yang Kakak sebutkan dan menemukan dua formulir yang belum punya label. Saya juga melihat tim Kakak membuka posisi Frontend Developer—jika berkenan, apakah ada hal yang sebaiknya saya tonjolkan dalam lamaran?"
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Data contoh",
+          "text": "Nama dan percakapan di atas fiktif."
+        }
       ]
     },
     "li-10": {
       "blocks": [
-        { "type": "p", "text": "**Latihan 1** — susun headline LinkedIn-mu dan pastikan sinkron dengan CV." },
-        { "type": "builder", "id": "li-headline", "kind": "headline", "fields": [
-          { "id": "role", "label": "Peran target", "placeholder": "cth. Frontend Developer" },
-          { "id": "skills", "label": "2–3 keahlian utama", "placeholder": "cth. React, JavaScript" },
-          { "id": "value", "label": "Nilai/fokus (opsional)", "placeholder": "cth. Fokus pada web yang aksesibel" }
-        ] },
-        { "type": "p", "text": "**Latihan 2** — pilah catatan koneksi berikut." },
-        { "type": "classify", "id": "li-notes", "labels": { "good": "Hangat", "bad": "Dingin" }, "items": [
-          { "text": "\"Halo, boleh minta referral? Terima kasih.\"", "answer": "bad", "why": "Langsung meminta tanpa konteks atau hubungan." },
-          { "text": "\"Halo Kak Sari, saya Rina. Webinar Kakak tentang riset pengguna membantu saya menyusun studi kasus portofolio. Boleh saya terhubung?\"", "answer": "good", "why": "Personal, menyebut alasan spesifik, permintaan ringan." },
-          { "text": "(Permintaan koneksi tanpa catatan ke 50 karyawan sekaligus)", "answer": "bad", "why": "Massal dan tanpa alasan; terkesan spam." },
-          { "text": "\"Halo Pak Andi, saya tertarik dengan posisi Data Analyst di tim Bapak dan sedang mempelajari dashboard yang tim Bapak bagikan. Boleh saya bertanya satu hal tentang tools yang dipakai?\"", "answer": "good", "why": "Relevan, spesifik, dan menghormati waktu penerima." }
-        ] }
+        {
+          "type": "p",
+          "text": "**Latihan 1** — susun headline LinkedIn-mu dan pastikan sinkron dengan CV."
+        },
+        {
+          "type": "builder",
+          "id": "li-headline",
+          "kind": "headline",
+          "fields": [
+            {
+              "id": "role",
+              "label": "Peran target",
+              "placeholder": "cth. Frontend Developer"
+            },
+            {
+              "id": "skills",
+              "label": "2–3 keahlian utama",
+              "placeholder": "cth. React, JavaScript"
+            },
+            {
+              "id": "value",
+              "label": "Nilai/fokus (opsional)",
+              "placeholder": "cth. Fokus pada web yang aksesibel"
+            }
+          ]
+        },
+        {
+          "type": "p",
+          "text": "**Latihan 2** — pilah catatan koneksi berikut."
+        },
+        {
+          "type": "classify",
+          "id": "li-notes",
+          "labels": {
+            "good": "Hangat",
+            "bad": "Dingin"
+          },
+          "items": [
+            {
+              "text": "\"Halo, boleh minta referral? Terima kasih.\"",
+              "answer": "bad",
+              "why": "Langsung meminta tanpa konteks atau hubungan."
+            },
+            {
+              "text": "\"Halo Kak Sari, saya Rina. Webinar Kakak tentang riset pengguna membantu saya menyusun studi kasus portofolio. Boleh saya terhubung?\"",
+              "answer": "good",
+              "why": "Personal, menyebut alasan spesifik, permintaan ringan."
+            },
+            {
+              "text": "(Permintaan koneksi tanpa catatan ke 50 karyawan sekaligus)",
+              "answer": "bad",
+              "why": "Massal dan tanpa alasan; terkesan spam."
+            },
+            {
+              "text": "\"Halo Pak Andi, saya tertarik dengan posisi Data Analyst di tim Bapak dan sedang mempelajari dashboard yang tim Bapak bagikan. Boleh saya bertanya satu hal tentang tools yang dipakai?\"",
+              "answer": "good",
+              "why": "Relevan, spesifik, dan menghormati waktu penerima."
+            }
+          ]
+        }
+      ]
+    },
+    "li-11": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "**LinkedIn** adalah jejaring profesional daring. Bagi pencari kerja, fungsinya tiga: **etalase profil** yang bisa dicek rekruter, **sumber riset** tentang perusahaan dan orang-orangnya, serta **saluran untuk membangun hubungan** profesional."
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "CV",
+              "tone": "neutral",
+              "lines": [
+                "Dokumen yang kamu kirim",
+                "Disesuaikan untuk tiap lowongan",
+                "Ringkas, 1–2 halaman"
+              ]
+            },
+            {
+              "label": "LinkedIn",
+              "tone": "neutral",
+              "lines": [
+                "Profil publik yang dicari dan ditemukan orang",
+                "Satu profil untuk semua lowongan",
+                "Lebih lengkap: aktivitas, rekomendasi, karya"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "head": [
+            "Bagian profil",
+            "Fungsi"
+          ],
+          "rows": [
+            [
+              "**Professional Headline**",
+              "Kalimat di bawah nama; muncul di hasil pencarian dan komentar"
+            ],
+            [
+              "**About**",
+              "Cerita singkat: siapa kamu, keahlian, dan apa yang kamu cari"
+            ],
+            [
+              "**Experience**",
+              "Riwayat kerja/magang/organisasi dengan poin pencapaian"
+            ],
+            [
+              "**Skills**",
+              "Keahlian yang bisa dicari rekruter"
+            ],
+            [
+              "**Licenses & Certifications**",
+              "Sertifikat beserta penerbit dan tanggalnya"
+            ],
+            [
+              "**Featured**",
+              "Tempat menyematkan portofolio, artikel, atau proyek terbaik"
+            ]
+          ]
+        },
+        {
+          "type": "practice",
+          "title": "Profil adalah bukti pendukung",
+          "text": "Rekruter sering membuka LinkedIn setelah membaca nama di lamaran. Profil yang kosong atau berbeda dari CV memunculkan pertanyaan; profil yang konsisten menambah kepercayaan."
+        },
+        {
+          "type": "recall",
+          "q": "Apa perbedaan utama CV dan LinkedIn?",
+          "options": [
+            "Keduanya sama persis",
+            "CV disesuaikan per lowongan; LinkedIn adalah satu profil publik yang lebih lengkap",
+            "LinkedIn hanya untuk yang sudah bekerja",
+            "CV tidak perlu konsisten dengan LinkedIn"
+          ],
+          "answer": 1,
+          "explain": "CV dikirim dan disesuaikan; LinkedIn ditemukan dan dibaca berbagai pihak."
+        }
+      ]
+    },
+    "li-12": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Buka profil LinkedIn-mu di tab lain, lalu centang hanya bagian yang **sudah benar-benar kamu rapikan**. Status tersimpan otomatis."
+        },
+        {
+          "type": "checklist",
+          "id": "li-profile",
+          "items": [
+            {
+              "id": "li-c1",
+              "text": "Foto profil wajah jelas dan rapi"
+            },
+            {
+              "id": "li-c2",
+              "text": "Headline menyebut peran target + keahlian utama",
+              "hint": "Bukan hanya \"Mahasiswa\" atau \"Fresh graduate\"."
+            },
+            {
+              "id": "li-c3",
+              "text": "About berisi 3–5 kalimat tentang keahlian dan tujuan"
+            },
+            {
+              "id": "li-c4",
+              "text": "Experience sama dengan CV (nama, peran, periode)"
+            },
+            {
+              "id": "li-c5",
+              "text": "Skills relevan dengan lowongan yang dituju"
+            },
+            {
+              "id": "li-c6",
+              "text": "Sertifikasi dicantumkan dengan penerbit dan tahun"
+            },
+            {
+              "id": "li-c7",
+              "text": "Featured berisi tautan portofolio/proyek terbaik"
+            },
+            {
+              "id": "li-c8",
+              "text": "URL profil kustom (linkedin.com/in/nama-kamu)",
+              "hint": "Lebih rapi saat dicantumkan di CV dan tanda tangan email."
+            }
+          ]
+        }
+      ]
+    },
+    "li-13": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Pilih satu lowongan nyata yang ingin kamu lamar, lalu isi lembar kerja ini. Jawabanmu **tersimpan di perangkat ini** dan bisa disalin sebagai catatan—berguna untuk menulis email lamaran dan menyiapkan wawancara."
+        },
+        {
+          "type": "worksheet",
+          "id": "li-research",
+          "title": "Lembar riset perusahaan",
+          "fields": [
+            {
+              "id": "company",
+              "label": "Nama perusahaan & posisi",
+              "placeholder": "cth. PT Contoh Digital — Social Media Specialist",
+              "required": true
+            },
+            {
+              "id": "business",
+              "label": "Bidang usaha & produk utama",
+              "placeholder": "Apa yang mereka jual/layani? Siapa pelanggannya?",
+              "multiline": true,
+              "required": true
+            },
+            {
+              "id": "needs",
+              "label": "3 kebutuhan utama posisi (dari deskripsi lowongan)",
+              "placeholder": "Tulis keahlian/tanggung jawab yang paling sering disebut",
+              "multiline": true,
+              "required": true
+            },
+            {
+              "id": "match",
+              "label": "Bukti dari pengalamanku yang cocok",
+              "placeholder": "Untuk tiap kebutuhan, satu pengalaman/proyek",
+              "multiline": true,
+              "required": true
+            },
+            {
+              "id": "news",
+              "label": "Info terbaru tentang perusahaan",
+              "placeholder": "Produk baru, kampanye, ekspansi—dari situs resmi atau berita",
+              "multiline": true
+            },
+            {
+              "id": "angle",
+              "label": "Satu kalimat: mengapa aku tertarik dengan perusahaan ini",
+              "placeholder": "Spesifik, bukan \"perusahaan besar dan terkenal\"",
+              "required": true
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Sumber riset yang layak",
+          "text": "Situs resmi & halaman karier perusahaan, halaman LinkedIn perusahaan, laporan tahunan (bila ada), dan berita dari media kredibel. Bedakan fakta dari opini di ulasan karyawan."
+        }
+      ]
+    },
+    "li-14": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Dalam proses rekrutmen biasanya ada dua peran yang berbeda. Mengenali keduanya membantumu tahu **kepada siapa** dan **tentang apa** kamu berbicara."
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "HR Recruiter / Talent Acquisition",
+              "tone": "neutral",
+              "lines": [
+                "Mengelola proses: menyaring CV, menjadwalkan, menghubungi kandidat",
+                "Memahami kebutuhan umum posisi & budaya perusahaan",
+                "Kontak yang tepat untuk pertanyaan proses dan status"
+              ]
+            },
+            {
+              "label": "Hiring Manager",
+              "tone": "neutral",
+              "lines": [
+                "Calon atasan langsung posisi tersebut",
+                "Paling paham kebutuhan teknis pekerjaan",
+                "Sering ikut wawancara dan keputusan akhir"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "title": "Struktur bisa berbeda",
+          "text": "Di perusahaan kecil, pemilik usaha bisa sekaligus menjadi perekrut dan hiring manager. Di perusahaan besar, ada tim Talent Acquisition khusus. Ikuti saluran yang ditulis di lowongan."
+        },
+        {
+          "type": "h",
+          "text": "Etika & privasi"
+        },
+        {
+          "type": "dodont",
+          "do": [
+            "Hubungi lewat kanal profesional (LinkedIn, email kerja yang dipublikasikan)",
+            "Kirim satu pesan singkat, lalu beri jeda",
+            "Hormati jika tidak dibalas"
+          ],
+          "dont": [
+            "Mencari nomor pribadi atau akun media sosial pribadi",
+            "Mengirim pesan berulang-ulang dalam waktu singkat",
+            "Mendatangi rumah atau menghubungi di luar jam kerja tanpa diminta"
+          ]
+        },
+        {
+          "type": "recall",
+          "q": "Kamu ingin menanyakan status lamaran. Siapa kontak yang paling tepat?",
+          "options": [
+            "Hiring manager lewat nomor pribadinya",
+            "HR recruiter/kontak yang tercantum di lowongan",
+            "CEO perusahaan",
+            "Teman di grup alumni"
+          ],
+          "answer": 1,
+          "explain": "Pertanyaan proses dan status paling tepat diarahkan ke perekrut atau kontak resmi di lowongan."
+        }
+      ]
+    },
+    "li-15": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Lowongan fiktif: **Social Media Specialist** di tim Marketing *PT Contoh Kreatif*. Untuk setiap kebutuhan, pilih orang yang paling tepat dihubungi."
+        },
+        {
+          "type": "scenario",
+          "id": "li-hm",
+          "title": "Siapa yang dihubungi?",
+          "pass": 75,
+          "cases": [
+            {
+              "situation": "Kamu ingin mengirim pesan koneksi untuk memahami tantangan tim Marketing yang membuka lowongan.",
+              "options": [
+                "Dewi — Head of Marketing, PT Contoh Kreatif",
+                "Budi — Finance Manager, PT Contoh Kreatif",
+                "Sari — Head of Marketing di perusahaan lain",
+                "Akun resmi PT Contoh Kreatif"
+              ],
+              "answer": 0,
+              "explain": "Head of Marketing di perusahaan yang sama kemungkinan besar adalah calon atasan (hiring manager) untuk posisi ini."
+            },
+            {
+              "situation": "Kamu sudah melamar dua minggu lalu dan ingin menanyakan tahapan seleksi.",
+              "options": [
+                "Dewi — Head of Marketing",
+                "Rina — Talent Acquisition, PT Contoh Kreatif",
+                "Semua karyawan sekaligus",
+                "Kolom komentar unggahan perusahaan"
+              ],
+              "answer": 1,
+              "explain": "Pertanyaan proses dan status ditangani perekrut (Talent Acquisition)."
+            },
+            {
+              "situation": "Profil seseorang menulis \"Ex-Marketing Lead PT Contoh Kreatif\", kini bekerja di tempat lain.",
+              "options": [
+                "Tetap hubungi sebagai hiring manager",
+                "Bukan hiring manager saat ini; bisa diajak berbagi wawasan secara sopan",
+                "Minta dia memasukkanmu ke perusahaan",
+                "Abaikan semua mantan karyawan"
+              ],
+              "answer": 1,
+              "explain": "Selalu verifikasi jabatan saat ini. Mantan karyawan bisa berbagi pengalaman, tetapi bukan pengambil keputusan."
+            }
+          ]
+        }
+      ]
+    },
+    "li-16": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Susun pesan koneksi atau pesan setelah melamar. Generator ini menyusun draf dari isianmu—**ubah kalimatnya agar terdengar seperti dirimu**. Pemeriksaan otomatis menandai hal yang sering membuat pesan terasa dingin."
+        },
+        {
+          "type": "builder",
+          "id": "li-outreach",
+          "kind": "outreach",
+          "fields": [
+            {
+              "id": "recipient",
+              "label": "Nama penerima",
+              "placeholder": "cth. Kak Dewi"
+            },
+            {
+              "id": "name",
+              "label": "Namamu",
+              "placeholder": "cth. Rina",
+              "default": "@name"
+            },
+            {
+              "id": "context",
+              "label": "Hal spesifik tentang mereka/perusahaannya",
+              "placeholder": "cth. kampanye Ramadan PT Contoh Kreatif"
+            },
+            {
+              "id": "reason",
+              "label": "Tujuanmu menghubungi",
+              "placeholder": "cth. ingin belajar tentang tantangan tim konten"
+            },
+            {
+              "id": "position",
+              "label": "Posisi yang dilamar (opsional, untuk pesan setelah melamar)",
+              "placeholder": "cth. Social Media Specialist"
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "key",
+          "title": "Satu pesan, satu permintaan kecil",
+          "text": "Pesan hangat menyebut alasan spesifik, menanyakan satu hal ringan, dan tidak meminta referral di pesan pertama."
+        }
       ]
     }
   },
   "quiz": [
-    { "q": "Apa yang dimaksud headline synchronization?", "options": ["Mengganti headline setiap hari", "Peran di LinkedIn, CV, dan tanda tangan email konsisten", "Menyalin headline orang lain", "Menulis semua keahlian di headline"], "answer": 1, "explain": "Konsistensi peran memudahkan rekruter memahami arah kariermu." },
-    { "q": "Ciri utama warm outreach adalah…", "options": ["Mengirim CV ke sebanyak mungkin orang", "Membangun hubungan dulu sebelum meminta bantuan", "Langsung meminta referral", "Menghubungi lewat nomor pribadi"], "answer": 1, "explain": "Warm outreach dimulai dari riset dan interaksi, bukan permintaan." },
-    { "q": "Sumber riset perusahaan yang tepat adalah…", "options": ["Gosip di grup chat", "Situs resmi, halaman LinkedIn perusahaan, dan profil di portal lowongan", "Tebakan dari nama perusahaan", "Komentar anonim tanpa sumber"], "answer": 1, "explain": "Gunakan sumber resmi dan portal yang kredibel." },
-    { "q": "Etika yang benar saat pesanmu belum dibalas adalah…", "options": ["Mengirim pesan setiap hari", "Follow-up sekali dengan sopan, lalu hormati keputusannya", "Menghubungi rekan kerjanya", "Menulis komentar di semua unggahannya"], "answer": 1, "explain": "Satu follow-up sopan cukup; menagih berulang merusak reputasi." },
-    { "q": "Isi catatan koneksi yang baik memuat…", "options": ["CV dan portofolio lengkap", "Sapaan nama, siapa kamu, alasan spesifik, permintaan ringan", "Permintaan pekerjaan langsung", "Hanya emoji salam"], "answer": 1, "explain": "Catatan singkat yang personal dan relevan lebih mungkin diterima." }
+    {
+      "q": "Apa yang dimaksud headline synchronization?",
+      "options": [
+        "Mengganti headline setiap hari",
+        "Peran di LinkedIn, CV, dan tanda tangan email konsisten",
+        "Menyalin headline orang lain",
+        "Menulis semua keahlian di headline"
+      ],
+      "answer": 1,
+      "explain": "Konsistensi peran memudahkan rekruter memahami arah kariermu."
+    },
+    {
+      "q": "Ciri utama warm outreach adalah…",
+      "options": [
+        "Mengirim CV ke sebanyak mungkin orang",
+        "Membangun hubungan dulu sebelum meminta bantuan",
+        "Langsung meminta referral",
+        "Menghubungi lewat nomor pribadi"
+      ],
+      "answer": 1,
+      "explain": "Warm outreach dimulai dari riset dan interaksi, bukan permintaan."
+    },
+    {
+      "q": "Sumber riset perusahaan yang tepat adalah…",
+      "options": [
+        "Gosip di grup chat",
+        "Situs resmi, halaman LinkedIn perusahaan, dan profil di portal lowongan",
+        "Tebakan dari nama perusahaan",
+        "Komentar anonim tanpa sumber"
+      ],
+      "answer": 1,
+      "explain": "Gunakan sumber resmi dan portal yang kredibel."
+    },
+    {
+      "q": "Etika yang benar saat pesanmu belum dibalas adalah…",
+      "options": [
+        "Mengirim pesan setiap hari",
+        "Follow-up sekali dengan sopan, lalu hormati keputusannya",
+        "Menghubungi rekan kerjanya",
+        "Menulis komentar di semua unggahannya"
+      ],
+      "answer": 1,
+      "explain": "Satu follow-up sopan cukup; menagih berulang merusak reputasi."
+    },
+    {
+      "q": "Isi catatan koneksi yang baik memuat…",
+      "options": [
+        "CV dan portofolio lengkap",
+        "Sapaan nama, siapa kamu, alasan spesifik, permintaan ringan",
+        "Permintaan pekerjaan langsung",
+        "Hanya emoji salam"
+      ],
+      "answer": 1,
+      "explain": "Catatan singkat yang personal dan relevan lebih mungkin diterima."
+    },
+    {
+      "q": "Siapa yang biasanya paling paham kebutuhan teknis sebuah posisi?",
+      "options": [
+        "Resepsionis",
+        "Hiring manager",
+        "Semua karyawan",
+        "Admin media sosial perusahaan"
+      ],
+      "answer": 1,
+      "explain": "Hiring manager adalah calon atasan langsung yang memahami pekerjaan sehari-hari posisi itu."
+    },
+    {
+      "q": "Mana tindakan networking yang melanggar etika privasi?",
+      "options": [
+        "Mengirim pesan koneksi di LinkedIn",
+        "Mencari nomor WhatsApp pribadi perekrut lalu menelepon",
+        "Mengomentari unggahan secara bermakna",
+        "Mengucapkan terima kasih setelah dibalas"
+      ],
+      "answer": 1,
+      "explain": "Hubungi lewat kanal profesional; kontak pribadi tanpa izin melanggar batas."
+    },
+    {
+      "q": "Bagian LinkedIn untuk menyematkan portofolio atau proyek terbaik adalah…",
+      "options": [
+        "Featured",
+        "Headline",
+        "Banner",
+        "Pengaturan privasi"
+      ],
+      "answer": 0,
+      "explain": "Featured menampilkan karya pilihan di bagian atas profil."
+    }
   ],
   "summary": {
     "takeaways": [
-      "Profil LinkedIn lengkap: foto, headline, About, pengalaman, Featured, URL rapi.",
-      "Headline sinkron dengan CV dan tanda tangan email.",
-      "Cari hiring manager dan riset perusahaan dari sumber resmi—secara etis.",
-      "Warm outreach: riset → interaksi → koneksi + catatan → percakapan.",
-      "Etika: personal, singkat, satu follow-up, selalu berterima kasih."
+      "LinkedIn adalah etalase, sumber riset, dan saluran hubungan profesional.",
+      "Headline dan pengalaman selaras dengan CV.",
+      "Riset: bidang usaha, kebutuhan posisi, dan bukti pengalamanmu yang cocok.",
+      "Recruiter untuk proses & status; hiring manager untuk wawasan pekerjaan—via kanal profesional.",
+      "Warm outreach: spesifik, satu permintaan ringan, tanpa meminta referral di awal."
     ],
-    "next": "Berikutnya kamu akan meracik dan mengirim email lamaran."
+    "next": "Berikutnya kamu akan menulis dan mengirim email lamaran secara profesional."
   },
-  "references": ["linkedin-talent", "hbr", "mayer-2020"]
+  "references": [
+    "linkedin-talent",
+    "hbr",
+    "mayer-2020"
+  ]
 }

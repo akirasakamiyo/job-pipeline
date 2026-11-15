@@ -19,8 +19,14 @@
      tools: {
        presend: { [itemId]: true },         ← checklist pra-kirim (Latihan)
        presendCompletedAt: ISO | null,
-       subjects: [{ text, at }]             ← riwayat Subject Generator (maks 8)
+       subjects: [{ text, at }],            ← riwayat Subject Generator (maks 8)
+       review: { [itemId]: true },          ← CV & Portfolio Review (2.0)
+       reviewCompletedAt: ISO | null
      },
+     activities: { [id]: { best, attempts, passedAt } },   ← aktivitas bernilai (2.0)
+     worksheets: { [id]: { values, completedAt } },        ← lembar kerja (2.0)
+     simulator: { draft, best, last, attempts, passedAt }, ← Email Writing Simulator (2.0)
+     evaluation: { best, last, attempts, passedAt } | null ← Evaluasi akhir (2.0)
      xp: number,
      achievements: { [badgeId]: ISO },      ← badge yang sudah DIBERIKAN
      lastVisited: { module, lesson } | null,
@@ -41,7 +47,35 @@ const MAX_ACTIVITY = 30;
 const MAX_SUBJECTS = 8;
 
 /** Poin XP per aksi (diberikan sekali per aktivitas) */
-export const XP = { lesson: 10, quiz: 50, module: 100, checklist: 20 };
+export const XP = { lesson: 10, quiz: 50, module: 100, checklist: 20, activity: 15, worksheet: 15, simulator: 40, evaluation: 150 };
+
+/** Nilai lulus aktivitas bila blok tidak menentukan sendiri */
+export const ACTIVITY_PASS = 70;
+
+/**
+ * Aktivitas bernilai di materi (id sama dengan "id" pada blok JSON).
+ * Dipakai untuk skor keseluruhan & syarat badge. Tambahkan id di sini
+ * bila membuat aktivitas bernilai baru.
+ */
+export const SCORED_ACTIVITIES = [
+  'id-drive-sim', 'cv-structure', 'cv-redflags', 'cv-ats', 'li-hm',
+  'tx-subject-challenge', 'tx-anatomy', 'tx-order', 'tx-ccbcc', 'tx-mistakes',
+  'tr-status', 'tr-timing', 'tr-best-message',
+];
+
+/** CV & Portfolio Review (halaman Latihan + Modul 2) */
+export const REVIEW_ITEMS = [
+  { id: 'rv-pdf', text: 'CV tersimpan sebagai PDF (atau format yang diminta)', hint: 'Teks bisa diseleksi, bukan hasil foto/scan.' },
+  { id: 'rv-name', text: 'Nama file: CV_NamaLengkap_Posisi.pdf', hint: 'Tanpa spasi berlebih atau kata "final".' },
+  { id: 'rv-contact', text: 'Kontak di header lengkap dan benar', hint: 'Email karier, nomor aktif, kota, LinkedIn.' },
+  { id: 'rv-summary', text: 'Professional Summary ditulis untuk posisi ini', hint: '2–3 kalimat berisi bukti dan keahlian.' },
+  { id: 'rv-achieve', text: 'Poin pengalaman berisi pencapaian, bukan sekadar tugas', hint: 'Kata kerja + apa yang dilakukan + hasil.' },
+  { id: 'rv-keywords', text: 'Kata kunci lowongan yang kamu kuasai sudah muncul', hint: 'Tanpa keyword stuffing.' },
+  { id: 'rv-typo', text: 'Bebas salah ketik (sudah dibaca ulang)', hint: 'Baca keras-keras atau minta teman memeriksa.' },
+  { id: 'rv-portfolio', text: 'Portofolio berisi 3–6 karya relevan', hint: 'Dengan deskripsi Masalah → Peran → Proses → Hasil.' },
+  { id: 'rv-access', text: 'Tautan portofolio bisa dibuka di jendela incognito', hint: 'Akses: siapa saja dengan link · Pelihat.' },
+  { id: 'rv-sync', text: 'CV dan profil LinkedIn konsisten', hint: 'Nama, peran, dan periode pengalaman sama.' },
+];
 
 /** Checklist persiapan sebelum mengirim lamaran (halaman Latihan) */
 export const PRESEND_ITEMS = [
@@ -65,18 +99,40 @@ let passScore = 70;
    Badge modul memerlukan "Mark as completed", yang sendiri mensyaratkan
    semua bagian selesai + kuis lulus.                                   */
 export const BADGES = [
+  // ----- 10 badge utama (Pipeline 2.0) — semuanya mensyaratkan aktivitas yang benar-benar selesai -----
+  { id: 'id-done', main: true, module: 'id', name: 'Digital Identity Ready', desc: 'Selesaikan Modul 1', icon: 'mail', test: (s) => doneOf(s, 'id') },
+  { id: 'cv-done', main: true, module: 'cv', name: 'CV Arsenal Complete', desc: 'Selesaikan Modul 2', icon: 'file', test: (s) => doneOf(s, 'cv') },
+  { id: 'li-done', main: true, module: 'li', name: 'LinkedIn Navigator', desc: 'Selesaikan Modul 3', icon: 'users', test: (s) => doneOf(s, 'li') },
+  { id: 'email-fund', main: true, module: 'tx', name: 'Email Fundamentals Master', desc: 'Selesaikan Materi 1–4 Modul 4 + lulus Subject Challenge & Anatomy Challenge', icon: 'send',
+    test: (s) => topicsDone(s, 'tx', ['m1', 'm2', 'm3', 'm4']) && passed(s, 'tx-subject-challenge') && passed(s, 'tx-anatomy') },
+  { id: 'email-etiquette', main: true, module: 'tx', name: 'Email Etiquette Specialist', desc: 'Selesaikan Materi 5–6 Modul 4 + lulus CC/BCC Scenario & Find the Mistakes', icon: 'shield',
+    test: (s) => topicsDone(s, 'tx', ['m5', 'm6']) && passed(s, 'tx-ccbcc') && passed(s, 'tx-mistakes') },
+  { id: 'pipeline-manager', main: true, module: 'tr', name: 'Application Pipeline Manager', desc: 'Selesaikan Modul 5 + catat ≥1 lamaran dengan tanggal follow-up', icon: 'kanban',
+    test: (s) => doneOf(s, 'tr') && s.tracker.withFollowUp >= 1 },
+  { id: 'email-writer', main: true, name: 'Email Writing Champion', desc: 'Skor rubrik Email Writing Simulator ≥ 80', icon: 'edit', test: (s) => s.simulator.passed },
+  { id: 'strategist', main: true, name: 'Job Hunting Strategist', desc: 'Lengkapi CV & Portfolio Review, Company Research Worksheet, dan checklist pra-kirim', icon: 'target',
+    test: (s) => s.tools.review.complete && s.worksheetsDone.includes('li-research') && s.tools.presend.everCompleted },
+  { id: 'communicator', main: true, name: 'Professional Communicator', desc: 'Lulus kelima kuis modul + Evaluasi Akhir ≥ 80', icon: 'chart',
+    test: (s) => s.modules.length > 0 && s.modules.every((m) => m.quizPassed) && (s.evaluation.best ?? 0) >= 80 },
+  { id: 'pipeline-complete', main: true, name: 'Application Pipeline Complete', desc: 'Selesaikan kelima modul + lulus Evaluasi Akhir', icon: 'trophy',
+    test: (s) => s.allDone && s.evaluation.passed },
+  // ----- Milestone (pencapaian kecil; badge versi lama tetap dipertahankan) -----
   { id: 'first-step', name: 'Langkah Pertama', desc: 'Selesaikan 1 bagian materi', icon: 'star', test: (s) => s.lessonsDone >= 1 },
-  { id: 'id-done', module: 'id', name: 'Digital Identity Ready', desc: 'Selesaikan Modul 1', icon: 'mail', test: (s) => doneOf(s, 'id') },
-  { id: 'cv-done', module: 'cv', name: 'CV Arsenal Complete', desc: 'Selesaikan Modul 2', icon: 'file', test: (s) => doneOf(s, 'cv') },
-  { id: 'li-done', module: 'li', name: 'LinkedIn Navigator', desc: 'Selesaikan Modul 3', icon: 'users', test: (s) => doneOf(s, 'li') },
-  { id: 'tx-done', module: 'tx', name: 'Email Master', desc: 'Selesaikan Modul 4', icon: 'send', test: (s) => doneOf(s, 'tx') },
-  { id: 'tr-done', module: 'tr', name: 'Follow-Up Pro', desc: 'Selesaikan Modul 5', icon: 'kanban', test: (s) => doneOf(s, 'tr') },
-  { id: 'master', name: 'Application Pipeline Complete', desc: 'Selesaikan kelima modul', icon: 'trophy', test: (s) => s.modules.length > 0 && s.completed === s.modules.length },
   { id: 'quiz-ace', name: 'Nilai Sempurna', desc: 'Skor 100 di kuis modul', icon: 'target', test: (s) => s.modules.some((m) => m.quizBest === 100) },
   { id: 'presend', name: 'Siap Kirim', desc: 'Lengkapi checklist pra-kirim', icon: 'check', test: (s) => s.tools.presend.done === s.tools.presend.total },
   { id: 'tracker-1', name: 'Lamaran Pertama', desc: 'Catat 1 lamaran di Tracker', icon: 'briefcase', test: (s) => s.tracker.total >= 1 },
+  { id: 'tx-done', module: 'tx', name: 'Modul 4 Selesai', desc: 'Selesaikan Modul 4', icon: 'send', test: (s) => doneOf(s, 'tx') },
+  { id: 'tr-done', module: 'tr', name: 'Modul 5 Selesai', desc: 'Selesaikan Modul 5', icon: 'kanban', test: (s) => doneOf(s, 'tr') },
+  { id: 'master', name: 'Lima Modul Selesai', desc: 'Selesaikan kelima modul', icon: 'flame', test: (s) => s.allDone },
 ];
 const doneOf = (summary, id) => summary.modules.find((m) => m.id === id)?.status === 'done';
+const passed = (summary, id) => Boolean(summary.activities[id]?.passedAt);
+/** Semua bagian dari materi tertentu (topics di modules.json) sudah selesai */
+function topicsDone(summary, moduleId, topicIds) {
+  const meta = getModuleMeta(moduleId);
+  const ids = (meta?.topics || []).filter((t) => topicIds.includes(t.id)).flatMap((t) => t.lessons);
+  return ids.length > 0 && ids.every((id) => summary.lessonSet.has(id));
+}
 
 /* ---------- Muat katalog ---------- */
 
@@ -100,7 +156,11 @@ function emptyState() {
     version: VERSION,
     user: { name: '', status: '', onboardedAt: null },
     modules: {},
-    tools: { presend: {}, presendCompletedAt: null, subjects: [] },
+    tools: { presend: {}, presendCompletedAt: null, subjects: [], review: {}, reviewCompletedAt: null },
+    activities: {},
+    worksheets: {},
+    simulator: { draft: {}, best: null, last: null, attempts: 0, passedAt: null },
+    evaluation: null,
     xp: 0,
     achievements: {},
     lastVisited: null,
@@ -131,6 +191,16 @@ function sanitizeModule(raw) {
     quiz,
     completedAt: isoOrNull(raw.completedAt),
   };
+}
+
+/** { id: { best, attempts, passedAt } } — skor aktivitas */
+function sanitizeScores(raw) {
+  if (!isObj(raw)) return {};
+  return Object.fromEntries(Object.entries(raw).filter(([, v]) => isObj(v)).map(([id, v]) => [id, {
+    best: num(v.best, 0, 100),
+    attempts: Math.round(num(v.attempts, 0)),
+    passedAt: isoOrNull(v.passedAt),
+  }]));
 }
 
 /** Memastikan setiap field bertipe benar; field tak dikenal dibuang */
@@ -164,7 +234,29 @@ function sanitizeState(raw) {
       subjects: Array.isArray(tools.subjects)
         ? tools.subjects.filter((s) => isObj(s) && isStr(s.text) && s.text.trim()).map((s) => ({ text: s.text.slice(0, 200), at: isoOrNull(s.at) || new Date().toISOString() })).slice(0, MAX_SUBJECTS)
         : [],
+      review: trueMap(tools.review),
+      reviewCompletedAt: isoOrNull(tools.reviewCompletedAt),
     },
+    activities: sanitizeScores(raw.activities),
+    worksheets: isObj(raw.worksheets)
+      ? Object.fromEntries(Object.entries(raw.worksheets).filter(([, v]) => isObj(v)).map(([id, v]) => [id, {
+        values: isObj(v.values) ? Object.fromEntries(Object.entries(v.values).filter(([, x]) => isStr(x)).map(([k, x]) => [k, x.slice(0, 1000)])) : {},
+        completedAt: isoOrNull(v.completedAt),
+      }]))
+      : {},
+    simulator: {
+      draft: isObj(raw.simulator?.draft) ? Object.fromEntries(Object.entries(raw.simulator.draft).filter(([, x]) => isStr(x)).map(([k, x]) => [k, x.slice(0, 1500)])) : {},
+      best: raw.simulator?.best == null ? null : num(raw.simulator.best, 0, 100),
+      last: raw.simulator?.last == null ? null : num(raw.simulator.last, 0, 100),
+      attempts: Math.round(num(raw.simulator?.attempts, 0)),
+      passedAt: isoOrNull(raw.simulator?.passedAt),
+    },
+    evaluation: isObj(raw.evaluation) ? {
+      best: num(raw.evaluation.best, 0, 100),
+      last: num(raw.evaluation.last, 0, 100),
+      attempts: Math.round(num(raw.evaluation.attempts, 0)),
+      passedAt: isoOrNull(raw.evaluation.passedAt),
+    } : null,
     xp: Math.round(num(raw.xp, 0)),
     achievements,
     lastVisited: isObj(raw.lastVisited) && isStr(raw.lastVisited.module)
@@ -335,6 +427,124 @@ export function removeSubject(text) {
   return save((state) => { state.tools.subjects = state.tools.subjects.filter((s) => s.text !== text); });
 }
 
+/* ---------- Aktivitas bernilai (2.0) ---------- */
+
+/**
+ * Mencatat skor aktivitas (skenario, pasangkan, urutkan, temukan kesalahan,
+ * kata kunci). XP diberikan SEKALI, saat aktivitas pertama kali lulus.
+ * → { firstPass, best }
+ */
+export function recordActivity(id, score, passScore = ACTIVITY_PASS, label = 'Aktivitas') {
+  const value = Math.max(0, Math.min(100, Math.round(score)));
+  let firstPass = false;
+  const next = save((state) => {
+    const prev = state.activities[id] || { best: 0, attempts: 0, passedAt: null };
+    firstPass = !prev.passedAt && value >= passScore;
+    state.activities[id] = {
+      best: Math.max(prev.best, value),
+      attempts: prev.attempts + 1,
+      passedAt: prev.passedAt || (value >= passScore ? new Date().toISOString() : null),
+    };
+    if (firstPass) {
+      state.xp += XP.activity;
+      log(state, { type: 'activity', text: `Lulus aktivitas "${label}" (skor ${value})` });
+    }
+  });
+  return { firstPass, best: next.activities[id].best };
+}
+
+/* ---------- Lembar kerja (2.0) ---------- */
+
+export function saveWorksheet(id, values) {
+  return save((state) => {
+    const prev = state.worksheets[id] || { values: {}, completedAt: null };
+    state.worksheets[id] = { ...prev, values: Object.fromEntries(Object.entries(values).map(([k, v]) => [k, String(v).slice(0, 1000)])) };
+  });
+}
+
+/** Menandai lembar kerja selesai. → true bila baru pertama kali (XP sekali) */
+export function completeWorksheet(id, label = 'Lembar kerja') {
+  let first = false;
+  save((state) => {
+    const prev = state.worksheets[id] || { values: {}, completedAt: null };
+    if (prev.completedAt) return;
+    state.worksheets[id] = { ...prev, completedAt: new Date().toISOString() };
+    state.xp += XP.worksheet;
+    first = true;
+    log(state, { type: 'activity', text: `Menyelesaikan "${label}"` });
+  });
+  return first;
+}
+
+/* ---------- CV & Portfolio Review (2.0) ---------- */
+
+/** → true bila review BARU SAJA lengkap untuk pertama kali (XP sekali) */
+export function setReviewItem(itemId, checked) {
+  if (!REVIEW_ITEMS.some((i) => i.id === itemId)) return false;
+  let firstComplete = false;
+  save((state) => {
+    if (checked) state.tools.review[itemId] = true;
+    else delete state.tools.review[itemId];
+    const allDone = REVIEW_ITEMS.every((i) => state.tools.review[i.id]);
+    if (allDone && !state.tools.reviewCompletedAt) {
+      state.tools.reviewCompletedAt = new Date().toISOString();
+      state.xp += XP.checklist;
+      firstComplete = true;
+      log(state, { type: 'checklist', text: 'Melengkapi CV & Portfolio Review' });
+    }
+  });
+  return firstComplete;
+}
+
+export function resetReview() {
+  return save((state) => { state.tools.review = {}; });
+}
+
+/* ---------- Email Writing Simulator (2.0) ---------- */
+
+export function saveSimDraft(draft) {
+  return save((state) => { state.simulator.draft = Object.fromEntries(Object.entries(draft).map(([k, v]) => [k, String(v).slice(0, 1500)])); });
+}
+
+/** → { firstPass, best } — XP simulator diberikan sekali saat pertama lulus */
+export function recordSimulation(score, passScore = 80) {
+  const value = Math.max(0, Math.min(100, Math.round(score)));
+  let firstPass = false;
+  const next = save((state) => {
+    const sim = state.simulator;
+    firstPass = !sim.passedAt && value >= passScore;
+    sim.best = Math.max(sim.best ?? 0, value);
+    sim.last = value;
+    sim.attempts += 1;
+    if (value >= passScore && !sim.passedAt) sim.passedAt = new Date().toISOString();
+    if (firstPass) state.xp += XP.simulator;
+    log(state, { type: firstPass ? 'activity' : 'quiz', text: `Email Writing Simulator: skor rubrik ${value}` });
+  });
+  return { firstPass, best: next.simulator.best };
+}
+
+/* ---------- Evaluasi akhir (2.0) ---------- */
+
+export const EVALUATION_PASS = 75;
+
+export function recordEvaluation(score) {
+  const value = Math.max(0, Math.min(100, Math.round(score)));
+  let firstPass = false;
+  save((state) => {
+    const prev = state.evaluation || { best: 0, last: 0, attempts: 0, passedAt: null };
+    firstPass = !prev.passedAt && value >= EVALUATION_PASS;
+    state.evaluation = {
+      best: Math.max(prev.best, value),
+      last: value,
+      attempts: prev.attempts + 1,
+      passedAt: prev.passedAt || (value >= EVALUATION_PASS ? new Date().toISOString() : null),
+    };
+    if (firstPass) state.xp += XP.evaluation;
+    log(state, { type: value >= EVALUATION_PASS ? 'quiz-pass' : 'quiz', text: `Evaluasi Akhir: skor ${value}` });
+  });
+  return { firstPass };
+}
+
 /* ---------- Reset (Tahap 7, halaman Progres) ---------- */
 
 /**
@@ -422,6 +632,25 @@ export function getSummary(state = getState()) {
   }
 
   const presendDone = PRESEND_ITEMS.filter((i) => state.tools.presend[i.id]).length;
+  const reviewDone = REVIEW_ITEMS.filter((i) => state.tools.review[i.id]).length;
+  const lessonSet = new Set(Object.values(state.modules).flatMap((m) => m.lessonsDone || []));
+
+  // Skor belajar keseluruhan (transparan, ditampilkan rumusnya di halaman Progres):
+  // 40% rata-rata kuis modul · 25% evaluasi akhir · 20% rata-rata aktivitas · 15% simulator
+  const avg = (list) => (list.length ? list.reduce((a, b) => a + b, 0) / list.length : 0);
+  const quizAvg = avg(modules.map((m) => m.quizBest ?? 0));
+  const activityAvg = avg(SCORED_ACTIVITIES.map((id) => state.activities[id]?.best ?? 0));
+  const evalBest = state.evaluation?.best ?? 0;
+  const simBest = state.simulator.best ?? 0;
+  const score = {
+    total: Math.round(quizAvg * 0.4 + evalBest * 0.25 + activityAvg * 0.2 + simBest * 0.15),
+    parts: [
+      { id: 'quiz', label: 'Rata-rata kuis modul', weight: 40, value: Math.round(quizAvg) },
+      { id: 'evaluation', label: 'Evaluasi Akhir', weight: 25, value: Math.round(evalBest) },
+      { id: 'activities', label: `Rata-rata ${SCORED_ACTIVITIES.length} aktivitas latihan`, weight: 20, value: Math.round(activityAvg) },
+      { id: 'simulator', label: 'Email Writing Simulator', weight: 15, value: Math.round(simBest) },
+    ],
+  };
 
   const summary = {
     user: state.user,
@@ -439,12 +668,21 @@ export function getSummary(state = getState()) {
     current,
     next,
     // Pengguna "baru" = belum ada progres belajar (aktivitas Tracker/Latihan tidak dihitung)
-    isNew: stepsDone === 0 && !state.activity.some((a) => ['lesson', 'quiz', 'quiz-pass', 'module'].includes(a.type)),
+    isNew: stepsDone === 0 && !state.activity.some((a) => ['lesson', 'quiz', 'quiz-pass', 'module', 'activity'].includes(a.type)),
     allDone: modules.length > 0 && completed === modules.length,
     tools: {
-      presend: { done: presendDone, total: PRESEND_ITEMS.length, pct: Math.round((presendDone / PRESEND_ITEMS.length) * 100) },
+      presend: { done: presendDone, total: PRESEND_ITEMS.length, pct: Math.round((presendDone / PRESEND_ITEMS.length) * 100), everCompleted: Boolean(state.tools.presendCompletedAt) },
+      review: { done: reviewDone, total: REVIEW_ITEMS.length, pct: Math.round((reviewDone / REVIEW_ITEMS.length) * 100), complete: Boolean(state.tools.reviewCompletedAt) },
       subjects: state.tools.subjects,
     },
+    lessonSet,
+    activities: state.activities,
+    activitiesPassed: SCORED_ACTIVITIES.filter((id) => state.activities[id]?.passedAt).length,
+    activitiesTotal: SCORED_ACTIVITIES.length,
+    worksheetsDone: Object.entries(state.worksheets).filter(([, w]) => w.completedAt).map(([id]) => id),
+    simulator: { best: state.simulator.best, attempts: state.simulator.attempts, passed: Boolean(state.simulator.passedAt) },
+    evaluation: { best: state.evaluation?.best ?? null, attempts: state.evaluation?.attempts ?? 0, passed: Boolean(state.evaluation?.passedAt) },
+    score,
     tracker: trackerStats,
     trackerCount: trackerStats.total,
   };

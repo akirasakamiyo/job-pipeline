@@ -6,6 +6,8 @@
       reset, tersimpan (state.tools.presend). Tidak ada yang tercentang
       otomatis.
    3. Daftar kuis modul      : skor terbaik nyata dari state + tautan
+   2.0: Email Writing Simulator (features/simulator.js), CV & Portfolio
+        Review (features/activities.js), status Evaluasi Akhir
    ===================================================================== */
 
 import { $, h, icon } from '../core/dom.js';
@@ -13,10 +15,14 @@ import { toast, confirmDialog, setProgress, initRings } from '../core/ui.js';
 import * as state from '../core/state.js';
 import * as motion from '../core/motion.js';
 import { copyText } from '../features/clipboard.js';
+import { renderSimulator } from '../features/simulator.js';
+import { renderReview } from '../features/activities.js';
 
 export function init() {
   initGenerator();
   initPresend();
+  lazySimulator();
+  $('[data-review]').replaceChildren(renderReview({ practiceHref: null }));
   renderQuizzes();
   state.subscribe(() => { renderHistory(); renderQuizzes(); syncPresendFromState(); });
 
@@ -24,6 +30,19 @@ export function init() {
   // setelah animasi masuk dimulai, karena posisi awal bisa ter-reset.
   const target = window.location.hash && document.getElementById(window.location.hash.slice(1));
   if (target) setTimeout(() => target.scrollIntoView({ behavior: 'auto', block: 'start' }), 400);
+}
+
+/* Performa (2.0): simulator (data + puluhan elemen form) baru dibangun saat
+   bagiannya mendekati layar, atau langsung bila dibuka lewat #simulator. */
+function lazySimulator() {
+  const host = $('[data-simulator]');
+  let done = false;
+  const build = () => { if (!done) { done = true; renderSimulator(host); } };
+  if (window.location.hash === '#simulator' || !('IntersectionObserver' in window)) { build(); return; }
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) { io.disconnect(); build(); }
+  }, { rootMargin: '600px 0px' });
+  io.observe(host);
 }
 
 /* =====================================================================
@@ -282,6 +301,13 @@ function checkSvg() {
 function renderQuizzes() {
   const grid = $('[data-quiz-grid]');
   if (!grid) return;
+  const ev = state.getSummary().evaluation;
+  const evalStatus = $('[data-eval-status]');
+  if (evalStatus) {
+    evalStatus.textContent = ev.attempts
+      ? `Skor terbaik ${ev.best} · ${ev.attempts}× mencoba${ev.passed ? ' · lulus' : ` · nilai lulus ${state.EVALUATION_PASS}`}`
+      : `15 soal acak dari kelima modul · nilai lulus ${state.EVALUATION_PASS}.`;
+  }
   $('[data-pass-score]').textContent = String(state.getPassScore());
   const { modules } = state.getSummary();
   grid.replaceChildren(...modules.map((m) => {
@@ -294,7 +320,7 @@ function renderQuizzes() {
       h('h3', { class: 'quiz-tile__title', id: `qt-${m.id}` }, m.title),
       h('p', { class: 'quiz-tile__score' },
         h('span', { class: 'num' }, tried ? String(m.quizBest) : '—'),
-        h('span', { class: 'text-soft text-sm' }, tried ? `skor terbaik · ${m.quizAttempts}× mencoba` : '5 soal')),
+        h('span', { class: 'text-soft text-sm' }, tried ? `skor terbaik · ${m.quizAttempts}× mencoba` : '8 soal')),
       h('a', { class: `btn ${tried && m.quizPassed ? 'btn--secondary' : 'btn--primary'} btn--block`, href: `${m.href}#kuis` },
         tried ? 'Ulangi kuis' : 'Kerjakan kuis', icon('arrow-right', 'icon--trail')));
   }));

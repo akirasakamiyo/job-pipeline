@@ -111,6 +111,7 @@
             <option value="company-desc">Perusahaan Z–A</option>
             <option value="status">Status (alur lamaran)</option>
             <option value="updated">Terakhir diperbarui</option>
+            <option value="followup">Follow-up terdekat</option>
           </select>
         </div>
       </div>
@@ -162,15 +163,20 @@
           <select class="select" id="f-status" name="status" aria-describedby="f-status-hint"></select>
           <p class="field__hint" id="f-status-hint">Perbarui setiap ada perkembangan.</p>
         </div>
-        <div class="field app-form__wide">
+        <div class="field">
           <label class="field__label" for="f-contact">Kontak HR</label>
           <input class="input" id="f-contact" name="contact" type="text" maxlength="120" aria-describedby="f-contact-hint">
           <p class="field__hint" id="f-contact-hint">Opsional: nama dan/atau email perekrut.</p>
         </div>
+        <div class="field">
+          <label class="field__label" for="f-followup">Tanggal follow-up</label>
+          <input class="input" id="f-followup" name="followUp" type="date" aria-describedby="f-followup-hint">
+          <p class="field__hint" id="f-followup-hint">Opsional: ikuti timeline perusahaan; tanpa timeline, ±5–10 hari kerja setelah kirim.</p>
+        </div>
         <div class="field app-form__wide">
           <label class="field__label" for="f-notes">Catatan <span class="field__count" data-notes-count>0/500</span></label>
           <textarea class="textarea" id="f-notes" name="notes" maxlength="500" aria-describedby="f-notes-hint"></textarea>
-          <p class="field__hint" id="f-notes-hint">Opsional: sumber lowongan, tanggal follow-up, hasil riset, jadwal interview.</p>
+          <p class="field__hint" id="f-notes-hint">Opsional: sumber lowongan, hasil riset, jadwal interview.</p>
         </div>
       </div>
       <div class="modal__foot">

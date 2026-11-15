@@ -19,13 +19,15 @@ import * as motion from '../core/motion.js';
 import { renderBlocks, rich } from '../features/lesson-renderer.js';
 import { createQuiz } from '../features/quiz.js';
 
-const KIND_LABEL = { intro: 'Pengantar', topic: 'Materi', visual: 'Visual', example: 'Contoh praktis', exercise: 'Latihan', quiz: 'Cek pemahaman', summary: 'Ringkasan' };
+const KIND_LABEL = { intro: 'Pengantar', topic: 'Konsep', visual: 'Visual', example: 'Contoh praktis', exercise: 'Latihan', quiz: 'Cek pemahaman', summary: 'Ringkasan' };
 const KIND_ICON = { intro: 'flame', topic: 'book', visual: 'eye', example: 'file', exercise: 'spark', quiz: 'target', summary: 'trophy' };
 
 let mod = null;          // ringkasan modul dari state.getSummary()
 let content = null;      // isi data/content/<id>.json
 let references = [];
 let sections = [];       // [{ id, kind, title, minutes }]
+let topics = [];         // Tahap 2.0: kelompok "Materi" [{ id, title, objective, summary, lessons }]
+let topicOf = new Map(); // id bagian → { topic, index, first, last }
 let currentId = null;
 let els = {};
 
@@ -61,6 +63,7 @@ export async function init() {
     { id: 'kuis', kind: 'quiz', title: 'Cek pemahaman', minutes: 5 },
     { id: 'selesai', kind: 'summary', title: 'Ringkasan & selesai', minutes: 2 },
   ];
+  buildTopics();
 
   renderShell(host);
   window.addEventListener('hashchange', () => show(resolveHash(), { fromHash: true }));
@@ -68,12 +71,28 @@ export async function init() {
   state.subscribe(() => refreshProgress());
 }
 
+/* ---------- Materi (kelompok bagian) ----------
+   Data dari modules.json → topics. Bila sebuah modul belum punya topics,
+   seluruh bagian dianggap satu materi agar pemutar tetap berjalan.      */
+function buildTopics() {
+  const lessonIds = mod.lessons.map((l) => l.id);
+  topics = Array.isArray(mod.topics) && mod.topics.length
+    ? mod.topics.map((t) => ({ ...t, lessons: t.lessons.filter((id) => lessonIds.includes(id)) })).filter((t) => t.lessons.length)
+    : [{ id: 'm1', title: mod.title, objective: '', summary: [], lessons: lessonIds }];
+  topicOf = new Map();
+  topics.forEach((topic, index) => topic.lessons.forEach((id, i) => {
+    topicOf.set(id, { topic, index, first: i === 0, last: i === topic.lessons.length - 1 });
+  }));
+}
+
+const topicLabel = (index) => `Materi ${index + 1}`;
+
 /* ---------- Kerangka halaman ---------- */
 
 function renderShell(host) {
   els.ring = h('div', { class: 'ring ring--lg', 'data-ring': true, 'data-value': mod.pct, 'data-label': `Progres modul ${mod.title}` });
   els.headStats = h('p', { class: 'learn-head__stats' });
-  els.sideList = h('ol', { class: 'sidebar__list learn-nav', role: 'list' });
+  els.sideList = h('div', { class: 'learn-nav' });
   els.sideBar = h('div', { class: 'bar bar--thin', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-label': 'Progres modul' }, h('span', { class: 'bar__fill' }));
   els.sideCaption = h('p', { class: 'learn-side__caption' });
   els.stage = h('article', { class: 'card learn-stage', 'aria-live': 'off' });
@@ -90,7 +109,7 @@ function renderShell(host) {
           h('span', { class: 'code' }, mod.code),
           h('span', { class: 'eyebrow' }, `Modul ${String(mod.number).padStart(2, '0')} · ${mod.title}`)),
         h('h1', { class: 'h1 learn-head__title', id: 'learn-title', 'data-intro': 'up' }, mod.headline),
-        h('p', { class: 'text-soft', 'data-intro': 'up' }, `${mod.tagline} · ±${mod.minutes + 7} menit · ${sections.length} bagian`)),
+        h('p', { class: 'text-soft', 'data-intro': 'up' }, `${mod.tagline} · ±${mod.minutes + 7} menit · ${topics.length} materi · ${sections.length} bagian`)),
       h('div', { class: 'learn-head__progress', 'data-intro': 'scale' }, els.ring, els.headStats)),
 
     h('div', { class: 'with-sidebar learn-layout' },
@@ -130,11 +149,19 @@ function show(id, { initial = false } = {}) {
   const body = h('div', { class: 'learn-stage__body' });
   if (section.kind === 'quiz') renderQuiz(body);
   else if (section.kind === 'summary') renderSummary(body);
-  else body.append(renderBlocks(content.sections[section.id]?.blocks || [], {
-    moduleId: mod.id,
-    content,
-    userName: state.getState().user.name,
-  }));
+  else {
+    const place = topicOf.get(section.id);
+    // Tujuan materi tampil di bagian pertama setiap materi (signaling)
+    if (place?.first && place.topic.objective) body.append(topicObjective(place));
+    body.append(renderBlocks(content.sections[section.id]?.blocks || [], {
+      moduleId: mod.id,
+      content,
+      references,
+      userName: state.getState().user.name,
+    }));
+    // Ringkasan materi tampil di bagian terakhir setiap materi (retrieval)
+    if (place?.last && place.topic.summary?.length) body.append(topicSummary(place));
+  }
 
   const title = h('h2', { class: 'h2 learn-stage__title', tabindex: '-1' }, section.title);
   els.stage.dataset.kind = section.kind;
@@ -142,6 +169,7 @@ function show(id, { initial = false } = {}) {
     h('header', { class: 'learn-stage__head' },
       h('p', { class: 'learn-stage__eyebrow' },
         h('span', { class: 'learn-kind' }, icon(KIND_ICON[section.kind]), KIND_LABEL[section.kind]),
+        topicOf.get(section.id) ? h('span', { class: 'learn-topic-tag' }, `${topicLabel(topicOf.get(section.id).index)} · ${topicOf.get(section.id).topic.title}`) : null,
         h('span', { class: 'eyebrow' }, `Bagian ${index + 1} dari ${sections.length}${section.minutes ? ` · ±${section.minutes} menit` : ''}`)),
       title,
       h('span', { 'data-section-status': true })),
@@ -160,6 +188,28 @@ function show(id, { initial = false } = {}) {
       window.scrollTo({ top: Math.max(0, top), behavior: motion.isReduced() ? 'auto' : 'smooth' });
     }
   }
+}
+
+/* ---------- Kotak tujuan & ringkasan materi ---------- */
+
+function topicObjective({ topic, index }) {
+  return h('aside', { class: 'topic-box topic-box--goal learn-block', 'aria-label': `Tujuan ${topicLabel(index)}` },
+    h('span', { class: 'topic-box__icon' }, icon('target')),
+    h('div', {},
+      h('p', { class: 'topic-box__eyebrow' }, `${topicLabel(index)} dari ${topics.length} · Tujuan`),
+      h('p', { class: 'topic-box__title' }, topic.title),
+      h('p', { class: 'topic-box__text' }, topic.objective)));
+}
+
+function topicSummary({ topic, index }) {
+  const next = topics[index + 1];
+  return h('aside', { class: 'topic-box topic-box--summary learn-block', 'aria-label': `Ringkasan ${topicLabel(index)}` },
+    h('span', { class: 'topic-box__icon' }, icon('check')),
+    h('div', {},
+      h('p', { class: 'topic-box__eyebrow' }, `Ringkasan ${topicLabel(index)}`),
+      h('p', { class: 'topic-box__title' }, topic.title),
+      h('ul', { class: 'topic-box__list', role: 'list' }, topic.summary.map((t) => h('li', {}, rich(t)))),
+      h('p', { class: 'topic-box__next' }, next ? `Berikutnya: ${topicLabel(index + 1)} · ${next.title}` : 'Berikutnya: cek pemahaman lewat kuis modul.')));
 }
 
 /* ---------- Footer: navigasi bagian ---------- */
@@ -228,6 +278,19 @@ function renderSummary(body) {
     h('section', { class: 'learn-summary', 'aria-labelledby': 'sum-title' },
       h('h3', { class: 'learn-h', id: 'sum-title' }, 'Poin penting'),
       h('ol', { class: 'takeaways', role: 'list' }, content.summary.takeaways.map((t) => h('li', {}, rich(t))))));
+
+  // Peta materi: status penyelesaian tiap materi
+  body.append(h('section', { class: 'learn-topics', 'aria-labelledby': 'topics-title' },
+    h('h3', { class: 'learn-h', id: 'topics-title' }, 'Materi di modul ini'),
+    h('ol', { class: 'topic-map', role: 'list' }, topics.map((t, index) => {
+      const done = t.lessons.filter((id) => isLessonDone(id)).length;
+      const complete = done === t.lessons.length;
+      return h('li', { class: `topic-map__item${complete ? ' is-done' : ''}` },
+        h('span', { class: 'topic-map__num', 'aria-hidden': 'true' }, complete ? icon('check') : String(index + 1)),
+        h('span', { class: 'topic-map__body' },
+          h('a', { href: `#${t.lessons.find((id) => !isLessonDone(id)) || t.lessons[0]}` }, t.title),
+          h('span', { class: 'topic-map__meta' }, `${done}/${t.lessons.length} bagian${complete ? ' · selesai' : ''}`)));
+    }))));
 
   // 10. MARK AS COMPLETED
   const completeBox = h('section', { class: 'complete-box', 'aria-labelledby': 'complete-title' });
@@ -321,7 +384,9 @@ function refreshProgress() {
     m.quizBest === null ? 'Kuis belum dicoba' : `Kuis terbaik ${m.quizBest}`);
   els.sideCaption.textContent = `${m.pct}% · ${m.status === 'done' ? 'Modul selesai' : m.readyToComplete ? 'Siap ditandai selesai' : `${m.lessonsDone}/${m.lessonsTotal} bagian`}`;
 
-  els.sideList.replaceChildren(...sections.map((s, i) => {
+  // Sidebar dikelompokkan per materi; kuis & ringkasan menjadi kelompok "Evaluasi"
+  const link = (s) => {
+    const i = sections.indexOf(s);
     const done = sectionDone(s);
     const current = s.id === currentId;
     return h('li', {},
@@ -333,6 +398,20 @@ function refreshProgress() {
       h('span', { class: 'learn-nav__dot', 'aria-hidden': 'true' }, done ? icon('check') : String(i + 1)),
       h('span', { class: 'learn-nav__text' }, s.title),
       h('span', { class: 'sr-only' }, done ? '(selesai)' : '(belum selesai)')));
+  };
+  const groups = [
+    ...topics.map((t, index) => ({ key: t.id, label: topicLabel(index), title: t.title, items: t.lessons.map((id) => sections.find((s) => s.id === id)) })),
+    { key: 'eval', label: 'Evaluasi', title: 'Kuis & ringkasan', items: sections.filter((s) => s.kind === 'quiz' || s.kind === 'summary') },
+  ];
+  els.sideList.replaceChildren(...groups.map((g) => {
+    const doneCount = g.items.filter(sectionDone).length;
+    const headId = `nav-${g.key}`;
+    return h('div', { class: `learn-nav__group${g.items.some((s) => s.id === currentId) ? ' is-current' : ''}` },
+      h('p', { class: 'learn-nav__heading', id: headId },
+        h('span', { class: 'learn-nav__label' }, g.label),
+        h('span', { class: 'learn-nav__title' }, g.title),
+        h('span', { class: 'learn-nav__count' }, `${doneCount}/${g.items.length}`)),
+      h('ol', { class: 'sidebar__list', role: 'list', 'aria-labelledby': headId }, g.items.map(link)));
   }));
 
   // Geser strip chip (mobile) agar bagian aktif terlihat

@@ -256,6 +256,16 @@ function renderTools(s) {
       desc: `${quizzesPassed} dari ${s.modules.length} kuis lulus.`,
       icon: 'target', module: 'cv', href: 'practice.html#kuis', soon: false,
     },
+    {
+      title: 'Email Writing Simulator',
+      desc: s.simulator.attempts ? `Skor rubrik terbaik ${s.simulator.best}.` : 'Tulis email lamaran & nilai dengan rubrik.',
+      icon: 'edit', module: 'tx', href: 'practice.html#simulator', soon: false,
+    },
+    {
+      title: 'Evaluasi Akhir',
+      desc: s.evaluation.attempts ? `Skor terbaik ${s.evaluation.best}${s.evaluation.passed ? ' · lulus' : ''}.` : '15 soal skenario lintas modul.',
+      icon: 'trophy', module: 'li', href: 'evaluation.html', soon: false,
+    },
   ];
   $('[data-tools]').replaceChildren(...tools.map((t) =>
     h('a', { class: 'tool-tile', href: t.href, 'data-module': t.module },
@@ -289,17 +299,19 @@ function renderActivity(s) {
 /* ---------- PENCAPAIAN ---------- */
 
 function renderAchievements(s) {
-  const earned = s.badges.filter((b) => b.earned);
+  // 2.0: dashboard menampilkan 10 badge utama; milestone kecil ada di halaman Progres
+  const main = s.badges.filter((b) => b.main);
+  const earned = main.filter((b) => b.earned);
   $('[data-badge-count]').textContent = earned.length;
-  $('[data-badge-total]').textContent = s.badges.length;
+  $('[data-badge-total]').textContent = main.length;
   const xp = $('[data-xp]');
   if (firstRender) { xp.dataset.count = s.xp; xp.textContent = s.xp; } else motion.countUp(xp, s.xp);
 
-  const next = s.badges.find((b) => !b.earned);
+  const next = main.find((b) => !b.earned);
   $('[data-next-badge]').textContent = next ? `Badge berikutnya: ${next.name} — ${next.desc.toLowerCase()}.` : 'Semua badge sudah kamu kumpulkan!';
 
   // Badge yang sudah didapat ditampilkan lebih dulu
-  const ordered = [...earned, ...s.badges.filter((b) => !b.earned)];
+  const ordered = [...earned, ...main.filter((b) => !b.earned)];
   $('[data-badges]').replaceChildren(...ordered.map((b) =>
     h('li', { class: `badge${b.earned ? '' : ' is-locked'}`, 'data-module': b.module || null },
       h('div', { class: 'badge__seal' }, icon(b.icon), h('span', { class: 'badge__lock' }, icon('lock'))),

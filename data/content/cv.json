@@ -1,177 +1,1229 @@
 {
   "module": "cv",
   "objectives": [
-    "Menyimpan CV dalam format PDF dengan nama file yang mudah dikenali",
-    "Menjaga ukuran file tetap ringan tanpa mengorbankan keterbacaan",
-    "Memahami cara rekruter dan sistem ATS membaca CV",
-    "Menyusun hierarki informasi CV dan menulis poin pencapaian",
-    "Mengintegrasikan portofolio lewat tautan yang rapi dan aman"
+    "Menjelaskan fungsi dan struktur CV profesional",
+    "Menulis Professional Summary yang spesifik",
+    "Menjelaskan cara rekruter memindai CV dan menghindari kesalahan desain umum",
+    "Menjelaskan cara umum ATS bekerja dan menyesuaikan kata kunci tanpa keyword stuffing",
+    "Menyimpan CV dengan format, ukuran, dan nama file yang tepat",
+    "Memilih karya, menulis deskripsi proyek, dan memastikan portofolio bisa diakses"
   ],
   "sections": {
     "cv-1": {
       "blocks": [
-        { "type": "objectives" },
-        { "type": "p", "text": "CV dan portofolio adalah **senjata utama** lamaranmu. Dokumen ini dibaca dua \"pembaca\": **sistem ATS** (Applicant Tracking System) yang menyaring dan menyimpan lamaran, lalu **rekruter manusia** yang memindainya dengan cepat." },
-        { "type": "compare", "items": [
-          { "label": "Pembaca 1: ATS", "tone": "neutral", "lines": ["Membaca teks dalam file", "Butuh format & judul bagian yang standar", "Mencocokkan kata kunci dengan lowongan"] },
-          { "label": "Pembaca 2: Rekruter", "tone": "neutral", "lines": ["Memindai, bukan membaca kata per kata", "Mencari informasi kunci dengan cepat", "Menilai relevansi & kerapian"] }
-        ] },
-        { "type": "callout", "tone": "key", "title": "Prinsip modul ini", "text": "Buat CV yang mudah dibaca mesin DAN mudah dipindai manusia." }
+        {
+          "type": "objectives"
+        },
+        {
+          "type": "p",
+          "text": "CV dan portofolio adalah **senjata utama** lamaranmu. Dokumen ini dibaca dua \"pembaca\": **sistem ATS** (Applicant Tracking System) yang menyaring dan menyimpan lamaran, lalu **rekruter manusia** yang memindainya dengan cepat."
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "Pembaca 1: ATS",
+              "tone": "neutral",
+              "lines": [
+                "Membaca teks dalam file",
+                "Butuh format & judul bagian yang standar",
+                "Mencocokkan kata kunci dengan lowongan"
+              ]
+            },
+            {
+              "label": "Pembaca 2: Rekruter",
+              "tone": "neutral",
+              "lines": [
+                "Memindai, bukan membaca kata per kata",
+                "Mencari informasi kunci dengan cepat",
+                "Menilai relevansi & kerapian"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "key",
+          "title": "Prinsip modul ini",
+          "text": "Buat CV yang mudah dibaca mesin DAN mudah dipindai manusia."
+        }
       ]
     },
     "cv-2": {
       "blocks": [
-        { "type": "p", "text": "Kirim CV dalam format **PDF** kecuali lowongan meminta format lain. PDF menjaga tata letak, huruf, dan jarak tetap sama di laptop maupun HP penerima." },
-        { "type": "callout", "tone": "warn", "title": "Ikuti instruksi lowongan", "text": "Jika lowongan meminta Word (.docx) atau format tertentu, ikuti permintaan itu. Instruksi perusahaan selalu didahulukan." },
-        { "type": "anatomy", "title": "Pola nama file CV", "parts": [
-          { "text": "CV", "label": "Jenis dokumen", "note": "CV / Portofolio / Surat" },
-          { "text": "_RinaPutriAndini", "label": "Nama lengkap", "note": "Tanpa spasi" },
-          { "text": "_FrontendDeveloper", "label": "Posisi", "note": "Sesuai judul lowongan" },
-          { "text": ".pdf", "label": "Format", "note": "Kecuali diminta lain" }
-        ] },
-        { "type": "dodont",
-          "do": ["CV_NamaLengkap_Posisi.pdf", "Satu pola untuk semua dokumen", "Posisi ditulis sama seperti di lowongan"],
-          "dont": ["CV.pdf (tidak ada nama)", "CV final revisi 3 (1).pdf", "Nama berisi emoji atau simbol aneh", "Hasil scan foto CV"] }
+        {
+          "type": "p",
+          "text": "Kirim CV dalam format **PDF** kecuali lowongan meminta format lain. PDF menjaga tata letak, huruf, dan jarak tetap sama di laptop maupun HP penerima."
+        },
+        {
+          "type": "callout",
+          "tone": "warn",
+          "title": "Ikuti instruksi lowongan",
+          "text": "Jika lowongan meminta Word (.docx) atau format tertentu, ikuti permintaan itu. Instruksi perusahaan selalu didahulukan."
+        },
+        {
+          "type": "anatomy",
+          "title": "Pola nama file CV",
+          "parts": [
+            {
+              "text": "CV",
+              "label": "Jenis dokumen",
+              "note": "CV / Portofolio / Surat"
+            },
+            {
+              "text": "_RinaPutriAndini",
+              "label": "Nama lengkap",
+              "note": "Tanpa spasi"
+            },
+            {
+              "text": "_FrontendDeveloper",
+              "label": "Posisi",
+              "note": "Sesuai judul lowongan"
+            },
+            {
+              "text": ".pdf",
+              "label": "Format",
+              "note": "Kecuali diminta lain"
+            }
+          ]
+        },
+        {
+          "type": "dodont",
+          "do": [
+            "CV_NamaLengkap_Posisi.pdf",
+            "Satu pola untuk semua dokumen",
+            "Posisi ditulis sama seperti di lowongan"
+          ],
+          "dont": [
+            "CV.pdf (tidak ada nama)",
+            "CV final revisi 3 (1).pdf",
+            "Nama berisi emoji atau simbol aneh",
+            "Hasil scan foto CV"
+          ]
+        }
       ]
     },
     "cv-3": {
       "blocks": [
-        { "type": "p", "text": "File yang terlalu besar bisa **gagal diunggah** ke portal lowongan atau lambat dibuka di HP. Jaga ukuran CV tetap ringan." },
-        { "type": "steps", "items": [
-          { "title": "Ekspor langsung ke PDF", "text": "Dari Google Docs: File → Download → PDF. Dari Word: Save As → PDF. Hindari memotret atau memindai CV." },
-          { "title": "Kompres gambar", "text": "Foto profil dan ikon cukup resolusi secukupnya; gambar besar paling sering membuat file membengkak." },
-          { "title": "Cek batas ukuran", "text": "Baca batas ukuran file di portal atau instruksi lowongan sebelum mengunggah." },
-          { "title": "Portofolio berat → tautan", "text": "Jangan melampirkan portofolio puluhan MB. Bagikan sebagai tautan (lihat bagian Portfolio Link Strategy)." }
-        ] },
-        { "type": "verify", "text": "Batas ukuran file berbeda di tiap portal/perusahaan. Angka acuan seperti \"di bawah 2 MB\" sering disebut sebagai praktik umum, bukan aturan baku—cek instruksi lowongan dan sumber resmi sebelum dipublikasikan sebagai patokan." }
+        {
+          "type": "p",
+          "text": "File yang terlalu besar bisa **gagal diunggah** ke portal lowongan atau lambat dibuka di HP. Jaga ukuran CV tetap ringan."
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": "Ekspor langsung ke PDF",
+              "text": "Dari Google Docs: File → Download → PDF. Dari Word: Save As → PDF. Hindari memotret atau memindai CV."
+            },
+            {
+              "title": "Kompres gambar",
+              "text": "Foto profil dan ikon cukup resolusi secukupnya; gambar besar paling sering membuat file membengkak."
+            },
+            {
+              "title": "Cek batas ukuran",
+              "text": "Baca batas ukuran file di portal atau instruksi lowongan sebelum mengunggah."
+            },
+            {
+              "title": "Portofolio berat → tautan",
+              "text": "Jangan melampirkan portofolio puluhan MB. Bagikan sebagai tautan (lihat bagian Portfolio Link Strategy)."
+            }
+          ]
+        },
+        {
+          "type": "verify",
+          "text": "Batas ukuran file berbeda di tiap portal/perusahaan. Angka acuan seperti \"di bawah 2 MB\" sering disebut sebagai praktik umum, bukan aturan baku—cek instruksi lowongan dan sumber resmi sebelum dipublikasikan sebagai patokan."
+        }
       ]
     },
     "cv-4": {
       "blocks": [
-        { "type": "p", "text": "Rekruter umumnya **memindai** CV, bukan membacanya kata per kata. Studi eye-tracking dari **Ladders (2018)** sering dikutip untuk menggambarkan bahwa keputusan awal terhadap sebuah CV dibuat dalam waktu yang sangat singkat dan perhatian tertuju pada informasi kunci." },
-        { "type": "verify", "text": "Angka durasi pemindaian dan daftar area yang paling dilihat menurut studi Ladders (2018) perlu dicek langsung ke laporan aslinya sebelum ditampilkan sebagai angka." },
-        { "type": "p", "text": "Implikasinya untuk CV-mu:" },
-        { "type": "list", "items": ["Informasi penting (nama, peran, pengalaman/pendidikan terbaru) mudah ditemukan di bagian atas", "Judul bagian standar: Pengalaman, Pendidikan, Keahlian", "Poin singkat, bukan paragraf panjang", "Tata letak bersih dengan ruang kosong yang cukup"] },
-        { "type": "callout", "tone": "tip", "title": "Ramah ATS", "text": "Gunakan teks biasa (bukan teks di dalam gambar), hindari tabel/kolom yang rumit, dan masukkan kata kunci relevan dari deskripsi lowongan secara jujur." },
-        { "type": "recall", "q": "Mengapa sebaiknya tidak menulis informasi penting di dalam gambar?", "options": ["Gambar membuat CV terlihat kosong", "Teks di dalam gambar bisa tidak terbaca sistem ATS", "Gambar dilarang dalam PDF"], "answer": 1, "explain": "ATS membaca teks dalam file; teks yang menjadi bagian gambar berisiko tidak terbaca." }
+        {
+          "type": "p",
+          "text": "Rekruter umumnya **memindai** CV, bukan membacanya kata per kata. Studi eye-tracking dari **Ladders (2018)** sering dikutip untuk menggambarkan bahwa keputusan awal terhadap sebuah CV dibuat dalam waktu yang sangat singkat dan perhatian tertuju pada informasi kunci."
+        },
+        {
+          "type": "research",
+          "text": "Studi eye-tracking **Ladders, Inc. (2018)** melaporkan bahwa rekruter menghabiskan rata-rata sekitar **7,4 detik** untuk pemindaian awal sebuah resume.",
+          "source": "ladders-2018",
+          "caveat": "Angka ini menggambarkan pemindaian awal dalam studi tersebut, bukan berarti setiap rekruter membaca seluruh lamaran hanya dalam 7,4 detik. Praktik tiap rekruter dan perusahaan bisa berbeda."
+        },
+        {
+          "type": "p",
+          "text": "Implikasinya untuk CV-mu:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Informasi penting (nama, peran, pengalaman/pendidikan terbaru) mudah ditemukan di bagian atas",
+            "Judul bagian standar: Pengalaman, Pendidikan, Keahlian",
+            "Poin singkat, bukan paragraf panjang",
+            "Tata letak bersih dengan ruang kosong yang cukup"
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Ramah ATS",
+          "text": "Gunakan teks biasa (bukan teks di dalam gambar), hindari tabel/kolom yang rumit, dan masukkan kata kunci relevan dari deskripsi lowongan secara jujur."
+        },
+        {
+          "type": "recall",
+          "q": "Mengapa sebaiknya tidak menulis informasi penting di dalam gambar?",
+          "options": [
+            "Gambar membuat CV terlihat kosong",
+            "Teks di dalam gambar bisa tidak terbaca sistem ATS",
+            "Gambar dilarang dalam PDF"
+          ],
+          "answer": 1,
+          "explain": "ATS membaca teks dalam file; teks yang menjadi bagian gambar berisiko tidak terbaca."
+        }
       ]
     },
     "cv-5": {
       "blocks": [
-        { "type": "p", "text": "Susun CV dari informasi **paling penting ke paling pendukung**. Urutan umum:" },
-        { "type": "stack", "title": "Hierarki informasi CV", "levels": [
-          { "label": "Header", "note": "Nama, peran yang dituju, kontak, LinkedIn, portofolio" },
-          { "label": "Ringkasan profil", "note": "2–3 kalimat: siapa kamu & nilai yang kamu bawa" },
-          { "label": "Pengalaman", "note": "Terbaru di atas; magang, organisasi, proyek, freelance" },
-          { "label": "Pendidikan", "note": "Untuk fresh graduate boleh diletakkan di atas Pengalaman" },
-          { "label": "Keahlian & sertifikasi", "note": "Yang relevan dengan lowongan" }
-        ] },
-        { "type": "h", "text": "Formula poin pencapaian" },
-        { "type": "steps", "items": [
-          { "title": "Kata kerja aksi", "text": "Membangun, memimpin, meningkatkan, menyusun…" },
-          { "title": "Apa yang dikerjakan", "text": "Tugas atau proyek spesifik." },
-          { "title": "Hasil / dampak", "text": "Hasil yang terukur bila ada—dan selalu jujur." }
-        ] },
-        { "type": "compare", "items": [
-          { "label": "Lemah", "tone": "bad", "lines": ["Bertanggung jawab atas media sosial himpunan"] },
-          { "label": "Kuat", "tone": "good", "lines": ["Menyusun kalender konten Instagram himpunan selama 1 semester dan menjadwalkan unggahan rutin tiap minggu"] }
-        ] },
-        { "type": "callout", "tone": "warn", "title": "Jangan melebih-lebihkan", "text": "Angka dan hasil di CV harus bisa kamu jelaskan saat wawancara. Bila tidak punya angka, jelaskan cakupan dan hasil nyatanya." }
+        {
+          "type": "p",
+          "text": "Susun CV dari informasi **paling penting ke paling pendukung**. Urutan umum:"
+        },
+        {
+          "type": "stack",
+          "title": "Hierarki informasi CV",
+          "levels": [
+            {
+              "label": "Header",
+              "note": "Nama, peran yang dituju, kontak, LinkedIn, portofolio"
+            },
+            {
+              "label": "Ringkasan profil",
+              "note": "2–3 kalimat: siapa kamu & nilai yang kamu bawa"
+            },
+            {
+              "label": "Pengalaman",
+              "note": "Terbaru di atas; magang, organisasi, proyek, freelance"
+            },
+            {
+              "label": "Pendidikan",
+              "note": "Untuk fresh graduate boleh diletakkan di atas Pengalaman"
+            },
+            {
+              "label": "Keahlian & sertifikasi",
+              "note": "Yang relevan dengan lowongan"
+            }
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Formula poin pencapaian"
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": "Kata kerja aksi",
+              "text": "Membangun, memimpin, meningkatkan, menyusun…"
+            },
+            {
+              "title": "Apa yang dikerjakan",
+              "text": "Tugas atau proyek spesifik."
+            },
+            {
+              "title": "Hasil / dampak",
+              "text": "Hasil yang terukur bila ada—dan selalu jujur."
+            }
+          ]
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "Lemah",
+              "tone": "bad",
+              "lines": [
+                "Bertanggung jawab atas media sosial himpunan"
+              ]
+            },
+            {
+              "label": "Kuat",
+              "tone": "good",
+              "lines": [
+                "Menyusun kalender konten Instagram himpunan selama 1 semester dan menjadwalkan unggahan rutin tiap minggu"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "warn",
+          "title": "Jangan melebih-lebihkan",
+          "text": "Angka dan hasil di CV harus bisa kamu jelaskan saat wawancara. Bila tidak punya angka, jelaskan cakupan dan hasil nyatanya."
+        }
       ]
     },
     "cv-6": {
       "blocks": [
-        { "type": "p", "text": "**Portofolio** membuktikan apa yang tertulis di CV. Integrasikan keduanya agar rekruter bisa langsung melihat contoh kerjamu." },
-        { "type": "list", "items": ["Pilih **beberapa karya terbaik yang paling relevan** dengan posisi—bukan semua karya", "Untuk tiap karya: **masalah**, **peranmu**, **proses**, dan **hasil**", "Sesuaikan media dengan bidang: PDF/Drive, Notion, situs pribadi, GitHub (teknologi), atau platform portofolio desain"] },
-        { "type": "compare", "items": [
-          { "label": "Hanya galeri", "tone": "bad", "lines": ["Kumpulan gambar tanpa penjelasan", "Tidak jelas peranmu di proyek"] },
-          { "label": "Studi kasus singkat", "tone": "good", "lines": ["Masalah → proses → hasil", "Peranmu ditulis jelas", "Relevan dengan lowongan"] }
-        ] },
-        { "type": "callout", "tone": "tip", "title": "Hubungkan ke CV", "text": "Letakkan tautan portofolio di header CV dan di tanda tangan email, dengan label yang jelas seperti \"Portofolio\"." }
+        {
+          "type": "p",
+          "text": "**Portofolio** membuktikan apa yang tertulis di CV. Integrasikan keduanya agar rekruter bisa langsung melihat contoh kerjamu."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Pilih **beberapa karya terbaik yang paling relevan** dengan posisi—bukan semua karya",
+            "Untuk tiap karya: **masalah**, **peranmu**, **proses**, dan **hasil**",
+            "Sesuaikan media dengan bidang: PDF/Drive, Notion, situs pribadi, GitHub (teknologi), atau platform portofolio desain"
+          ]
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "Hanya galeri",
+              "tone": "bad",
+              "lines": [
+                "Kumpulan gambar tanpa penjelasan",
+                "Tidak jelas peranmu di proyek"
+              ]
+            },
+            {
+              "label": "Studi kasus singkat",
+              "tone": "good",
+              "lines": [
+                "Masalah → proses → hasil",
+                "Peranmu ditulis jelas",
+                "Relevan dengan lowongan"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Hubungkan ke CV",
+          "text": "Letakkan tautan portofolio di header CV dan di tanda tangan email, dengan label yang jelas seperti \"Portofolio\"."
+        }
       ]
     },
     "cv-7": {
       "blocks": [
-        { "type": "p", "text": "Tautan portofolio harus **mudah dibuka, jelas tujuannya, dan aman**." },
-        { "type": "flags",
-          "green": ["Satu tautan utama yang berisi semua karya", "Akses: siapa saja dengan link · Pelihat", "Dites di jendela incognito", "Label tautan jelas, mis. \"Portofolio\""],
-          "red": ["Banyak tautan berserakan", "Akses Dibatasi sehingga HRD harus meminta izin", "Tautan mati atau mengarah ke file lama", "Peran Editor untuk publik"] },
-        { "type": "steps", "items": [
-          { "title": "Kumpulkan dalam satu folder/halaman", "text": "Mis. folder Drive \"02_Portofolio\" atau satu halaman Notion." },
-          { "title": "Atur akses", "text": "Siapa saja yang memiliki link · Pelihat (Modul 1)." },
-          { "title": "Tes", "text": "Buka tautan di jendela incognito atau perangkat lain." },
-          { "title": "Pasang", "text": "Di header CV, tanda tangan email, dan profil LinkedIn." }
-        ] }
+        {
+          "type": "p",
+          "text": "Tautan portofolio harus **mudah dibuka, jelas tujuannya, dan aman**."
+        },
+        {
+          "type": "flags",
+          "green": [
+            "Satu tautan utama yang berisi semua karya",
+            "Akses: siapa saja dengan link · Pelihat",
+            "Dites di jendela incognito",
+            "Label tautan jelas, mis. \"Portofolio\""
+          ],
+          "red": [
+            "Banyak tautan berserakan",
+            "Akses Dibatasi sehingga HRD harus meminta izin",
+            "Tautan mati atau mengarah ke file lama",
+            "Peran Editor untuk publik"
+          ]
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": "Kumpulkan dalam satu folder/halaman",
+              "text": "Mis. folder Drive \"02_Portofolio\" atau satu halaman Notion."
+            },
+            {
+              "title": "Atur akses",
+              "text": "Siapa saja yang memiliki link · Pelihat (Modul 1)."
+            },
+            {
+              "title": "Tes",
+              "text": "Buka tautan di jendela incognito atau perangkat lain."
+            },
+            {
+              "title": "Pasang",
+              "text": "Di header CV, tanda tangan email, dan profil LinkedIn."
+            }
+          ]
+        }
       ]
     },
     "cv-8": {
       "blocks": [
-        { "type": "p", "text": "Bayangkan CV sebagai halaman yang dipindai dari atas ke bawah. Semakin atas, semakin besar perhatian yang didapat." },
-        { "type": "stack", "title": "Dari paling dilihat ke pendukung", "levels": [
-          { "label": "1 · Nama & peran", "note": "Langsung menjawab \"siapa ini?\"" },
-          { "label": "2 · Ringkasan", "note": "Alasan untuk terus membaca" },
-          { "label": "3 · Pengalaman terbaru", "note": "Bukti kemampuan" },
-          { "label": "4 · Pendidikan", "note": "Latar belakang" },
-          { "label": "5 · Keahlian", "note": "Kata kunci untuk ATS & rekruter" }
-        ] },
-        { "type": "flow", "title": "Perjalanan sebuah CV", "steps": [
-          { "label": "Unggah / kirim", "note": "PDF, nama rapi" },
-          { "label": "ATS", "note": "Teks terbaca & kata kunci" },
-          { "label": "Pindai rekruter", "note": "Info kunci di atas" },
-          { "label": "Cek portofolio", "note": "Tautan bisa dibuka" },
-          { "label": "Panggilan", "note": "Wawancara" }
-        ] }
+        {
+          "type": "p",
+          "text": "Bayangkan CV sebagai halaman yang dipindai dari atas ke bawah. Semakin atas, semakin besar perhatian yang didapat."
+        },
+        {
+          "type": "stack",
+          "title": "Dari paling dilihat ke pendukung",
+          "levels": [
+            {
+              "label": "1 · Nama & peran",
+              "note": "Langsung menjawab \"siapa ini?\""
+            },
+            {
+              "label": "2 · Ringkasan",
+              "note": "Alasan untuk terus membaca"
+            },
+            {
+              "label": "3 · Pengalaman terbaru",
+              "note": "Bukti kemampuan"
+            },
+            {
+              "label": "4 · Pendidikan",
+              "note": "Latar belakang"
+            },
+            {
+              "label": "5 · Keahlian",
+              "note": "Kata kunci untuk ATS & rekruter"
+            }
+          ]
+        },
+        {
+          "type": "flow",
+          "title": "Perjalanan sebuah CV",
+          "steps": [
+            {
+              "label": "Unggah / kirim",
+              "note": "PDF, nama rapi"
+            },
+            {
+              "label": "ATS",
+              "note": "Teks terbaca & kata kunci"
+            },
+            {
+              "label": "Pindai rekruter",
+              "note": "Info kunci di atas"
+            },
+            {
+              "label": "Cek portofolio",
+              "note": "Tautan bisa dibuka"
+            },
+            {
+              "label": "Panggilan",
+              "note": "Wawancara"
+            }
+          ]
+        }
       ]
     },
     "cv-9": {
       "blocks": [
-        { "type": "p", "text": "Contoh mengubah tugas menjadi poin pencapaian (data fiktif):" },
-        { "type": "compare", "items": [
-          { "label": "Sebelum", "tone": "bad", "lines": ["Membantu membuat website", "Ikut kepanitiaan acara kampus", "Bisa desain"] },
-          { "label": "Sesudah", "tone": "good", "lines": ["Membangun halaman pendaftaran acara kampus dengan HTML, CSS, dan JavaScript yang dipakai panitia untuk mengumpulkan data peserta", "Mengoordinasikan 5 anggota divisi publikasi untuk menyiapkan materi promosi acara", "Merancang 12 desain poster untuk akun Instagram himpunan selama satu semester"] }
-        ] },
-        { "type": "callout", "tone": "info", "title": "Angka di contoh", "text": "Angka pada contoh adalah ilustrasi. Di CV-mu, gunakan angka sesuai pengalaman nyata." },
-        { "type": "anatomy", "title": "Nama file sebelum → sesudah", "parts": [
-          { "text": "cv rina final.pdf", "label": "Sebelum", "note": "Spasi, tanpa posisi" },
-          { "text": "→", "label": "", "note": "" },
-          { "text": "CV_RinaPutriAndini_FrontendDeveloper.pdf", "label": "Sesudah", "note": "Jenis_Nama_Posisi" }
-        ] }
+        {
+          "type": "p",
+          "text": "Contoh mengubah tugas menjadi poin pencapaian (data fiktif):"
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "Sebelum",
+              "tone": "bad",
+              "lines": [
+                "Membantu membuat website",
+                "Ikut kepanitiaan acara kampus",
+                "Bisa desain"
+              ]
+            },
+            {
+              "label": "Sesudah",
+              "tone": "good",
+              "lines": [
+                "Membangun halaman pendaftaran acara kampus dengan HTML, CSS, dan JavaScript yang dipakai panitia untuk mengumpulkan data peserta",
+                "Mengoordinasikan 5 anggota divisi publikasi untuk menyiapkan materi promosi acara",
+                "Merancang 12 desain poster untuk akun Instagram himpunan selama satu semester"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Angka di contoh",
+          "text": "Angka pada contoh adalah ilustrasi. Di CV-mu, gunakan angka sesuai pengalaman nyata."
+        },
+        {
+          "type": "anatomy",
+          "title": "Nama file sebelum → sesudah",
+          "parts": [
+            {
+              "text": "cv rina final.pdf",
+              "label": "Sebelum",
+              "note": "Spasi, tanpa posisi"
+            },
+            {
+              "text": "→",
+              "label": "",
+              "note": ""
+            },
+            {
+              "text": "CV_RinaPutriAndini_FrontendDeveloper.pdf",
+              "label": "Sesudah",
+              "note": "Jenis_Nama_Posisi"
+            }
+          ]
+        }
       ]
     },
     "cv-10": {
       "blocks": [
-        { "type": "p", "text": "**Latihan 1** — buat nama file CV-mu sendiri. Pratinjau dan pemeriksaannya diperbarui langsung." },
-        { "type": "builder", "id": "cv-filename", "kind": "filename", "fields": [
-          { "id": "doc", "label": "Jenis dokumen", "placeholder": "CV", "default": "CV" },
-          { "id": "name", "label": "Nama lengkap", "placeholder": "cth. Rina Putri Andini", "default": "@name" },
-          { "id": "role", "label": "Posisi yang dilamar", "placeholder": "cth. Frontend Developer" }
-        ] },
-        { "type": "p", "text": "**Latihan 2** — pilah poin CV berikut: sudah kuat atau masih lemah?" },
-        { "type": "classify", "id": "cv-bullets", "labels": { "good": "Kuat", "bad": "Lemah" }, "items": [
-          { "text": "Bertanggung jawab atas media sosial", "answer": "bad", "why": "Hanya menyebut tugas, tanpa aksi spesifik dan hasil." },
-          { "text": "Menyusun kalender konten mingguan dan menjadwalkan unggahan Instagram himpunan selama satu semester", "answer": "good", "why": "Ada kata kerja aksi, apa yang dikerjakan, dan cakupannya." },
-          { "text": "Pekerja keras dan cepat belajar", "answer": "bad", "why": "Klaim sifat tanpa bukti; lebih kuat bila ditunjukkan lewat pencapaian." },
-          { "text": "Membangun formulir pendaftaran acara yang dipakai panitia untuk mendata peserta", "answer": "good", "why": "Menjelaskan aksi dan hasil nyata yang dipakai orang lain." }
-        ] }
+        {
+          "type": "p",
+          "text": "**Latihan 1** — buat nama file CV-mu sendiri. Pratinjau dan pemeriksaannya diperbarui langsung."
+        },
+        {
+          "type": "builder",
+          "id": "cv-filename",
+          "kind": "filename",
+          "fields": [
+            {
+              "id": "doc",
+              "label": "Jenis dokumen",
+              "placeholder": "CV",
+              "default": "CV"
+            },
+            {
+              "id": "name",
+              "label": "Nama lengkap",
+              "placeholder": "cth. Rina Putri Andini",
+              "default": "@name"
+            },
+            {
+              "id": "role",
+              "label": "Posisi yang dilamar",
+              "placeholder": "cth. Frontend Developer"
+            }
+          ]
+        },
+        {
+          "type": "p",
+          "text": "**Latihan 2** — pilah poin CV berikut: sudah kuat atau masih lemah?"
+        },
+        {
+          "type": "classify",
+          "id": "cv-bullets",
+          "labels": {
+            "good": "Kuat",
+            "bad": "Lemah"
+          },
+          "items": [
+            {
+              "text": "Bertanggung jawab atas media sosial",
+              "answer": "bad",
+              "why": "Hanya menyebut tugas, tanpa aksi spesifik dan hasil."
+            },
+            {
+              "text": "Menyusun kalender konten mingguan dan menjadwalkan unggahan Instagram himpunan selama satu semester",
+              "answer": "good",
+              "why": "Ada kata kerja aksi, apa yang dikerjakan, dan cakupannya."
+            },
+            {
+              "text": "Pekerja keras dan cepat belajar",
+              "answer": "bad",
+              "why": "Klaim sifat tanpa bukti; lebih kuat bila ditunjukkan lewat pencapaian."
+            },
+            {
+              "text": "Membangun formulir pendaftaran acara yang dipakai panitia untuk mendata peserta",
+              "answer": "good",
+              "why": "Menjelaskan aksi dan hasil nyata yang dipakai orang lain."
+            }
+          ]
+        }
+      ]
+    },
+    "cv-11": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "**CV (Curriculum Vitae)** adalah ringkasan kualifikasimu yang relevan dengan posisi yang dilamar. Fungsinya bukan menceritakan seluruh hidup, tetapi **membuat rekruter cukup yakin untuk memanggilmu wawancara**."
+        },
+        {
+          "type": "table",
+          "head": [
+            "Bagian",
+            "Isi",
+            "Catatan"
+          ],
+          "rows": [
+            [
+              "**Informasi pribadi**",
+              "Nama, kota domisili, nomor, email karier, LinkedIn, portofolio",
+              "Data seperti agama, berat badan, atau status pernikahan tidak perlu kecuali diminta lowongan"
+            ],
+            [
+              "**Professional Summary**",
+              "2–3 kalimat: siapa kamu, keahlian utama, nilai yang kamu bawa",
+              "Ditulis ulang untuk tiap jenis posisi"
+            ],
+            [
+              "**Pendidikan**",
+              "Institusi, jurusan, tahun, IPK bila mendukung",
+              "Fresh graduate boleh meletakkannya di atas Pengalaman"
+            ],
+            [
+              "**Pengalaman kerja/magang**",
+              "Peran, perusahaan, periode, 2–4 poin pencapaian",
+              "Terbaru di atas"
+            ],
+            [
+              "**Pengalaman organisasi/proyek**",
+              "Peran dan hasil yang terukur",
+              "Sangat penting bagi mahasiswa & fresh graduate"
+            ],
+            [
+              "**Skills**",
+              "Keahlian teknis & alat yang dikuasai",
+              "Tulis yang relevan; hindari grafik persentase"
+            ],
+            [
+              "**Certifications**",
+              "Nama sertifikat, penerbit, tahun",
+              "Cantumkan yang relevan dengan posisi"
+            ],
+            [
+              "**Achievements**",
+              "Penghargaan, kompetisi, publikasi",
+              "Sertakan konteks (tingkat, jumlah peserta) bila ada"
+            ]
+          ]
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "CV fresh graduate",
+              "tone": "neutral",
+              "lines": [
+                "Summary → Pendidikan → Organisasi/Proyek → Magang → Skills"
+              ]
+            },
+            {
+              "label": "CV berpengalaman",
+              "tone": "neutral",
+              "lines": [
+                "Summary → Pengalaman kerja → Skills → Pendidikan → Sertifikasi"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "title": "Panjang CV",
+          "text": "Untuk fresh graduate, satu halaman biasanya cukup. Kandidat berpengalaman bisa dua halaman bila semua isinya relevan. Ikuti batas jika lowongan menyebutkannya."
+        },
+        {
+          "type": "recall",
+          "q": "Bagian mana yang paling sering perlu ditulis ulang untuk tiap jenis posisi?",
+          "options": [
+            "Nama",
+            "Professional Summary",
+            "Nama kampus",
+            "Nomor telepon"
+          ],
+          "answer": 1,
+          "explain": "Summary menyesuaikan keahlian yang ditonjolkan dengan kebutuhan posisi."
+        }
+      ]
+    },
+    "cv-12": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "**Professional Summary** adalah 2–3 kalimat di bagian atas CV yang menjawab: *siapa kamu, apa keahlian utamamu, dan nilai apa yang kamu bawa untuk posisi ini*. Bagian ini sering dibaca pertama setelah nama."
+        },
+        {
+          "type": "anatomy",
+          "title": "Formula summary",
+          "parts": [
+            {
+              "text": "Lulusan Sistem Informasi",
+              "label": "Identitas profesional",
+              "note": "Latar pendidikan/peran"
+            },
+            {
+              "text": " dengan pengalaman 2 proyek analisis data penjualan",
+              "label": "Bukti",
+              "note": "Pengalaman paling relevan"
+            },
+            {
+              "text": " menggunakan Excel, SQL, dan Looker Studio,",
+              "label": "Keahlian kunci",
+              "note": "Sesuai lowongan"
+            },
+            {
+              "text": " siap membantu tim membuat laporan yang cepat dan akurat.",
+              "label": "Nilai",
+              "note": "Apa yang kamu tawarkan"
+            }
+          ]
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "Generik",
+              "tone": "bad",
+              "lines": [
+                "\"Saya pribadi pekerja keras, jujur, dan mau belajar. Mencari pekerjaan untuk mengembangkan diri.\"",
+                "Bisa ditulis siapa saja; tidak menyebut keahlian atau posisi"
+              ]
+            },
+            {
+              "label": "Spesifik",
+              "tone": "good",
+              "lines": [
+                "\"Lulusan Ilmu Komunikasi yang mengelola Instagram himpunan hingga engagement naik dari 2% ke 5% dalam 6 bulan, terbiasa dengan Canva dan Meta Business Suite.\"",
+                "Menyebut bukti, alat, dan hasil"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "dodont",
+          "do": [
+            "Tulis untuk posisi yang dilamar",
+            "Pakai kata kunci dari lowongan secara wajar",
+            "Tunjukkan bukti, bukan sifat"
+          ],
+          "dont": [
+            "Mengulang isi seluruh CV",
+            "Kata sifat tanpa bukti (\"pekerja keras\", \"teliti\")",
+            "Kalimat lebih dari 4 baris"
+          ]
+        },
+        {
+          "type": "recall",
+          "q": "Apa yang membuat summary terasa kuat?",
+          "options": [
+            "Banyak kata sifat positif",
+            "Bukti dan keahlian yang relevan dengan posisi",
+            "Paragraf panjang",
+            "Kutipan motivasi"
+          ],
+          "answer": 1,
+          "explain": "Rekruter mencari bukti relevansi, bukan klaim sifat."
+        }
+      ]
+    },
+    "cv-13": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kamu menyusun CV untuk **fresh graduate** yang melamar posisi *Junior Data Analyst*. Urutkan bagian CV dari atas ke bawah sesuai hierarki yang paling membantu rekruter."
+        },
+        {
+          "type": "order",
+          "id": "cv-structure",
+          "title": "Urutkan bagian CV (fresh graduate)",
+          "pass": 80,
+          "items": [
+            "Header: nama, kontak, LinkedIn, portofolio",
+            "Professional Summary",
+            "Pendidikan",
+            "Pengalaman organisasi & proyek",
+            "Pengalaman magang",
+            "Skills & sertifikasi"
+          ],
+          "explain": "Header dan summary selalu di atas. Bagi fresh graduate, Pendidikan serta Organisasi/Proyek biasanya menjadi bukti terkuat, lalu magang, skills, dan sertifikasi. Untuk kandidat berpengalaman, Pengalaman kerja naik ke atas Pendidikan."
+        }
+      ]
+    },
+    "cv-14": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Cuplikan CV fiktif di bawah ini memiliki beberapa **red flag**. Klik setiap bagian yang menurutmu bermasalah, lalu tekan **Periksa**. Tidak semua bagian salah—hati-hati menandai."
+        },
+        {
+          "type": "spot",
+          "id": "cv-redflags",
+          "frame": "cv",
+          "title": "Temukan red flag di CV",
+          "pass": 70,
+          "segments": [
+            {
+              "text": "ANDI SAPUTRA",
+              "br": true
+            },
+            {
+              "text": "andi.ganteng99@yahoo.com",
+              "mistake": "Alamat email tidak profesional (julukan + angka). Gunakan alamat karier dengan nama asli.",
+              "br": true
+            },
+            {
+              "text": "Tujuan: Mencari pekerjaan apa saja yang bisa membuat saya berkembang.",
+              "mistake": "Tujuan generik dan tidak menyebut posisi. Ganti dengan Professional Summary yang spesifik.",
+              "br": true
+            },
+            {
+              "text": "Berat badan 70 kg · Tinggi 172 cm · Hobi: memancing",
+              "mistake": "Data fisik dan hobi tidak relevan untuk posisi analis data. Cantumkan hanya bila diminta lowongan.",
+              "br": true
+            },
+            {
+              "text": "S1 Statistika, Universitas Contoh (2020–2024), IPK 3,52",
+              "br": true
+            },
+            {
+              "text": "Bertanggung jawab atas data penjualan.",
+              "mistake": "Hanya tugas, bukan pencapaian. Gunakan formula kata kerja + apa yang dilakukan + hasil terukur.",
+              "br": true
+            },
+            {
+              "text": "Membuat dashboard Looker Studio yang memangkas waktu rekap mingguan dari 3 jam menjadi 30 menit.",
+              "br": true
+            },
+            {
+              "text": "Skills: Microsfot Ofice, SQL",
+              "mistake": "Salah ketik (\"Microsfot Ofice\"). Kesalahan ejaan memberi kesan kurang teliti.",
+              "br": true
+            },
+            {
+              "text": "Excel ●●●●○ 80%",
+              "mistake": "Grafik persentase keahlian tidak bermakna bagi rekruter dan sulit dibaca sistem. Sebutkan keahlian dan buktinya.",
+              "br": true
+            },
+            {
+              "text": "Sertifikat: Google Data Analytics (2024)",
+              "br": true
+            },
+            {
+              "text": "File: CV terbaru FIX banget.docx",
+              "mistake": "Nama file tidak profesional. Gunakan pola CV_NamaLengkap_Posisi.pdf."
+            }
+          ]
+        }
+      ]
+    },
+    "cv-15": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "**Applicant Tracking System (ATS)** adalah perangkat lunak yang dipakai banyak perusahaan untuk **menerima, menyimpan, dan mengelola lamaran**. Rekruter memakainya untuk mencari, menyaring, dan memindahkan kandidat antartahap seleksi."
+        },
+        {
+          "type": "flow",
+          "title": "Gambaran umum alur lamaran di ATS",
+          "steps": [
+            {
+              "label": "Kamu mengunggah CV",
+              "note": "Lewat portal karier atau formulir"
+            },
+            {
+              "label": "ATS mengurai (parsing) isi CV",
+              "note": "Teks dipecah menjadi nama, pengalaman, pendidikan, keahlian"
+            },
+            {
+              "label": "Data tersimpan sebagai profil kandidat",
+              "note": "Bisa dicari dengan kata kunci"
+            },
+            {
+              "label": "Rekruter mencari & menyaring",
+              "note": "Misalnya berdasarkan keahlian atau pengalaman"
+            },
+            {
+              "label": "Rekruter manusia menilai",
+              "note": "Keputusan tetap dibuat orang"
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "warn",
+          "title": "Bukan robot yang otomatis menolak semua CV",
+          "text": "Cara kerja ATS berbeda-beda antarvendor dan antarperusahaan. Ada yang memakai penyaringan otomatis, ada yang hanya sebagai basis data. Tidak ada format yang dijamin \"lolos ATS\"—yang bisa kamu lakukan adalah membuat CV mudah dibaca mesin dan relevan bagi manusia."
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "Mudah diurai mesin",
+              "tone": "good",
+              "lines": [
+                "Teks biasa yang bisa diseleksi",
+                "Judul bagian standar: Pengalaman, Pendidikan, Keahlian",
+                "Satu kolom utama, urutan logis"
+              ]
+            },
+            {
+              "label": "Berisiko gagal diurai",
+              "tone": "bad",
+              "lines": [
+                "Teks di dalam gambar atau ikon",
+                "Tabel dan kolom berlapis",
+                "Info penting di header/footer dokumen"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "recall",
+          "q": "Pernyataan mana yang paling akurat tentang ATS?",
+          "options": [
+            "ATS selalu menolak CV berwarna",
+            "Format tertentu menjamin lolos ATS",
+            "ATS membantu perusahaan mengelola lamaran; cara kerjanya berbeda-beda",
+            "ATS hanya dipakai perusahaan luar negeri"
+          ],
+          "answer": 2,
+          "explain": "ATS adalah alat pengelola lamaran. Fiturnya bervariasi, jadi tidak ada jaminan format tertentu pasti lolos."
+        }
+      ]
+    },
+    "cv-16": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "**Kata kunci (keywords)** adalah istilah penting di lowongan: keahlian, alat, sertifikasi, atau nama peran. Rekruter sering mencari kandidat memakai istilah ini, jadi CV yang menyebutnya—**dengan jujur**—lebih mudah ditemukan."
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": "Baca lowongan dua kali",
+              "text": "Tandai keahlian wajib, alat, dan istilah yang diulang."
+            },
+            {
+              "title": "Cocokkan dengan pengalamanmu",
+              "text": "Hanya ambil yang benar-benar kamu kuasai."
+            },
+            {
+              "title": "Tempatkan secara alami",
+              "text": "Di summary, poin pengalaman, dan bagian Skills—dengan bukti."
+            },
+            {
+              "title": "Gunakan istilah yang sama",
+              "text": "Jika lowongan menulis \"Microsoft Excel\", tulis itu, bukan hanya \"spreadsheet\"."
+            },
+            {
+              "title": "Simpan sebagai file yang terbaca",
+              "text": "PDF berbasis teks atau format yang diminta lowongan."
+            }
+          ]
+        },
+        {
+          "type": "dodont",
+          "do": [
+            "Judul bagian yang umum dan jelas",
+            "Font standar, ukuran terbaca",
+            "Tanggal dengan format konsisten",
+            "Keahlian dibuktikan di poin pengalaman"
+          ],
+          "dont": [
+            "Menyalin seluruh teks lowongan ke CV",
+            "Mengulang kata kunci berkali-kali (keyword stuffing)",
+            "Teks putih tersembunyi berisi kata kunci",
+            "Menulis keahlian yang tidak kamu kuasai"
+          ]
+        },
+        {
+          "type": "practice",
+          "title": "Satu CV dasar, banyak versi",
+          "text": "Simpan satu CV induk yang lengkap, lalu buat versi yang disesuaikan untuk tiap jenis posisi. Beri nama file berbeda agar tidak tertukar."
+        },
+        {
+          "type": "recall",
+          "q": "Lowongan menulis \"Google Analytics 4\". Kamu menguasainya. Apa yang paling tepat?",
+          "options": [
+            "Tulis \"tools analitik\" saja",
+            "Tulis \"Google Analytics 4\" dan sebut di poin pengalaman yang memakainya",
+            "Ulangi istilah itu 10 kali",
+            "Tidak usah ditulis"
+          ],
+          "answer": 1,
+          "explain": "Pakai istilah yang sama dengan lowongan dan buktikan di pengalaman."
+        }
+      ]
+    },
+    "cv-17": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ini **simulasi sederhana** pencocokan kata kunci—bukan cara kerja ATS tertentu. Edit ringkasan dan poin CV di bawah agar memuat kata kunci yang relevan **dan benar-benar dikuasai kandidat**. Persentase naik saat kata kunci ditemukan."
+        },
+        {
+          "type": "keywords",
+          "id": "cv-ats",
+          "pass": 70,
+          "posting": {
+            "company": "PT Data Nusantara (fiktif)",
+            "role": "Junior Data Analyst",
+            "lines": [
+              "Menguasai SQL untuk mengolah data",
+              "Mahir Microsoft Excel (pivot table, VLOOKUP)",
+              "Pengalaman membuat dashboard dengan Looker Studio atau Power BI",
+              "Mampu melakukan analisis data penjualan",
+              "Komunikasi yang baik untuk presentasi hasil analisis",
+              "Diutamakan memiliki sertifikasi Google Data Analytics"
+            ]
+          },
+          "keywords": [
+            {
+              "term": "SQL",
+              "alts": []
+            },
+            {
+              "term": "Microsoft Excel",
+              "alts": [
+                "excel"
+              ]
+            },
+            {
+              "term": "pivot table",
+              "alts": [
+                "pivot"
+              ]
+            },
+            {
+              "term": "Looker Studio",
+              "alts": [
+                "power bi"
+              ]
+            },
+            {
+              "term": "dashboard",
+              "alts": []
+            },
+            {
+              "term": "analisis data penjualan",
+              "alts": [
+                "data penjualan"
+              ]
+            },
+            {
+              "term": "presentasi",
+              "alts": [
+                "mempresentasikan"
+              ]
+            },
+            {
+              "term": "Google Data Analytics",
+              "alts": []
+            }
+          ],
+          "profile": "Kandidat menguasai SQL, Excel (pivot table), Looker Studio, pernah menganalisis data penjualan koperasi kampus, dan memiliki sertifikat Google Data Analytics.",
+          "sample": "Lulusan Statistika yang suka mengolah angka.\n- Membantu koperasi kampus merekap transaksi bulanan.\n- Membuat laporan untuk pengurus.\nKeahlian: spreadsheet, database"
+        }
+      ]
+    },
+    "cv-18": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Portofolio berbeda dari CV: **CV merangkum kualifikasi, portofolio membuktikannya** lewat contoh kerja nyata. Rekruter ingin melihat cara berpikir dan hasilmu, bukan hanya gambar akhir."
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "CV",
+              "tone": "neutral",
+              "lines": [
+                "Ringkasan 1–2 halaman",
+                "Daftar pengalaman & keahlian",
+                "Dibaca cepat"
+              ]
+            },
+            {
+              "label": "Portofolio",
+              "tone": "neutral",
+              "lines": [
+                "Kumpulan karya terpilih",
+                "Menunjukkan proses & hasil",
+                "Dibuka saat rekruter ingin bukti"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Memilih karya yang relevan"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Pilih **3–6 karya terbaik** yang paling dekat dengan posisi.",
+            "Utamakan karya yang menunjukkan keahlian di lowongan.",
+            "Proyek kuliah, organisasi, atau sukarela boleh—asal peranmu jelas.",
+            "Hapus karya lama yang kualitasnya jauh di bawah karya terbarumu."
+          ]
+        },
+        {
+          "type": "anatomy",
+          "title": "Struktur deskripsi proyek (studi kasus singkat)",
+          "parts": [
+            {
+              "text": "Masalah:",
+              "label": "Konteks",
+              "note": "Apa yang perlu diselesaikan"
+            },
+            {
+              "text": " Peranku:",
+              "label": "Kontribusi",
+              "note": "Apa yang kamu kerjakan sendiri"
+            },
+            {
+              "text": " Proses & alat:",
+              "label": "Cara",
+              "note": "Langkah dan tools"
+            },
+            {
+              "text": " Hasil:",
+              "label": "Dampak",
+              "note": "Angka, umpan balik, atau tautan"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "head": [
+            "Media",
+            "Cocok untuk",
+            "Yang perlu dicek"
+          ],
+          "rows": [
+            [
+              "**Google Drive (PDF)**",
+              "Semua bidang, terutama dokumen & desain",
+              "Akses: siapa saja dengan link · Pelihat"
+            ],
+            [
+              "**Notion**",
+              "Studi kasus berisi teks + gambar",
+              "Halaman dipublikasikan ke web"
+            ],
+            [
+              "**GitHub**",
+              "Teknologi & data",
+              "README jelas, repo publik, demo bila ada"
+            ]
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "key",
+          "title": "Tes aksesnya",
+          "text": "Sebelum mengirim, buka tautan portofolio di jendela incognito dan di HP. Tautan yang meminta akses sama saja dengan tidak ada portofolio."
+        }
+      ]
+    },
+    "cv-19": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Periksa kesiapan CV dan portofoliomu dengan checklist berikut. Checklist ini **sama dengan alat di halaman Latihan**, jadi centangmu tersimpan di kedua tempat. Centang hanya yang benar-benar sudah kamu lakukan."
+        },
+        {
+          "type": "review"
+        }
       ]
     }
   },
   "quiz": [
-    { "q": "Format CV yang disarankan bila lowongan tidak meminta format khusus adalah…", "options": ["JPG hasil foto", "PDF", "Tautan ke file yang bisa diedit", "ZIP"], "answer": 1, "explain": "PDF menjaga tata letak tetap sama di berbagai perangkat." },
-    { "q": "Bagaimana jika lowongan meminta CV dalam format Word?", "options": ["Tetap kirim PDF karena lebih rapi", "Ikuti permintaan lowongan", "Kirim keduanya tanpa penjelasan", "Kirim tautan Google Docs"], "answer": 1, "explain": "Instruksi perusahaan selalu didahulukan." },
-    { "q": "Apa yang paling sering membuat ukuran file CV membengkak?", "options": ["Jumlah halaman", "Gambar beresolusi besar atau hasil scan", "Penggunaan huruf tebal", "Nama file yang panjang"], "answer": 1, "explain": "Gambar besar dan hasil pindai adalah penyebab utama file berat; ekspor langsung ke PDF dari dokumen." },
-    { "q": "Poin pencapaian yang kuat memuat…", "options": ["Daftar sifat positif", "Kata kerja aksi, apa yang dikerjakan, dan hasilnya", "Semua tugas harian", "Kalimat sepanjang mungkin"], "answer": 1, "explain": "Formula aksi–apa–hasil membuat poin mudah dipindai dan meyakinkan." },
-    { "q": "Strategi tautan portofolio yang baik adalah…", "options": ["Melampirkan semua file besar di email", "Satu tautan utama dengan akses Pelihat yang sudah dites", "Banyak tautan berbeda di setiap bagian CV", "Tautan dengan akses Editor agar mudah dibuka"], "answer": 1, "explain": "Satu tautan rapi yang bisa dibuka tanpa izin dan tidak bisa diubah orang lain." }
+    {
+      "q": "Format CV yang disarankan bila lowongan tidak meminta format khusus adalah…",
+      "options": [
+        "JPG hasil foto",
+        "PDF",
+        "Tautan ke file yang bisa diedit",
+        "ZIP"
+      ],
+      "answer": 1,
+      "explain": "PDF menjaga tata letak tetap sama di berbagai perangkat."
+    },
+    {
+      "q": "Bagaimana jika lowongan meminta CV dalam format Word?",
+      "options": [
+        "Tetap kirim PDF karena lebih rapi",
+        "Ikuti permintaan lowongan",
+        "Kirim keduanya tanpa penjelasan",
+        "Kirim tautan Google Docs"
+      ],
+      "answer": 1,
+      "explain": "Instruksi perusahaan selalu didahulukan."
+    },
+    {
+      "q": "Apa yang paling sering membuat ukuran file CV membengkak?",
+      "options": [
+        "Jumlah halaman",
+        "Gambar beresolusi besar atau hasil scan",
+        "Penggunaan huruf tebal",
+        "Nama file yang panjang"
+      ],
+      "answer": 1,
+      "explain": "Gambar besar dan hasil pindai adalah penyebab utama file berat; ekspor langsung ke PDF dari dokumen."
+    },
+    {
+      "q": "Poin pencapaian yang kuat memuat…",
+      "options": [
+        "Daftar sifat positif",
+        "Kata kerja aksi, apa yang dikerjakan, dan hasilnya",
+        "Semua tugas harian",
+        "Kalimat sepanjang mungkin"
+      ],
+      "answer": 1,
+      "explain": "Formula aksi–apa–hasil membuat poin mudah dipindai dan meyakinkan."
+    },
+    {
+      "q": "Strategi tautan portofolio yang baik adalah…",
+      "options": [
+        "Melampirkan semua file besar di email",
+        "Satu tautan utama dengan akses Pelihat yang sudah dites",
+        "Banyak tautan berbeda di setiap bagian CV",
+        "Tautan dengan akses Editor agar mudah dibuka"
+      ],
+      "answer": 1,
+      "explain": "Satu tautan rapi yang bisa dibuka tanpa izin dan tidak bisa diubah orang lain."
+    },
+    {
+      "q": "Apa makna angka 7,4 detik dari studi Ladders (2018)?",
+      "options": [
+        "Semua rekruter membaca lamaran dalam 7,4 detik",
+        "Rata-rata waktu pemindaian awal resume dalam studi tersebut",
+        "Batas maksimal panjang CV",
+        "Waktu ATS memproses CV"
+      ],
+      "answer": 1,
+      "explain": "Angka itu hasil studi tentang pemindaian awal, bukan aturan untuk semua rekruter atau seluruh proses seleksi."
+    },
+    {
+      "q": "Mana praktik yang paling ramah ATS sekaligus jujur?",
+      "options": [
+        "Menyalin seluruh teks lowongan",
+        "Menulis teks putih tersembunyi berisi kata kunci",
+        "Memakai istilah lowongan yang benar-benar dikuasai dan membuktikannya di pengalaman",
+        "Menaruh semua info dalam gambar"
+      ],
+      "answer": 2,
+      "explain": "Kata kunci relevan yang dibuktikan membantu mesin dan manusia; trik tersembunyi justru merugikan."
+    },
+    {
+      "q": "Struktur deskripsi proyek portofolio yang dianjurkan adalah…",
+      "options": [
+        "Judul dan gambar saja",
+        "Masalah → Peran → Proses & alat → Hasil",
+        "Daftar alat yang dipakai",
+        "Tanggal pembuatan"
+      ],
+      "answer": 1,
+      "explain": "Studi kasus singkat menunjukkan cara berpikir dan dampak kerjamu."
+    }
   ],
   "summary": {
     "takeaways": [
-      "PDF dengan pola nama CV_NamaLengkap_Posisi.pdf, kecuali lowongan meminta lain.",
-      "Jaga ukuran file ringan: ekspor langsung, kompres gambar, cek batas portal.",
-      "Rekruter memindai: informasi kunci di atas, judul standar, poin singkat.",
-      "Poin pencapaian = aksi + apa + hasil, dan selalu jujur.",
-      "Portofolio: karya relevan + satu tautan rapi berakses Pelihat."
+      "CV menonjolkan kualifikasi yang relevan; Summary ditulis ulang per jenis posisi.",
+      "Informasi paling relevan di atas—rekruter memindai, bukan membaca kata per kata.",
+      "Tidak ada format yang dijamin lolos ATS; buat CV terbaca mesin dan relevan bagi manusia.",
+      "PDF + nama file CV_NamaLengkap_PosisiDilamar.pdf, ukuran ringan.",
+      "Portofolio: karya terpilih dengan studi kasus singkat, tautan dites di incognito."
     ],
-    "next": "Berikutnya kamu akan meriset target dan membangun koneksi di LinkedIn."
+    "next": "Berikutnya kamu akan meriset perusahaan, menyelaraskan LinkedIn, dan membangun warm outreach."
   },
-  "references": ["ladders-2018", "glints", "jobstreet", "mayer-2020"]
+  "references": [
+    "ladders-2018",
+    "glints",
+    "jobstreet",
+    "mayer-2020"
+  ]
 }

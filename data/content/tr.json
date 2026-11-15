@@ -1,11 +1,11 @@
 {
   "module": "tr",
   "objectives": [
-    "Menjelaskan manfaat mencatat setiap lamaran",
-    "Membuat tracker lamaran di Google Sheets atau Notion",
-    "Memahami arti setiap status lamaran",
-    "Menerapkan etika dan waktu follow-up yang tepat",
-    "Menulis pesan follow-up yang profesional"
+    "Menjelaskan risiko mengandalkan ingatan dan apa saja yang perlu dicatat",
+    "Membuat tracker di Google Sheets, Notion, atau spreadsheet sederhana",
+    "Menjelaskan arti status Applied, Under Review, Interview, Accepted, Rejected",
+    "Menentukan waktu follow-up dengan mendahulukan timeline perusahaan",
+    "Menulis follow-up pertama & kedua, terima kasih setelah wawancara, serta respons undangan dan penolakan"
   ],
   "sections": {
     "tr-1": {
@@ -85,6 +85,10 @@
         {
           "type": "p",
           "text": "Tracker bisa dibuat di **Google Sheets** atau **Notion**. Platform ini juga menyediakan **Job Tracker** bawaan yang tersimpan di perangkatmu."
+        },
+        {
+          "type": "p",
+          "text": "Kolom minimum yang disarankan: **Company, Position, Application Date, Status, HR Contact, Follow-Up Date, Notes**. Kolom *Follow-Up Date* membuatmu tahu kapan harus menindaklanjuti tanpa mengandalkan ingatan."
         },
         {
           "type": "table",
@@ -264,19 +268,19 @@
           "steps": [
             {
               "label": "Hari kirim",
-              "note": "Catat di tracker"
+              "note": "Catat di tracker + tanggal follow-up"
             },
             {
-              "label": "± 1 minggu",
+              "label": "± 5–10 hari kerja",
               "note": "Follow-up pertama bila belum ada kabar"
             },
             {
-              "label": "± 1 minggu lagi",
+              "label": "± 1 minggu kemudian",
               "note": "Follow-up kedua (opsional)"
             },
             {
               "label": "Tetap tanpa kabar",
-              "note": "Catat di Notes & lanjutkan"
+              "note": "Catat di Notes & fokus ke lamaran lain"
             }
           ]
         },
@@ -287,8 +291,15 @@
           "text": "Kirim email terima kasih singkat pada hari yang sama atau keesokan harinya."
         },
         {
-          "type": "verify",
-          "text": "Rentang waktu follow-up di atas adalah praktik umum yang sering disarankan, bukan aturan baku. Verifikasi dengan sumber (mis. JobStreet/Glints career advice) sebelum dipublikasikan sebagai patokan."
+          "type": "practice",
+          "title": "Patokan, bukan aturan",
+          "text": "Rentang sekitar 5–10 hari kerja (±1–2 minggu) hanyalah contoh kontekstual. Selalu ikuti timeline yang disebutkan perusahaan di lowongan, email, atau saat wawancara—proses rekrutmen tiap perusahaan berbeda."
+        },
+        {
+          "type": "callout",
+          "tone": "warn",
+          "title": "Kapan sebaiknya tidak follow-up",
+          "text": "Jika lowongan menulis \"hanya kandidat terpilih yang akan dihubungi\" atau timeline belum lewat, tunggu. Jangan follow-up lewat kanal pribadi atau lebih dari dua kali."
         }
       ]
     },
@@ -303,11 +314,11 @@
           "variant": "email",
           "from": "Rina Putri Andini <rina.andini@gmail.com>",
           "to": "rekrutmen@perusahaan.example",
-          "subject": "Re: Lamaran Frontend Developer – Rina Putri Andini",
-          "greeting": "Yth. Tim Rekrutmen [Perusahaan],",
+          "subject": "Re: Frontend Developer - Rina Putri Andini - React & JavaScript",
+          "greeting": "Yth. Tim Rekrutmen PT Contoh Digital,",
           "body": [
-            "Saya ingin menindaklanjuti lamaran saya untuk posisi Frontend Developer yang saya kirim pada [tanggal].",
-            "Saya tetap sangat tertarik untuk berkontribusi, terutama dalam membangun antarmuka yang aksesibel bagi pengguna [Perusahaan]. Jika ada informasi tambahan yang dibutuhkan, saya siap mengirimkannya.",
+            "Saya ingin menindaklanjuti lamaran saya untuk posisi Frontend Developer yang saya kirim pada 3 November.",
+            "Saya tetap sangat tertarik untuk berkontribusi, terutama dalam membangun antarmuka yang aksesibel bagi pengguna PT Contoh Digital. Jika ada informasi tambahan yang dibutuhkan, saya siap mengirimkannya.",
             "Terima kasih atas waktu dan perhatiannya."
           ],
           "closing": "Hormat saya,",
@@ -477,6 +488,361 @@
           ]
         }
       ]
+    },
+    "tr-16": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Praktikkan langsung di **Job Tracker** platform ini. Data tersimpan di perangkatmu dan dipakai untuk badge *Application Pipeline Manager*."
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": "Tambah satu lamaran",
+              "text": "Boleh lamaran nyata atau latihan. Isi perusahaan, posisi, tanggal kirim, dan status."
+            },
+            {
+              "title": "Isi kontak HR",
+              "text": "Nama atau alamat email resmi dari lowongan."
+            },
+            {
+              "title": "Tentukan tanggal follow-up",
+              "text": "Gunakan timeline dari perusahaan; jika tidak ada, sekitar 5–10 hari kerja setelah kirim sebagai patokan awal."
+            },
+            {
+              "title": "Perbarui status",
+              "text": "Ubah status saat ada kabar, dan catat hal penting di Notes."
+            }
+          ]
+        },
+        {
+          "type": "tool",
+          "tool": "tracker",
+          "href": "tracker.html",
+          "title": "Buka Job Tracker",
+          "text": "Tambahkan lamaran dengan tanggal follow-up."
+        }
+      ]
+    },
+    "tr-11": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Rancang sistem pencatatan versimu sendiri di Google Sheets, Notion, atau spreadsheet lain. Lembar kerja ini menghasilkan **baris judul kolom** yang bisa langsung kamu tempel ke spreadsheet."
+        },
+        {
+          "type": "worksheet",
+          "id": "tr-system",
+          "title": "Rancangan tracker pribadi",
+          "output": "columns",
+          "fields": [
+            {
+              "id": "tool",
+              "label": "Alat yang akan dipakai",
+              "placeholder": "cth. Google Sheets di akun Gmail karier",
+              "required": true
+            },
+            {
+              "id": "columns",
+              "label": "Kolom (pisahkan dengan koma)",
+              "placeholder": "Company, Position, Application Date, Status, HR Contact, Follow-Up Date, Notes",
+              "default": "Company, Position, Application Date, Status, HR Contact, Follow-Up Date, Notes",
+              "required": true
+            },
+            {
+              "id": "statuses",
+              "label": "Daftar status yang dipakai",
+              "placeholder": "Applied, Under Review, Interview, Accepted, Rejected",
+              "default": "Applied, Under Review, Interview, Accepted, Rejected",
+              "required": true
+            },
+            {
+              "id": "rule",
+              "label": "Aturan follow-up pribadimu",
+              "placeholder": "cth. Ikuti timeline perusahaan; jika tidak ada, follow-up pertama 7 hari kerja setelah kirim",
+              "multiline": true,
+              "required": true
+            },
+            {
+              "id": "routine",
+              "label": "Kapan kamu memperbarui tracker?",
+              "placeholder": "cth. Setiap Senin dan Kamis pagi, 10 menit",
+              "required": true
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Dropdown status di Google Sheets",
+          "text": "Gunakan validasi data (Data → Validasi data) untuk membuat dropdown status, sehingga penulisan status selalu konsisten."
+        }
+      ]
+    },
+    "tr-12": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Lamaran bergerak dari satu status ke status lain. Untuk setiap kejadian, pilih **pembaruan tracker** yang paling tepat."
+        },
+        {
+          "type": "scenario",
+          "id": "tr-status",
+          "title": "Perbarui statusnya",
+          "pass": 75,
+          "cases": [
+            {
+              "situation": "Kamu menerima email otomatis: \"Terima kasih, lamaran Anda telah kami terima.\"",
+              "options": [
+                "Ubah ke Interview",
+                "Tetap Applied; catat di Notes bahwa lamaran diterima sistem",
+                "Ubah ke Accepted",
+                "Hapus dari tracker"
+              ],
+              "answer": 1,
+              "explain": "Email otomatis hanya konfirmasi penerimaan, belum berarti sedang ditinjau atau diterima."
+            },
+            {
+              "situation": "HR mengirim email: \"Lamaran Anda sedang kami tinjau, hasilnya akan diinformasikan dalam 2 minggu.\"",
+              "options": [
+                "Under Review + tanggal follow-up setelah 2 minggu",
+                "Interview",
+                "Rejected",
+                "Follow-up besok"
+              ],
+              "answer": 0,
+              "explain": "Status berubah menjadi Under Review, dan timeline dari perusahaan menentukan tanggal follow-up."
+            },
+            {
+              "situation": "Kamu diundang tes tertulis dan wawancara minggu depan.",
+              "options": [
+                "Accepted",
+                "Interview + catat jadwal & persiapan di Notes",
+                "Tetap Applied",
+                "Under Review"
+              ],
+              "answer": 1,
+              "explain": "Undangan tes/wawancara masuk status Interview. Catat jadwal, nama pewawancara, dan persiapan."
+            },
+            {
+              "situation": "Perusahaan mengirim email penolakan yang sopan.",
+              "options": [
+                "Hapus barisnya agar tidak sedih",
+                "Rejected + catat pelajaran di Notes, lalu balas terima kasih",
+                "Tetap Interview",
+                "Follow-up untuk meminta dipertimbangkan ulang"
+              ],
+              "answer": 1,
+              "explain": "Mencatat penolakan membantumu mengevaluasi pola lamaran. Balasan singkat menjaga hubungan baik."
+            }
+          ]
+        }
+      ]
+    },
+    "tr-13": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Tentukan langkah follow-up yang paling tepat. Ingat: **timeline dari perusahaan selalu didahulukan**; rentang 5–10 hari kerja hanya patokan bila tidak ada informasi."
+        },
+        {
+          "type": "scenario",
+          "id": "tr-timing",
+          "title": "Kapan follow-up?",
+          "pass": 75,
+          "cases": [
+            {
+              "situation": "Kamu melamar 3 hari kerja lalu. Lowongan tidak menyebut timeline.",
+              "options": [
+                "Kirim follow-up hari ini",
+                "Tunggu dulu; follow-up pertama sekitar 5–10 hari kerja setelah kirim",
+                "Telepon kantor setiap hari",
+                "Lupakan lamaran itu"
+              ],
+              "answer": 1,
+              "explain": "3 hari kerja masih terlalu cepat. Beri waktu tim rekrutmen memproses lamaran."
+            },
+            {
+              "situation": "Lowongan menulis: \"Kandidat terpilih akan dihubungi paling lambat 30 hari setelah lowongan ditutup.\" Baru lewat 10 hari.",
+              "options": [
+                "Follow-up sekarang karena sudah 10 hari",
+                "Ikuti timeline perusahaan; tunggu sampai lewat 30 hari",
+                "Kirim follow-up ke beberapa karyawan",
+                "Melamar ulang posisi yang sama"
+              ],
+              "answer": 1,
+              "explain": "Timeline resmi perusahaan mengalahkan patokan umum."
+            },
+            {
+              "situation": "Follow-up pertama terkirim 8 hari kerja lalu dan belum dibalas.",
+              "options": [
+                "Kirim follow-up kedua yang singkat, lalu berhenti bila tetap tanpa kabar",
+                "Kirim follow-up setiap hari",
+                "Kirim pesan bernada kecewa",
+                "Hubungi nomor pribadi HR"
+              ],
+              "answer": 0,
+              "explain": "Follow-up kedua boleh dilakukan dengan jarak wajar. Setelah itu, catat di tracker dan fokus pada lamaran lain."
+            },
+            {
+              "situation": "Kamu baru selesai wawancara siang ini.",
+              "options": [
+                "Tunggu dua minggu baru menghubungi",
+                "Kirim email terima kasih singkat hari ini atau besok",
+                "Tanyakan hasilnya malam ini",
+                "Tidak perlu mengirim apa pun"
+              ],
+              "answer": 1,
+              "explain": "Ucapan terima kasih setelah wawancara sebaiknya dikirim tidak lama setelahnya."
+            }
+          ]
+        }
+      ]
+    },
+    "tr-14": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Contoh fiktif berikut bisa kamu sesuaikan. Perhatikan pola yang sama: **konteks → inti pesan → terima kasih**, tetap singkat."
+        },
+        {
+          "type": "h",
+          "text": "Follow-up kedua"
+        },
+        {
+          "type": "email",
+          "from": "Rina Putri Andini",
+          "to": "rekrutmen@contoh-digital.example",
+          "subject": "Re: Frontend Developer - Rina Putri Andini - React & JavaScript",
+          "greeting": "Yth. Tim Rekrutmen PT Contoh Digital,",
+          "body": [
+            "Saya ingin menindaklanjuti kembali lamaran posisi Frontend Developer yang saya kirim pada 3 November dan follow-up saya pada 13 November.",
+            "Saya masih sangat tertarik dengan posisi ini. Jika posisi sudah terisi, saya akan berterima kasih atas informasinya agar dapat memperbarui catatan saya."
+          ],
+          "closing": "Terima kasih atas waktu Bapak/Ibu.\n\nHormat saya,",
+          "signature": [
+            "Rina Putri Andini",
+            "Frontend Developer | React & JavaScript",
+            "0812-0000-0000",
+            "linkedin.com/in/rinaputriandini"
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Ucapan terima kasih setelah wawancara"
+        },
+        {
+          "type": "email",
+          "from": "Rina Putri Andini",
+          "to": "maya.lestari@contoh-digital.example",
+          "subject": "Terima kasih - Wawancara Frontend Developer - Rina Putri Andini",
+          "greeting": "Yth. Ibu Maya,",
+          "body": [
+            "Terima kasih atas waktu Ibu untuk wawancara posisi Frontend Developer hari ini.",
+            "Diskusi tentang rencana peningkatan aksesibilitas aplikasi PT Contoh Digital membuat saya semakin antusias. Pengalaman saya menerapkan navigasi keyboard di proyek portofolio dapat membantu target tersebut.",
+            "Jika ada informasi tambahan yang dibutuhkan, saya siap mengirimkannya."
+          ],
+          "closing": "Salam hormat,",
+          "signature": [
+            "Rina Putri Andini",
+            "Frontend Developer | React & JavaScript",
+            "0812-0000-0000",
+            "linkedin.com/in/rinaputriandini"
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Follow-up setelah wawancara (melewati timeline)"
+        },
+        {
+          "type": "email",
+          "variant": "paragraph",
+          "label": "Isi singkat",
+          "body": [
+            "Yth. Ibu Maya, saya ingin menindaklanjuti wawancara posisi Frontend Developer pada 20 November. Ibu menyampaikan hasilnya akan diinformasikan dalam satu minggu; apakah ada perkembangan yang bisa saya ketahui? Terima kasih atas waktunya."
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Respons terhadap undangan wawancara"
+        },
+        {
+          "type": "email",
+          "variant": "paragraph",
+          "label": "Konfirmasi jadwal",
+          "body": [
+            "Yth. Ibu Maya, terima kasih atas undangan wawancara posisi Frontend Developer. Saya mengonfirmasi kehadiran pada Selasa, 26 November pukul 10.00 WIB melalui Google Meet. Mohon informasikan bila ada dokumen yang perlu saya siapkan."
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Respons terhadap penolakan"
+        },
+        {
+          "type": "email",
+          "variant": "paragraph",
+          "label": "Menjaga hubungan baik",
+          "body": [
+            "Yth. Ibu Maya, terima kasih atas kabar dan kesempatan mengikuti proses seleksi di PT Contoh Digital. Saya menghargai waktu tim selama wawancara. Jika berkenan, saya akan senang menerima masukan singkat untuk pengembangan diri, dan berharap dapat bertemu lagi di kesempatan berikutnya."
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "key",
+          "title": "Pola yang sama",
+          "text": "Sebut konteks (posisi, tanggal), sampaikan inti dalam 1–2 kalimat, tutup dengan terima kasih. Balas di utas email yang sama agar riwayatnya mudah dilihat."
+        }
+      ]
+    },
+    "tr-15": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Untuk setiap situasi, pilih pesan yang **paling profesional dan efektif**."
+        },
+        {
+          "type": "scenario",
+          "id": "tr-best-message",
+          "title": "Pesan mana yang terbaik?",
+          "pass": 75,
+          "cases": [
+            {
+              "situation": "Follow-up pertama, 7 hari kerja setelah melamar, tanpa timeline dari perusahaan.",
+              "options": [
+                "\"Pak, kok belum dibalas? Saya butuh kepastian.\"",
+                "\"Saya ingin menindaklanjuti lamaran posisi Data Analyst yang saya kirim pada 4 November. Saya tetap tertarik dan siap mengirim informasi tambahan bila diperlukan. Terima kasih.\"",
+                "\"Halo?\"",
+                "Mengirim ulang semua lampiran tanpa pesan"
+              ],
+              "answer": 1,
+              "explain": "Ada konteks (posisi & tanggal), penegasan minat, dan nada sopan."
+            },
+            {
+              "situation": "Kamu menerima undangan wawancara, tetapi jadwalnya bentrok dengan ujian akhir.",
+              "options": [
+                "Tidak membalas",
+                "\"Terima kasih atas undangannya. Pada jadwal tersebut saya ada ujian akhir; apakah memungkinkan pada Rabu atau Kamis setelah pukul 13.00?\"",
+                "\"Saya tidak bisa.\"",
+                "Datang terlambat tanpa kabar"
+              ],
+              "answer": 1,
+              "explain": "Berterima kasih, jelaskan singkat, dan tawarkan alternatif konkret."
+            },
+            {
+              "situation": "Kamu menerima penolakan setelah wawancara.",
+              "options": [
+                "\"Kenapa saya ditolak? Saya merasa lebih baik dari kandidat lain.\"",
+                "Tidak membalas dan menghapus email",
+                "\"Terima kasih atas kesempatannya. Saya menghargai waktu tim dan berharap dapat bertemu di kesempatan lain.\"",
+                "Mengunggah keluhan di media sosial"
+              ],
+              "answer": 2,
+              "explain": "Balasan singkat yang sopan menjaga hubungan baik untuk peluang berikutnya."
+            }
+          ]
+        }
+      ]
     }
   },
   "quiz": [
@@ -534,17 +900,50 @@
       ],
       "answer": 2,
       "explain": "Menyebut konteks dengan sopan dan tidak memaksa."
+    },
+    {
+      "q": "Lowongan menyebut hasil seleksi diumumkan 30 hari setelah penutupan. Kapan follow-up?",
+      "options": [
+        "Setelah 5 hari kerja",
+        "Setelah timeline 30 hari terlewati",
+        "Setiap minggu",
+        "Tidak boleh sama sekali"
+      ],
+      "answer": 1,
+      "explain": "Timeline resmi perusahaan didahulukan dibanding patokan umum."
+    },
+    {
+      "q": "Kolom apa yang membantumu tidak lupa menindaklanjuti lamaran?",
+      "options": [
+        "Follow-Up Date",
+        "Warna sel",
+        "Logo perusahaan",
+        "Gaji yang diharapkan"
+      ],
+      "answer": 0,
+      "explain": "Tanggal follow-up membuat tindak lanjut terjadwal, bukan bergantung ingatan."
+    },
+    {
+      "q": "Respons terbaik terhadap email penolakan adalah…",
+      "options": [
+        "Tidak membalas",
+        "Meminta penjelasan dengan nada kecewa",
+        "Membalas singkat: terima kasih atas kesempatan dan berharap bertemu lagi",
+        "Melamar ulang posisi yang sama esok hari"
+      ],
+      "answer": 2,
+      "explain": "Balasan sopan menjaga hubungan baik untuk peluang berikutnya."
     }
   ],
   "summary": {
     "takeaways": [
-      "Catat setiap lamaran di hari yang sama: perusahaan, posisi, tanggal, kontak, status.",
-      "Google Sheets atau Notion—pilih yang paling mudah kamu rawat; atau pakai Job Tracker di platform ini.",
-      "Status (Applied → Under Review → Interview → Accepted / Rejected) menentukan langkah berikutnya.",
-      "Ikuti timeline perusahaan; tanpa timeline, follow-up sekitar seminggu setelah kirim (praktik umum).",
-      "Follow-up singkat di utas yang sama, sopan, maksimal satu–dua kali."
+      "Catat setiap lamaran: Company, Position, Application Date, Status, HR Contact, Follow-Up Date, Notes.",
+      "Status menentukan langkah berikutnya; perbarui saat ada kabar.",
+      "Timeline perusahaan didahulukan; tanpa itu, sekitar 5–10 hari kerja sebagai patokan.",
+      "Pesan singkat: konteks → inti → terima kasih, di utas yang sama.",
+      "Penolakan dibalas sopan dan dicatat sebagai bahan evaluasi."
     ],
-    "next": "Selamat! Ini stasiun terakhir. Praktikkan semuanya lewat menu Latihan dan Tracker."
+    "next": "Selamat! Kerjakan Evaluasi Akhir untuk menguji pemahamanmu di kelima modul."
   },
   "references": [
     "google-learning-center",

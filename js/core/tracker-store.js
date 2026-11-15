@@ -6,7 +6,7 @@
      version: 1,
      items: [{
        id, company, position, date (YYYY-MM-DD), status,
-       contact, notes, createdAt (ISO), updatedAt (ISO)
+       contact, followUp (YYYY-MM-DD | ''), notes, createdAt (ISO), updatedAt (ISO)
      }]
    }
    Setiap item divalidasi saat dibaca. Entri yang tidak valid disalin ke
@@ -59,6 +59,7 @@ function sanitize(raw) {
     date: isValidDate(raw.date) ? raw.date : '',
     status: STATUSES.includes(raw.status) ? raw.status : 'Applied',
     contact: clean(raw.contact, LIMITS.contact),
+    followUp: isValidDate(raw.followUp) ? raw.followUp : '',   // 2.0: tanggal follow-up (opsional)
     notes: cleanNotes(raw.notes),
     createdAt: typeof raw.createdAt === 'string' ? raw.createdAt : now,
     updatedAt: typeof raw.updatedAt === 'string' ? raw.updatedAt : now,
@@ -144,5 +145,8 @@ export function getStats(items = getItems()) {
     byStatus,
     active: byStatus.Applied + byStatus['Under Review'] + byStatus.Interview,
     responseRate: total ? Math.round((responded / total) * 100) : 0,
+    withFollowUp: items.filter((i) => i.followUp).length,
+    // Follow-up jatuh tempo: tanggal sudah tiba & lamaran masih aktif
+    followUpDue: items.filter((i) => i.followUp && i.followUp <= todayISO() && ['Applied', 'Under Review', 'Interview'].includes(i.status)).length,
   };
 }

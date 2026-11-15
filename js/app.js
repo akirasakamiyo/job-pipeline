@@ -29,6 +29,7 @@ const PAGES = {
   tracker: () => import('./pages/tracker-page.js'),
   resources: () => import('./pages/resources-page.js'),   // Tahap 7 (sebelumnya placeholder)
   progress: () => import('./pages/progress-page.js'),     // Tahap 7 (sebelumnya placeholder)
+  evaluation: () => import('./pages/evaluation.js'),      // 2.0: Evaluasi Akhir
 };
 
 /* ---------- Notifikasi achievement ----------

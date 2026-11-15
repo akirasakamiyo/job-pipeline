@@ -61,6 +61,8 @@ function getVisible(items) {
     'company-desc': (a, b) => b.company.localeCompare(a.company, 'id', { sensitivity: 'base' }),
     status: (a, b) => store.STATUSES.indexOf(a.status) - store.STATUSES.indexOf(b.status) || byDate(b, a),
     updated: (a, b) => b.updatedAt.localeCompare(a.updatedAt),
+    // 2.0: follow-up terdekat dulu; lamaran tanpa tanggal follow-up di akhir
+    followup: (a, b) => (a.followUp || '9999').localeCompare(b.followUp || '9999') || byDate(b, a),
   };
   return filtered.sort(sorters[view.sort] || sorters['date-desc']);
 }
@@ -98,7 +100,7 @@ function render() {
   host.replaceChildren(h('table', { class: 'app-table' },
     h('caption', { class: 'sr-only' }, 'Daftar lamaran kerja'),
     h('thead', {}, h('tr', {},
-      ['Perusahaan', 'Posisi', 'Tanggal', 'Status', 'Kontak HR', 'Catatan', 'Aksi'].map((label) => h('th', { scope: 'col' }, label)))),
+      ['Perusahaan', 'Posisi', 'Tanggal', 'Status', 'Kontak HR', 'Follow-up', 'Catatan', 'Aksi'].map((label) => h('th', { scope: 'col' }, label)))),
     h('tbody', {}, visible.map((item) => row(item)))));
 }
 
@@ -110,10 +112,21 @@ function row(item) {
     h('td', { class: 'app-table__date', 'data-label': 'Tanggal' }, h('time', { datetime: item.date }, formatDate(item.date))),
     h('td', { class: 'app-table__status', 'data-label': 'Status' }, h('span', { class: `chip status status--${info.tone}`, title: info.hint }, item.status)),
     h('td', { class: 'app-table__contact', 'data-label': 'Kontak HR' }, item.contact || h('span', { class: 'muted' }, '—')),
+    h('td', { class: 'app-table__follow', 'data-label': 'Follow-up' }, followCell(item)),
     h('td', { class: 'app-table__notes', 'data-label': 'Catatan' }, item.notes ? h('p', { title: item.notes }, item.notes) : h('span', { class: 'muted' }, '—')),
     h('td', { class: 'app-table__actions' },
       h('button', { type: 'button', class: 'btn btn--ghost btn--icon', 'aria-label': `Ubah lamaran ${item.company} – ${item.position}`, 'data-tooltip': 'Ubah', onclick: () => openForm(item) }, icon('edit')),
       h('button', { type: 'button', class: 'btn btn--ghost btn--icon', 'aria-label': `Hapus lamaran ${item.company} – ${item.position}`, 'data-tooltip': 'Hapus (bisa diurungkan)', onclick: () => remove(item) }, icon('trash'))));
+}
+
+/** Tanggal follow-up + penanda bila sudah jatuh tempo (lamaran masih aktif) */
+function followCell(item) {
+  if (!item.followUp) return h('span', { class: 'muted' }, '—');
+  const active = ['Applied', 'Under Review', 'Interview'].includes(item.status);
+  const due = active && item.followUp <= store.todayISO();
+  return h('span', { class: 'follow' },
+    h('time', { datetime: item.followUp }, formatDate(item.followUp)),
+    due ? h('span', { class: 'chip chip--warn follow__due' }, 'Waktunya follow-up') : null);
 }
 
 function renderSummary(items) {
@@ -153,7 +166,7 @@ function clearFilters() {
 
 /* ---------- Form tambah / ubah ---------- */
 
-const FIELDS = ['company', 'position', 'date', 'status', 'contact', 'notes'];
+const FIELDS = ['company', 'position', 'date', 'status', 'contact', 'followUp', 'notes'];
 
 function initForm() {
   const form = $('[data-form]');

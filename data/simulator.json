@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "note": "Skenario Email Writing Simulator (Modul 4, Materi 7). Semua data fiktif; domain .example tidak bisa menerima email sungguhan. Bobot rubrik berjumlah 100.",
+  "scenario": {
+    "company": "PT Sinar Kreasi",
+    "companyAliases": ["sinar kreasi"],
+    "position": "Junior Content Writer",
+    "positionAliases": ["junior content writer", "content writer"],
+    "recipient": "rekrutmen@sinarkreasi.example",
+    "source": "LinkedIn",
+    "deadline": "30 November",
+    "hrName": "Ibu Laras Pramesti",
+    "description": "PT Sinar Kreasi adalah agensi konten digital yang membantu UMKM membangun kehadiran daring. Kami mencari Junior Content Writer untuk menulis artikel blog dan caption media sosial klien.",
+    "qualifications": [
+      "Mampu menulis artikel SEO",
+      "Terbiasa melakukan riset kata kunci",
+      "Menguasai Bahasa Indonesia baku sesuai EYD",
+      "Bisa membuat aset visual sederhana dengan Canva",
+      "Disiplin terhadap tenggat waktu"
+    ],
+    "keywordGroups": [
+      { "label": "artikel SEO", "terms": ["seo", "artikel"] },
+      { "label": "riset kata kunci", "terms": ["riset kata kunci", "kata kunci", "keyword"] },
+      { "label": "Bahasa Indonesia baku/EYD", "terms": ["eyd", "puebi", "bahasa indonesia baku", "baku", "ejaan"] },
+      { "label": "Canva", "terms": ["canva"] },
+      { "label": "tenggat waktu", "terms": ["tenggat", "deadline", "tepat waktu"] }
+    ],
+    "attachments": ["CV", "portofolio"],
+    "instructions": [
+      "Kirim ke rekrutmen@sinarkreasi.example (tanpa tembusan).",
+      "Subjek: Posisi - Nama Lengkap - Keahlian Utama.",
+      "Lampirkan CV dan portofolio tulisan dalam format PDF.",
+      "Paling lambat 30 November."
+    ]
+  },
+  "fields": [
+    { "id": "to", "label": "Recipient (Kepada)", "placeholder": "Alamat email penerima", "part": "Recipient" },
+    { "id": "cc", "label": "CC (opsional)", "placeholder": "Kosongkan bila tidak diminta", "part": "CC", "optional": true },
+    { "id": "subject", "label": "Subject", "placeholder": "Posisi - Nama Lengkap - Keahlian", "part": "Subject" },
+    { "id": "greeting", "label": "Greeting", "placeholder": "Yth. …", "part": "Greeting" },
+    { "id": "opening", "label": "Opening (paragraf 1)", "placeholder": "Perkenalan, posisi yang dilamar, sumber lowongan", "multiline": true, "part": "Opening" },
+    { "id": "value", "label": "Value proposition (paragraf 2)", "placeholder": "Bukti kompetensi yang relevan dengan kualifikasi", "multiline": true, "part": "Main Content" },
+    { "id": "attachment", "label": "Attachment information", "placeholder": "Sebutkan dokumen yang dilampirkan", "multiline": true, "part": "Attachment Information" },
+    { "id": "closing", "label": "Closing", "placeholder": "Kesediaan, terima kasih, salam penutup", "multiline": true, "part": "Closing" },
+    { "id": "signature", "label": "Signature", "placeholder": "Nama lengkap, keahlian, nomor, LinkedIn/portofolio", "multiline": true, "part": "Email Signature" }
+  ],
+  "passScore": 80
+}

@@ -29,11 +29,12 @@ export const isSoon = (id) => Boolean(NAV_ITEMS.find((item) => item.id === id)?.
 
 /* Item tambahan khusus menu "Lainnya" di mobile */
 const MORE_EXTRA = [
+  { id: 'evaluation', label: 'Evaluasi Akhir', href: 'evaluation.html', icon: 'trophy', ready: true },
   { id: 'styleguide', label: 'Design System', href: 'styleguide.html', icon: 'grid', ready: true },
 ];
 
 /* Halaman turunan menandai menu induknya sebagai aktif */
-const PAGE_PARENT = { module: 'modules' };
+const PAGE_PARENT = { module: 'modules', evaluation: 'practice' };
 const currentPage = () => {
   const page = document.body.dataset.page || '';
   return PAGE_PARENT[page] || page;

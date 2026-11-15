@@ -20,14 +20,15 @@ const shuffle = (arr) => {
   return a;
 };
 
-export function createQuiz(host, { questions, passScore = 70, best = null, onFinish }) {
+export function createQuiz(host, { questions, passScore = 70, best = null, onFinish, count = null, finishLink = { href: '#selesai', label: 'Ke ringkasan' } }) {
   let order = [];
   let index = 0;
   let correctCount = 0;
 
   function start() {
     // Acak soal, lalu acak pilihan di tiap soal sambil menjaga kunci jawaban
-    order = shuffle(questions).map((q) => {
+    // count: ambil sebagian soal dari bank (dipakai Evaluasi Akhir)
+    order = shuffle(questions).slice(0, count || questions.length).map((q) => {
       const opts = shuffle(q.options.map((text, i) => ({ text, correct: i === q.answer })));
       return { ...q, opts };
     });
@@ -40,7 +41,7 @@ export function createQuiz(host, { questions, passScore = 70, best = null, onFin
     host.replaceChildren(h('div', { class: 'quiz-intro' },
       h('span', { class: 'tool-tile__icon' }, icon('target')),
       h('div', {},
-        h('p', { class: 'h4' }, `${questions.length} soal pilihan ganda`),
+        h('p', { class: 'h4' }, `${count || questions.length} soal pilihan ganda${count && count < questions.length ? ` (diacak dari ${questions.length} soal)` : ''}`),
         h('p', { class: 'text-soft text-sm' }, `Nilai lulus ${passScore}. Kamu bisa mengulang kapan saja; skor terbaik yang disimpan.`),
         best !== null ? h('p', { class: 'text-sm' }, `Skor terbaikmu sejauh ini: `, h('strong', {}, String(best))) : null),
       h('button', { type: 'button', class: 'btn btn--primary', onclick: () => renderQuestion() },
@@ -52,12 +53,13 @@ export function createQuiz(host, { questions, passScore = 70, best = null, onFin
     const name = uid('q');
     const submit = h('button', { type: 'submit', class: 'btn btn--primary', disabled: true }, 'Periksa jawaban');
     const feedback = h('div', { 'aria-live': 'polite' });
+    // 2.0: kunci jawaban TIDAK ditulis ke DOM (tidak ada data-correct / ikon
+    // sebelum menjawab). Kebenaran dicek dari q.opts di memori.
     const optionsWrap = h('div', { class: 'options' }, q.opts.map((opt, i) =>
-      h('label', { class: 'option', 'data-correct': String(opt.correct) },
+      h('label', { class: 'option' },
         h('input', { type: 'radio', name, value: String(i) }),
         h('span', { class: 'option__key' }, 'ABCD'[i]),
-        h('span', {}, opt.text),
-        icon(opt.correct ? 'check' : 'x', 'option__mark'))));
+        h('span', {}, opt.text))));
     const pct = Math.round((index / order.length) * 100);
     const legendId = uid('legend');
 
@@ -79,16 +81,18 @@ export function createQuiz(host, { questions, passScore = 70, best = null, onFin
       const chosen = $('input:checked', form)?.closest('.option');
       if (!chosen) return;
       answered = true;
-      const correct = chosen.dataset.correct === 'true';
+      const chosenIndex = Number($('input', chosen).value);
+      const correct = q.opts[chosenIndex].correct;
       if (correct) correctCount += 1;
       // Disimpan untuk pembahasan di layar hasil akhir
-      q.chosenText = q.opts[Number($('input', chosen).value)].text;
+      q.chosenText = q.opts[chosenIndex].text;
       q.correctText = q.opts.find((o) => o.correct).text;
       q.wasCorrect = correct;
       optionsWrap.classList.add('is-locked');
-      $$('.option', form).forEach((opt) => {
+      $$('.option', form).forEach((opt, i) => {
         $('input', opt).disabled = true;
-        if (opt.dataset.correct === 'true') opt.classList.add('is-correct');
+        opt.append(icon(q.opts[i].correct ? 'check' : 'x', 'option__mark'));
+        if (q.opts[i].correct) opt.classList.add('is-correct');
       });
       if (!correct) chosen.classList.add('is-wrong');
       const box = h('div', { class: `feedback feedback--${correct ? 'correct' : 'wrong'}` },
@@ -125,11 +129,11 @@ export function createQuiz(host, { questions, passScore = 70, best = null, onFin
       h('div', {},
         h('p', { class: 'h3' }, passed ? 'Lulus! Pemahamanmu sudah kuat.' : 'Belum lulus—coba sekali lagi.'),
         h('p', { class: 'text-soft' }, passed
-          ? 'Lanjut ke ringkasan untuk menandai modul selesai.'
+          ? (finishLink?.href === '#selesai' ? 'Lanjut ke ringkasan untuk menandai modul selesai.' : 'Hasilmu sudah tersimpan.')
           : `Nilai lulus ${passScore}. Baca ulang bagian yang terasa sulit, lalu ulangi kuis (soal akan diacak).`)),
       h('div', { class: 'cluster' },
         h('button', { type: 'button', class: `btn ${passed ? 'btn--secondary' : 'btn--primary'}`, onclick: start }, icon('undo', 'icon--lead'), 'Ulangi kuis'),
-        passed ? h('a', { class: 'btn btn--primary', href: '#selesai' }, 'Ke ringkasan', icon('arrow-right', 'icon--trail')) : null));
+        passed && finishLink ? h('a', { class: 'btn btn--primary', href: finishLink.href }, finishLink.label, icon('arrow-right', 'icon--trail')) : null));
 
     // Pembahasan seluruh soal: jawabanmu, jawaban benar, dan penjelasannya
     const review = h('details', { class: 'quiz-review', open: !passed },

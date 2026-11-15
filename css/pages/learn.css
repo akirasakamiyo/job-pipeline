@@ -157,46 +157,7 @@
 .flags__col--green li::before { content: "●"; position: absolute; left: 2px; font-size: 10px; top: 4px; color: var(--success); }
 .flags__col--red li::before { content: "●"; position: absolute; left: 2px; font-size: 10px; top: 4px; color: var(--danger); }
 
-/* ---------- Mock email ---------- */
-.mail {
-  margin: 0;
-  border: var(--bw) solid var(--ink);
-  border-radius: var(--r-lg);
-  background: var(--surface);
-  box-shadow: var(--sh-sticker);
-  overflow: hidden;
-  font-size: var(--fs-sm);
-}
-.mail__caption {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px var(--s-4);
-  background: var(--paper-2);
-  border-bottom: 1.5px solid var(--ink);
-  font: 700 11px/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase;
-}
-.mail__caption .icon { width: 16px; height: 16px; }
-.mail__meta { display: grid; margin: 0; padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--line); gap: 4px; }
-.mail__meta div { display: grid; grid-template-columns: 64px 1fr; gap: var(--s-2); }
-.mail__meta dt { color: var(--ink-soft); font-weight: 600; }
-.mail__meta dd { margin: 0; overflow-wrap: anywhere; }
-.mail__subject dd { font-weight: 800; }
-.mail__body { display: grid; gap: var(--s-3); padding: var(--s-4); line-height: 1.6; }
-.mail__signature { display: grid; gap: 2px; padding-top: var(--s-2); color: var(--ink-2); }
-.mail__signame { font-weight: 800; color: var(--ink); }
-.mail__sigline { color: var(--ink-mute); }
-.mail__attachments { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0; padding: 0 var(--s-4) var(--s-4); list-style: none; }
-.mail__attachments li { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: var(--r-sm); background: var(--m-cv-tint); font-weight: 700; font-size: var(--fs-xs); overflow-wrap: anywhere; }
-.mail__attachments .icon { width: 15px; height: 15px; flex: none; color: var(--m-cv-text); }
-.mail--signature .mail__signature, .mail--paragraph p { padding: var(--s-4); }
-.mail--paragraph { display: grid; }
-.mail__bubble {
-  display: grid; gap: var(--s-2);
-  margin: var(--s-4);
-  padding: var(--s-4);
-  border-radius: 18px 18px 18px 4px;
-  background: var(--mod-tint);
-  line-height: 1.55;
-}
+/* Mock email (.mail) dipindah ke components.css (2.0) karena dipakai juga oleh simulator di halaman Latihan. */
 
 /* ---------- Diagram ---------- */
 .diagram {
@@ -413,3 +374,63 @@
 
 /* ---------- Skeleton saat materi dimuat (Tahap 6) ---------- */
 .learn-skeleton { display: grid; gap: var(--s-4); padding-block: var(--s-6); max-width: 760px; }
+
+/* =====================================================================
+   2.0 — STRUKTUR MATERI (Stage 3)
+   Sidebar dikelompokkan per materi · label materi di panggung ·
+   kotak tujuan & ringkasan materi · peta materi di halaman ringkasan
+   ===================================================================== */
+
+/* Mobile: kelompok "melebur" menjadi strip chip seperti sebelumnya */
+.learn-nav { display: flex; gap: 8px; }
+.learn-nav__group, .learn-nav__group > .sidebar__list { display: contents; }
+.learn-nav__heading { display: none; }
+
+@media (min-width: 1024px) {
+  .learn-nav { flex-direction: column; gap: var(--s-3); }
+  .learn-nav__group { display: grid; gap: 2px; }
+  .learn-nav__group > .sidebar__list { display: flex; }
+  .learn-nav__heading {
+    display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: 2px 8px;
+    padding: 6px 12px 4px;
+  }
+  .learn-nav__label { font: 700 10px/1.4 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--mod-text, var(--ink-soft)); }
+  .learn-nav__title { grid-column: 1 / 3; grid-row: 2; font-size: var(--fs-xs); font-weight: 800; color: var(--ink); line-height: 1.3; }
+  .learn-nav__count { grid-row: 1 / 3; grid-column: 3; align-self: center; font: 700 11px/1 var(--font-mono); color: var(--ink-soft); }
+  .learn-nav__group + .learn-nav__group { border-top: 1px dashed var(--line); padding-top: var(--s-3); }
+}
+
+.learn-topic-tag {
+  display: inline-flex; align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  background: var(--mod-tint, var(--paper-2));
+  color: var(--mod-text, var(--ink));
+  font-size: var(--fs-xs); font-weight: 800;
+}
+
+.topic-box {
+  display: flex; gap: var(--s-3);
+  padding: var(--s-4) var(--s-5);
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--mod, var(--ink));
+  background: var(--mod-tint, var(--paper-2));
+}
+.topic-box--summary { background: var(--surface); border-style: dashed; }
+.topic-box__icon { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--mod, var(--ink)); color: #fff; }
+.topic-box__icon .icon { width: 18px; height: 18px; stroke-width: 2.4; }
+.topic-box__eyebrow { font: 700 10px/1.5 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--mod-text, var(--ink-soft)); }
+.topic-box__title { font-weight: 800; margin-bottom: 2px; }
+.topic-box__text { color: var(--ink-2); }
+.topic-box__list { display: grid; gap: 4px; margin: 6px 0 0; padding-left: 1.2em; list-style: disc; }
+.topic-box__next { margin-top: var(--s-2); font-size: var(--fs-sm); font-weight: 700; color: var(--ink-soft); }
+
+.topic-map { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.topic-map__item { display: flex; align-items: center; gap: var(--s-3); padding: 10px var(--s-3); border: 1px solid var(--line); border-radius: var(--r-md); }
+.topic-map__item.is-done { background: var(--mod-tint); border-color: transparent; }
+.topic-map__num { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--line-strong); font: 700 12px/1 var(--font-mono); color: var(--ink-soft); }
+.topic-map__item.is-done .topic-map__num { background: var(--mod); border-color: var(--mod); color: #fff; }
+.topic-map__num .icon { width: 14px; height: 14px; stroke-width: 3; }
+.topic-map__body { display: flex; flex-direction: column; min-width: 0; }
+.topic-map__body a { font-weight: 800; color: var(--ink); min-height: 24px; }
+.topic-map__meta { font-size: var(--fs-xs); color: var(--ink-soft); }

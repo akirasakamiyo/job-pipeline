@@ -31,6 +31,23 @@ const STATUS = {
   todo: { label: 'Belum mulai', chip: 'chip--locked', cta: 'Mulai' },
 };
 
+/** Aktivitas bernilai (sama dengan state.SCORED_ACTIVITIES) → judul & lokasi materi */
+const ACTIVITY_INFO = {
+  'id-drive-sim': ['Simulasi izin Google Drive', 'id', 'id-15'],
+  'cv-structure': ['CV Structure Builder', 'cv', 'cv-13'],
+  'cv-redflags': ['CV Red Flags Detector', 'cv', 'cv-14'],
+  'cv-ats': ['ATS Keyword Matching', 'cv', 'cv-17'],
+  'li-hm': ['Identify the Hiring Manager', 'li', 'li-15'],
+  'tx-subject-challenge': ['Subject Line Challenge', 'tx', 'tx-13'],
+  'tx-anatomy': ['Email Anatomy Challenge', 'tx', 'tx-14'],
+  'tx-order': ['Email Ordering Challenge', 'tx', 'tx-15'],
+  'tx-ccbcc': ['CC/BCC Scenario', 'tx', 'tx-18'],
+  'tx-mistakes': ['Find the Mistakes', 'tx', 'tx-21'],
+  'tr-status': ['Application Status Management', 'tr', 'tr-12'],
+  'tr-timing': ['Follow-Up Timing Scenario', 'tr', 'tr-13'],
+  'tr-best-message': ['Choose the Best Follow-Up Message', 'tr', 'tr-15'],
+};
+
 const UNDO_MS = 12000;      // waktu tombol "Urungkan" tetap tersedia
 let firstRender = true;
 
@@ -59,6 +76,7 @@ export function init() {
 function render(s) {
   renderOverview(s);
   renderModules(s);
+  renderScore(s);
   renderBadges(s);
   renderActivity(s);
   renderCorrupt();
@@ -76,13 +94,14 @@ function renderOverview(s) {
     : `${s.stepsDone} dari ${s.stepsTotal} langkah selesai (bagian materi, kuis lulus, dan tanda "selesai" per modul).`;
 
   const quizPassed = s.modules.filter((m) => m.quizPassed).length;
-  const earned = s.badges.filter((b) => b.earned).length;
+  const mainBadges = s.badges.filter((b) => b.main);
+  const earned = mainBadges.filter((b) => b.earned).length;
   const stats = [
     { icon: 'trophy', value: `${s.completed}/${s.modules.length}`, label: 'Modul selesai' },
     { icon: 'check', value: `${s.lessonsDone}/${s.lessonsTotal}`, label: 'Bagian materi' },
     { icon: 'target', value: `${quizPassed}/${s.modules.length}`, label: 'Kuis lulus' },
     { icon: 'star', value: String(s.xp), label: 'Total XP' },
-    { icon: 'flame', value: `${earned}/${s.badges.length}`, label: 'Badge didapat' },
+    { icon: 'flame', value: `${earned}/${mainBadges.length}`, label: 'Badge utama' },
   ];
   $('[data-stats]').replaceChildren(...stats.map((st) =>
     h('div', { class: 'stat' },
@@ -124,19 +143,47 @@ function renderModules(s) {
   }));
 }
 
+/* ---------- Skor belajar keseluruhan (2.0) ---------- */
+function renderScore(s) {
+  const sc = s.score;
+  $('[data-score-total]').textContent = String(sc.total);
+  $('[data-score-parts]').replaceChildren(...sc.parts.map((p) => h('li', { class: 'score-part' },
+    h('div', { class: 'score-part__head' },
+      h('span', {}, p.label),
+      h('span', { class: 'mono' }, `${p.value} × ${p.weight}% = ${Math.round((p.value * p.weight) / 100)}`)),
+    h('div', { class: 'bar bar--thin', role: 'progressbar', 'aria-label': p.label, 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': String(p.value), style: { '--value': String(p.value) } }, h('span', { class: 'bar__fill' })))));
+  $('[data-activity-list]').replaceChildren(...state.SCORED_ACTIVITIES.map((id) => {
+    const [label, mid, lesson] = ACTIVITY_INFO[id] || [id, null, null];
+    const rec = s.activities[id];
+    return h('li', { class: 'act-row', 'data-module': mid },
+      h('span', { class: 'code' }, (state.getModuleMeta(mid)?.code) || '—'),
+      h('a', { class: 'act-row__title', href: mid ? `module.html?id=${mid}#${lesson}` : '#' }, label),
+      rec
+        ? h('span', { class: `chip ${rec.passedAt ? 'chip--done' : 'chip--warn'}` }, rec.passedAt ? icon('check') : null, `Terbaik ${rec.best}`)
+        : h('span', { class: 'chip' }, 'Belum dicoba'));
+  }));
+  $('[data-activity-summary]').textContent = `${s.activitiesPassed} dari ${s.activitiesTotal} aktivitas lulus · Simulator: ${s.simulator.attempts ? `terbaik ${s.simulator.best}` : 'belum dicoba'} · Evaluasi Akhir: ${s.evaluation.attempts ? `terbaik ${s.evaluation.best}` : 'belum dicoba'}`;
+}
+
+function badgeItem(b) {
+  return h('li', { class: `badge${b.earned ? '' : ' is-locked'}`, 'data-module': b.module || null },
+    h('div', { class: 'badge__seal' }, icon(b.icon), h('span', { class: 'badge__lock' }, icon('lock'))),
+    h('div', {},
+      h('p', { class: 'badge__name' }, b.name),
+      h('p', { class: 'badge__desc' }, b.desc),
+      b.earned
+        ? h('p', { class: 'badge__desc badge__when' }, b.earnedAt ? `Didapat ${new Date(b.earnedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}` : 'Didapat')
+        : null,
+      h('span', { class: 'sr-only' }, b.earned ? '(sudah didapat)' : '(terkunci)')));
+}
+
 function renderBadges(s) {
-  const earned = s.badges.filter((b) => b.earned);
-  $('[data-badge-summary]').textContent = `${earned.length} dari ${s.badges.length} badge sudah didapat.`;
-  $('[data-badge-grid]').replaceChildren(...s.badges.map((b) =>
-    h('li', { class: `badge${b.earned ? '' : ' is-locked'}`, 'data-module': b.module || null },
-      h('div', { class: 'badge__seal' }, icon(b.icon), h('span', { class: 'badge__lock' }, icon('lock'))),
-      h('div', {},
-        h('p', { class: 'badge__name' }, b.name),
-        h('p', { class: 'badge__desc' }, b.desc),
-        b.earned
-          ? h('p', { class: 'badge__desc badge__when' }, b.earnedAt ? `Didapat ${new Date(b.earnedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}` : 'Didapat')
-          : null,
-        h('span', { class: 'sr-only' }, b.earned ? '(sudah didapat)' : '(terkunci)')))));
+  const main = s.badges.filter((b) => b.main);
+  const milestones = s.badges.filter((b) => !b.main);
+  const earned = main.filter((b) => b.earned);
+  $('[data-badge-summary]').textContent = `${earned.length} dari ${main.length} badge utama sudah didapat · ${milestones.filter((b) => b.earned).length}/${milestones.length} milestone.`;
+  $('[data-badge-grid]').replaceChildren(...main.map(badgeItem));
+  $('[data-milestone-grid]').replaceChildren(...milestones.map(badgeItem));
 }
 
 function renderActivity(s) {

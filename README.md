@@ -15,13 +15,15 @@ profil LinkedIn, email lamaran, serta follow-up dan pelacakan lamaran.
 
 | Area | Isi |
 |---|---|
-| Dashboard | Progres nyata, peta 5 stasiun, kartu modul, alat bantu, aktivitas, badge |
-| 5 modul | 51 bagian materi, kuis per modul (nilai lulus 70), latihan interaktif, "Mark as completed" |
-| Latihan | Email Subject Generator (`[Posisi] - [Nama Lengkap] - [Keahlian]`), checklist pra-kirim 10 item, daftar kuis |
-| Tracker | Tambah/ubah/hapus (+ urungkan), cari, saring status, urutkan, ringkasan |
-| Gamifikasi | XP (bagian 10, kuis 50, modul 100, checklist 20) dan 10 badge, hanya diberikan setelah aktivitas selesai |
-| Resources | 11 sumber, saring per modul/jenis, pencarian, label "Perlu verifikasi" |
-| Progres | Rekap per modul, koleksi badge, riwayat, cadangan/pemulihan JSON, reset (dengan konfirmasi + urungkan), preferensi gerak |
+| Dashboard | Progres nyata, peta 5 stasiun, kartu modul, 6 alat bantu, aktivitas, 10 badge utama |
+| 5 modul (2.0) | 25 materi dalam 89 bagian; tiap materi punya tujuan & ringkasan. Kuis 8 soal per modul (nilai lulus 70), "Mark as completed" |
+| Aktivitas (2.0) | 13 aktivitas bernilai: studi kasus, drag & drop anatomi email, urutkan, temukan kesalahan, simulasi kata kunci ATS; plus lembar kerja, builder, dan checklist |
+| Latihan | Email Subject Generator (`[Posisi] - [Nama Lengkap] - [Keahlian]`), **Email Writing Simulator** dengan rubrik transparan, checklist pra-kirim, **CV & Portfolio Review**, daftar kuis |
+| Evaluasi Akhir (2.0) | 15 soal skenario acak dari bank 20 soal lintas modul, nilai lulus 75 |
+| Tracker | Tambah/ubah/hapus (+ urungkan), cari, saring status, urutkan, **tanggal follow-up + penanda jatuh tempo**, ringkasan |
+| Gamifikasi | XP (bagian 10, kuis 50, modul 100, checklist 20, aktivitas 15, lembar kerja 15, simulator 40, evaluasi 150) — sekali per aktivitas; 10 badge utama + 7 milestone; **skor belajar keseluruhan** dengan rumus terbuka |
+| Resources | 11 sumber, saring per modul/jenis, pencarian, label "Perlu verifikasi", pembeda fakta riset vs saran praktis |
+| Progres | Skor belajar, status aktivitas, rekap per modul, badge & milestone, riwayat, cadangan/pemulihan JSON, reset (dengan konfirmasi + urungkan), preferensi gerak |
 
 ## Struktur folder
 
@@ -30,15 +32,16 @@ ujap/
 ├── index.html            ← pintu masuk (mengalihkan ke dashboard.html)
 ├── 404.html              ← halaman "tidak ditemukan" mandiri untuk GitHub Pages
 ├── dashboard.html  modules.html  module.html  practice.html
-├── tracker.html  resources.html  progress.html  styleguide.html
+├── tracker.html  resources.html  progress.html  evaluation.html  styleguide.html
 ├── .nojekyll             ← GitHub Pages menyajikan file apa adanya (tanpa Jekyll)
 ├── assets/  (icons/sprite.svg · illustrations/ · deco/ · images/favicon.svg)
 ├── css/     (tokens · base · layout · components · animations · pages/*)
-├── data/    (modules.json · content/{id,cv,li,tx,tr}.json · references.json · resources.json)
+├── data/    (modules.json · content/{id,cv,li,tx,tr}.json · references.json · resources.json ·
+│             simulator.json · evaluation.json)
 ├── js/
 │   ├── app.js            ← satu titik masuk; memuat modul halaman via <body data-page>
 │   ├── core/             ← storage, state, tracker-store, backup, navigation, motion, ui, …
-│   ├── features/         ← lesson-renderer, quiz, exercises, module-card, clipboard
+│   ├── features/         ← lesson-renderer, quiz, exercises, activities, simulator, module-card, clipboard
 │   └── pages/            ← satu file per halaman
 ├── vendor/gsap/          ← GSAP & ScrollTrigger (lokal, tanpa CDN)
 └── docs/                 ← screenshot & laporan QA
@@ -210,6 +213,11 @@ python3 -c "import re,hashlib,base64;s=open('dashboard.html').read();print(base6
 | Tugas | Lokasi |
 |---|---|
 | Mengubah teks materi, kuis, latihan | `data/content/<id>.json` (blok yang didukung tercantum di `js/features/lesson-renderer.js`) |
+| Mengubah pengelompokan materi | `topics` di `data/modules.json` — urutan `lessons` tiap topik harus sama dengan urutan `lessons` modul |
+| Menambah aktivitas bernilai | Blok `scenario` / `match` / `order` / `spot` / `keywords` dengan `id` unik, lalu daftarkan id-nya di `SCORED_ACTIVITIES` (`js/core/state.js`) dan `ACTIVITY_INFO` (`js/pages/progress-page.js`) |
+| Mengubah skenario simulator / rubrik | `data/simulator.json` (lowongan, kata kunci) dan fungsi `evaluate()` di `js/features/simulator.js` (bobot kriteria) |
+| Mengubah soal Evaluasi Akhir | `data/evaluation.json` (`count` = jumlah soal per percobaan) |
+| Mengubah syarat badge | `BADGES` di `js/core/state.js` — badge baru wajib bergantung pada aktivitas yang tercatat, bukan diberikan otomatis |
 | Mengubah judul/durasi bagian modul | `data/modules.json`. **Jangan mengganti `id` bagian** (`id-1`, `cv-3`, …), karena progres pengguna terikat ke id tersebut. Menambah bagian baru aman, tapi persentase progres pengguna lama akan turun sedikit. |
 | Menambah resource | `data/resources.json` (`module`, `type`, `title`, `source`, `url`, `about`, `verified`) |
 | Menambah referensi | `data/references.json`, lalu cantumkan `id`-nya di `references` pada file konten modul |
