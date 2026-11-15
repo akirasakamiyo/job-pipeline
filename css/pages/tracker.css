@@ -18,6 +18,7 @@
 @media (min-width: 1100px) { .tracker-summary { grid-template-columns: 1.4fr repeat(5, minmax(0, 1fr)); } }
 
 .sum-card {
+  position: relative;   /* menahan teks .sr-only di dalam tombol */
   display: grid; gap: 4px; align-content: start;
   padding: var(--s-4);
   border-radius: var(--r-md);

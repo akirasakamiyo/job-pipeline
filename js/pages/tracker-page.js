@@ -138,7 +138,8 @@ function renderSummary(items) {
       type: 'button',
       class: 'sum-card',
       'aria-pressed': String(view.status === status),
-      'aria-label': `${status}: ${stats.byStatus[status]} lamaran. Klik untuk menyaring.`,
+      // Nama tombol dari teks yang terlihat + keterangan untuk pembaca layar (WCAG 2.5.3)
+      'data-status': status,
       onclick: () => {
         view.status = view.status === status ? 'all' : status;
         $('[data-filter]').value = view.status;
@@ -146,7 +147,8 @@ function renderSummary(items) {
       },
     },
     h('span', { class: 'sum-card__label' }, h('span', { class: 'sum-card__dot', style: { '--dot': STATUS_DOT[info.tone] } }), status),
-    h('span', { class: 'sum-card__value num' }, String(stats.byStatus[status])));
+    h('span', { class: 'sum-card__value num' }, String(stats.byStatus[status])),
+    h('span', { class: 'sr-only' }, ' lamaran — klik untuk menyaring'));
   };
   host.replaceChildren(
     h('div', { class: 'sum-card sum-card--total' },
