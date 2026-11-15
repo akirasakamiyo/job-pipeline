@@ -15,7 +15,8 @@ profil LinkedIn, email lamaran, serta follow-up dan pelacakan lamaran.
 
 | Area | Isi |
 |---|---|
-| Dashboard | Progres nyata, peta 5 stasiun, kartu modul, 6 alat bantu, aktivitas, 10 badge utama |
+| Navigasi (V3) | Sidebar kiri di semua halaman: grup *Learning* & *Career Tools*, status aktif, profil, progres ringkas. Bisa diciutkan (tersimpan) di desktop, rel ikon + overlay di tablet, drawer + hamburger di HP |
+| Dashboard | Hero ringkas dengan statistik platform dari data, panel progres (selesai/tersisa/modul aktif), roadmap + tujuan berikutnya, carousel modul dengan panah & titik di HP, 7 alat cepat, aktivitas + "terakhir dibuka", 10 badge utama |
 | 5 modul (2.0) | 25 materi dalam 89 bagian; tiap materi punya tujuan & ringkasan. Kuis 8 soal per modul (nilai lulus 70), "Mark as completed" |
 | Aktivitas (2.0) | 13 aktivitas bernilai: studi kasus, drag & drop anatomi email, urutkan, temukan kesalahan, simulasi kata kunci ATS; plus lembar kerja, builder, dan checklist |
 | Latihan | Email Subject Generator (`[Posisi] - [Nama Lengkap] - [Keahlian]`), **Email Writing Simulator** dengan rubrik transparan, checklist pra-kirim, **CV & Portfolio Review**, daftar kuis |
@@ -150,7 +151,7 @@ Progres deploy bisa dipantau di tab **Actions** (alur kerja *pages build and dep
 Setelah situs online, lakukan pengecekan ini:
 
 - [ ] Halaman utama terbuka dan langsung pindah ke Dashboard.
-- [ ] Semua menu (Dashboard, Modul, Latihan, Tracker, Resources, Progres) bisa dibuka.
+- [ ] Semua menu sidebar (Dashboard, Learning Modules, Practice Center, Evaluation, Job Tracker, Achievements, Resources & Guides) bisa dibuka, termasuk lewat drawer di HP.
 - [ ] Ilustrasi dan ikon tampil. Kalau ada yang hilang, periksa huruf besar/kecil nama file.
 - [ ] Selesaikan satu bagian modul, muat ulang halaman, lalu pastikan progres tetap tersimpan.
 - [ ] Buka alamat yang tidak ada (misalnya `/job-pipeline/abc`). Halaman 404 harus muncul dengan tombol ke Dashboard.

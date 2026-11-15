@@ -26,23 +26,6 @@
 .dash-hero__cta { display: flex; flex-direction: column; gap: var(--s-3); }
 .dash-hero__cta .btn { width: 100%; }
 
-/* Ringkasan progres di hero */
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--s-2);
-  margin: 0;
-}
-.hero-stats div {
-  padding: var(--s-3);
-  border-radius: var(--r-md);
-  background: var(--surface);
-  border: 1px solid var(--line);
-}
-.hero-stats dt { font-size: var(--fs-xs); font-weight: 700; color: var(--ink-soft); }
-.hero-stats dd { margin-top: 6px; font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem); }
-.hero-stats dd small { font-size: .55em; color: var(--ink-soft); font-family: var(--font-body); font-weight: 700; }
-
 /* Ilustrasi + kartu "lanjutkan" */
 .dash-hero__art { position: relative; width: 100%; max-width: 520px; margin-inline: auto; }
 .dash-hero__art img { width: 100%; }
@@ -104,25 +87,6 @@
 }
 .progress-panel__barhead { display: flex; justify-content: space-between; margin-bottom: var(--s-2); color: var(--ink-soft); font-weight: 600; }
 .progress-panel__barhead .mono { color: var(--ink); font-weight: 700; }
-
-/* Progres per modul */
-.module-progress { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
-.module-progress__row {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: var(--s-2) var(--s-3);
-  padding: 10px var(--s-2);
-  border-radius: var(--r-sm);
-  color: var(--ink);
-  text-decoration: none;
-  transition: background-color var(--dur-2);
-}
-.module-progress__row:hover { background: var(--paper-2); color: var(--ink); }
-.module-progress__title { font-size: var(--fs-sm); font-weight: 650; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.module-progress__row .bar { grid-column: 2 / 3; height: 6px; }
-.module-progress__pct { grid-row: 1 / 3; grid-column: 3; font: 700 var(--fs-sm)/1 var(--font-mono); min-width: 4ch; text-align: right; }
-.module-progress__row .code { grid-row: 1 / 3; }
 
 /* Roadmap */
 .roadmap { display: flex; flex-direction: column; gap: var(--s-5); }
@@ -193,6 +157,7 @@
    GRID BAWAH: alat · aktivitas · pencapaian · resources
    ===================================================================== */
 .dash-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
+.dash-tools { grid-column: 1 / -1; }   /* V3: tujuh alat dalam satu baris lebar */
 /* min-width 0: baris badge yang bisa digeser tidak boleh melebarkan kolom grid */
 .dash-grid > *, .dash-progress > *, .dash-hero > * { min-width: 0; }
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -203,8 +168,7 @@
   .dash-grid { grid-template-columns: 1.35fr 1fr; align-items: start; }
 }
 
-.tools-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
-@media (min-width: 768px) and (max-width: 1023px) { .tools-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }   /* 2.0: 6 alat → 3 kolom */
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: var(--s-3); }   /* V3: 7 alat, kolom menyesuaikan lebar */
 @media (max-width: 399px) { .tool-tile__desc { display: none; } }
 
 .xp-pill {
@@ -243,7 +207,84 @@
 }
 
 /* Performa (Tahap 6): ruang awal untuk ringkasan hero yang dirender JS — cegah CLS */
-.hero-stats:empty { min-height: 78px; }
+.hero-facts:empty { min-height: 84px; }
 .continue-card:empty { min-height: 84px; }
 .progress-panel__counts:empty { min-height: 140px; }
 .module-rail:empty { min-height: 560px; }
+
+/* =====================================================================
+   DASHBOARD V3 — hero ringkas, panel progres, roadmap, carousel, aktivitas
+   ===================================================================== */
+.hero-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+@media (min-width: 1200px) { .hero-facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.hero-fact { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 10px 12px; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--line); font-size: var(--fs-xs); font-weight: 650; color: var(--ink-2); line-height: 1.3; }
+.hero-fact strong { font-size: var(--fs-lg); color: var(--ink); }
+.hero-fact__icon { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--signal-tint); color: var(--ink); }
+.hero-fact__icon .icon { width: 17px; height: 17px; }
+@media (min-width: 1200px) { .hero-fact { flex-direction: column; align-items: flex-start; gap: 6px; } }
+
+/* Panel progres: 3 ringkasan (selesai · tersisa · modul aktif) */
+.progress-panel__counts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.count-pill small { font-size: .55em; color: var(--ink-soft); font-family: var(--font-body); font-weight: 700; margin-left: 2px; }
+.count-pill--active { grid-column: 1 / -1; display: grid; gap: 4px; color: var(--ink); text-decoration: none; border-color: var(--mod, var(--line)); }
+.count-pill--active:hover { color: var(--ink); border-color: var(--ink); }
+.count-pill__active { font-weight: 800; font-size: var(--fs-sm); line-height: 1.3; }
+.count-pill__meta { font-size: var(--fs-xs); color: var(--ink-soft); font-weight: 600; }
+
+/* Roadmap: tujuan berikutnya */
+.roadmap__steps .chip { white-space: nowrap; }
+.roadmap__next {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--mod-tint, var(--signal-tint));
+  border: 1.5px solid var(--mod, var(--ink));
+  color: var(--ink); text-decoration: none;
+  transition: translate var(--dur-2) var(--ease-out);
+}
+.roadmap__next:hover { color: var(--ink); translate: 0 -2px; }
+.roadmap__next .icon { grid-row: 1 / 3; grid-column: 2; }
+.roadmap__next-label { font: 700 10px/1.4 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--mod-text, var(--ink-soft)); }
+.roadmap__next-title { font-weight: 800; font-size: var(--fs-sm); }
+#roadmap { scroll-margin-top: calc(var(--topbar-h) + 24px); }
+
+/* Carousel modul: panah & titik posisi hanya saat rail dapat digeser (HP) */
+.rail-controls { display: flex; align-items: center; justify-content: center; gap: var(--s-3); margin-top: var(--s-2); }
+.rail-controls .btn--icon { width: 44px; min-height: 44px; }
+.rail-dots { display: flex; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.rail-dot { display: grid; place-items: center; width: 28px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer; }
+.rail-dot::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--line-strong); transition: width var(--dur-2), background-color var(--dur-2); }
+.rail-dot[aria-current="true"]::before { width: 22px; border-radius: 99px; background: var(--ink); }
+@media (min-width: 768px) { .rail-controls { display: none; } }
+
+/* Aktivitas: pintasan terakhir dibuka */
+.resume-row { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-3); padding: 10px var(--s-3); border-radius: var(--r-md); background: var(--mod-tint, var(--paper-2)); color: var(--ink); text-decoration: none; }
+.resume-row:hover { color: var(--ink); }
+.resume-row > .icon { margin-left: auto; flex: none; }
+.resume-row__body { display: grid; min-width: 0; }
+.resume-row__label { font: 700 10px/1.4 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--mod-text, var(--ink-soft)); }
+.resume-row__title { font-weight: 800; font-size: var(--fs-sm); overflow-wrap: anywhere; }
+
+/* Badge: bar progres menuju 10 badge utama */
+.dash-achievements [data-badge-bar] { margin-block: var(--s-2) var(--s-1); }
+
+/* Resources: deskripsi & status verifikasi */
+.link-row__desc { color: var(--ink-2); font-size: var(--fs-xs); line-height: 1.4; }
+.link-row__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+
+/* V3: grid bawah seimbang — alat & pencapaian selebar penuh,
+   aktivitas & resources berdampingan (tablet ke atas) */
+@media (min-width: 768px) {
+  .dash-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "tools tools" "activity resources" "achieve achieve"; align-items: stretch; }
+  .dash-tools { grid-area: tools; }
+  .dash-activity { grid-area: activity; }
+  .dash-resources { grid-area: resources; }
+  .dash-achievements { grid-area: achieve; }
+}
+@media (min-width: 600px) {
+  .dash-badges { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+}
+@media (max-width: 599px) {
+  .tools-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }   /* V3: 7 alat ringkas di HP */
+  .tool-tile__title { font-size: var(--fs-sm); }
+}

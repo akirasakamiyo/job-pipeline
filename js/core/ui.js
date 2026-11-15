@@ -267,6 +267,8 @@ function getTip() {
 function showTip(target) {
   const text = target.dataset.tooltip;
   if (!text) return;
+  // V3: tooltip menu sidebar hanya perlu saat sidebar dalam mode ikon (label tersembunyi)
+  if (target.hasAttribute('data-tooltip-rail') && document.documentElement.dataset.navMode !== 'rail') return;
   const el = getTip();
   tipTarget = target;
   el.textContent = text;
@@ -277,6 +279,17 @@ function showTip(target) {
 
   const r = target.getBoundingClientRect();
   const t = el.getBoundingClientRect();
+  el.classList.remove('is-right');
+  if (target.dataset.tooltipSide === 'right') {
+    // Di sisi kanan target (sidebar), sejajar vertikal
+    el.classList.add('is-right');
+    el.style.left = `${r.right + 12}px`;
+    el.style.top = `${Math.max(8, r.top + r.height / 2 - t.height / 2)}px`;
+    if (text !== target.getAttribute('aria-label')) {
+      target.setAttribute('aria-describedby', [target.getAttribute('aria-describedby'), 'ujap-tooltip'].filter(Boolean).join(' '));
+    }
+    return;
+  }
   let top = r.top - t.height - 10;
   if (top < 8) { top = r.bottom + 10; el.classList.add('is-below'); }   // tidak cukup ruang di atas
   const center = r.left + r.width / 2;

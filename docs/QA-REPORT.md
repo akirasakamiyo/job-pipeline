@@ -1,3 +1,57 @@
+# Laporan QA: Dashboard V3 + Sidebar Global
+
+**Tanggal:** 15 November 2026 · **Lingkungan:** Chromium (Playwright) di Linux, server lokal
+
+| Pengujian | Hasil |
+|---|---|
+| Suite fungsional (regresi 2.0 + sidebar + dashboard V3) | lihat ringkasan di bawah |
+| Audit layout 17 halaman/bagian × 6 lebar (1440, 1280, 1024, 768, 390, 360) | **0 masalah**: tanpa scroll horizontal, teks terpotong, target sentuh < 24px, kartu bertabrakan, menu hilang, atau konten tertutup sidebar |
+| axe-core WCAG 2.1 AA, 51 kombinasi (17 halaman × 1440/1024/390) | **0 pelanggaran** |
+
+### Yang diuji khusus V3
+- **Sidebar desktop:**
+  - 7 menu dalam 2 grup dengan tujuan yang benar.
+  - Satu menu aktif per halaman, berwarna Signal Yellow; halaman modul mengaktifkan *Learning Modules*.
+  - Lebar 264px, konten di kanan sidebar.
+  - Ciutkan → 80px, preferensi tersimpan dan bertahan saat pindah halaman.
+  - Tooltip hanya muncul di mode ikon.
+  - Brand, progres ringkas, dan pintasan profil (membuka dialog profil) berfungsi.
+- **Keyboard:** Tab pertama = skip link, lalu fokus masuk ke sidebar dengan outline terlihat.
+- **Tablet (1024):** rel ikon 80px; tombol perluas membuka menu penuh sebagai overlay tanpa menggeser konten; Esc menutup.
+- **HP (390):**
+  - Sidebar tersembunyi dan `inert`.
+  - Hamburger membuka drawer dengan backdrop, fokus pindah ke menu, `aria-expanded`, dan scroll latar terkunci.
+  - Esc mengembalikan fokus ke hamburger; klik backdrop menutup.
+  - Memilih setiap menu (7 menu) menutup drawer dan membuka halamannya.
+- **Dashboard:**
+  - Fallback HTML 10 badge.
+  - Statistik hero dihitung dari data.
+  - Dua CTA menuju tujuan berbeda; *Lihat peta belajar* menggulir ke roadmap.
+  - Panel progres: selesai, tersisa, dan modul aktif.
+  - Roadmap dengan status dan tujuan berikutnya.
+  - 7 alat cepat; tujuan dan anchor-nya diverifikasi.
+  - Empty state aktivitas dan pintasan "Terakhir dibuka".
+  - Resources dengan deskripsi dan label verifikasi.
+  - Carousel HP dengan panah dan titik posisi.
+
+### Bug yang ditemukan & diperbaiki saat pengujian V3
+| Bug | Perbaikan |
+|---|---|
+| Sidebar disisipkan sebelum skip link, sehingga Tab pertama tidak lagi "Lewati ke konten utama" | Sidebar diletakkan setelah skip link |
+| Tombol × drawer muncul di desktop/tablet (aturan `.btn` menimpa `display: none`) | Spesifisitas dinaikkan; tombol hanya tampil di HP |
+| Checklist CV & Portfolio Review meluap 14px di HP 360px (nama file panjang tanpa spasi) | Teks checklist boleh dipatahkan |
+| Tracker di 768px: tombol "Tambah lamaran" terpotong, dropdown terlalu sempit | Tata letak satu baris mulai 900px |
+| Tabel anatomi email: nomor "10" terpecah di 1280px; label "Kepada" bertanda nomor terlipat | Lebar minimum kolom & ruang label |
+| Nama aksesibel logo footer berbeda dari teks terlihat (WCAG 2.5.3) | `aria-label` diganti teks pembaca layar tambahan |
+| Kartu badge di kolom sempit sangat tinggi | Grid bawah: alat & badge selebar penuh, aktivitas & resources berdampingan |
+
+### Catatan
+- Angka "51 Learning Sections" di brief sudah tidak sesuai data: setelah Pipeline 2.0 jumlahnya **89 bagian**, dan hero menampilkan angka dari data.
+- Menu *Achievements* diarahkan ke `progress.html` (koleksi badge + skor) agar tidak ada halaman ganda.
+- Belum diuji: Safari/Firefox, perangkat fisik, pembaca layar langsung.
+
+---
+
 # Laporan QA: Pipeline 2.0
 
 **Tanggal:** 15 November 2026

@@ -8,7 +8,8 @@ LMS statis untuk GitHub Pages: HTML5, CSS3, vanilla JS (ES modules), GSAP 3.12.5
   - `storage.js`: semua key memakai awalan `ujap:`; data rusak dikarantina ke `ujap:<key>:rusak-<ts>`.
   - `state.js`: progres, XP, badge, dan `sanitizeState`.
   - `tracker-store.js`, `backup.js`.
-  - `navigation.js`, `motion.js`, `ui.js`.
+  - `navigation.js`: sidebar kiri global (V3), dirender ke placeholder `[data-topbar]` di setiap halaman. Menu diatur di `NAV_GROUPS`. Lebar dan mode diatur CSS (`.appnav` di `layout.css`): ≥1200 penuh/ciut, 768–1199 ikon + overlay, <768 drawer. Preferensi ciut ada di `ujap:prefs.sidebar` dan dipasang oleh skrip boot `<head>` (`data-nav-pref`).
+  - `motion.js`, `ui.js`.
 - Materi berbasis data:
   - Daftar bagian dan pengelompokan materi (`topics`): `data/modules.json`.
   - Aktivitas interaktif: `js/features/activities.js`. Simulator: `js/features/simulator.js` + `data/simulator.json`. Evaluasi akhir: `data/evaluation.json`.

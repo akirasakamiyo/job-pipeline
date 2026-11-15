@@ -1356,3 +1356,5 @@
 .eval-cta__body { flex: 1; min-width: 220px; display: grid; gap: 2px; }
 .sim__form .field__label { justify-content: flex-start; flex-wrap: wrap; gap: 4px 6px; }
 .worksheet .field__label { justify-content: flex-start; gap: 4px; }
+.mail--annotated .mail__meta div { grid-template-columns: 96px 1fr; }   /* V3: ruang untuk penanda nomor bagian */
+.check__text { min-width: 0; overflow-wrap: anywhere; }   /* V3: nama file panjang tidak melebarkan checklist di HP 360px */

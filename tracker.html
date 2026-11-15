@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <!-- Keamanan (Tahap 7): Content Security Policy. Hanya skrip dari situs ini + skrip boot inline (di-hash)
        yang boleh berjalan. Bila skrip boot di <head> diubah, hash sha256 di bawah WAJIB diperbarui (lihat README). -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-KAA7GRYrWs7pgVEZEBioOLtygPnBFlkJ6tK8iBlfbIw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-I7x/38d65xygMLgPMZezA3HB0zp5kXSxtSdIt9wH4qw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Job Tracker · The Ultimate Job Application Pipeline</title>
@@ -17,8 +17,10 @@
     (function (d) {
       var h = d.documentElement; h.classList.add('js');
       try {
-        var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches ||
-          (JSON.parse(localStorage.getItem('ujap:prefs') || '{}').motion === 'reduced');
+        var prefs = JSON.parse(localStorage.getItem('ujap:prefs') || '{}') || {};
+        // V3: sidebar diciutkan dipasang sebelum render agar layout tidak melompat
+        if (prefs.sidebar === 'collapsed') h.setAttribute('data-nav-pref', 'collapsed');
+        var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches || prefs.motion === 'reduced';
         if (sessionStorage.getItem('ujap:transition') === '1' && !reduced) h.classList.add('is-entering');
       } catch (e) {}
       setTimeout(function () { h.classList.add('motion-fallback'); h.classList.remove('is-entering'); }, 2500);
@@ -122,15 +124,13 @@
 
   <footer class="footer">
     <div class="container footer__inner">
-      <a class="brand" href="dashboard.html" aria-label="The Ultimate Job Application Pipeline — ke Dashboard">
+      <a class="brand" href="dashboard.html">
         <img class="brand__mark" src="assets/images/favicon.svg" alt="" width="38" height="38">
-        <span class="brand__text"><span class="brand__kicker">The Ultimate Job Application</span><span class="brand__name">Pipeline</span></span>
+        <span class="brand__text"><span class="brand__kicker">The Ultimate Job Application</span><span class="brand__name">Pipeline</span></span><span class="sr-only"> — ke Dashboard</span>
       </a>
       <p>Data tracker tersimpan di perangkatmu sendiri. Tanpa akun, tanpa server.</p>
     </div>
   </footer>
-
-  <div data-bottombar></div>
 
   <!-- Dialog tambah / ubah lamaran -->
   <dialog class="modal tracker-modal" id="app-dialog" aria-labelledby="app-dialog-title">

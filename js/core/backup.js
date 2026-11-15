@@ -135,7 +135,10 @@ export function applyBackup(backup) {
   tracker.getItems();                              // entri tidak valid dipindah ke cadangan
 
   // Preferensi: hanya field yang dikenal
-  storage.set('prefs', { motion: isObj(prefs) && prefs.motion === 'reduced' ? 'reduced' : 'system' });
+  storage.set('prefs', {
+    motion: isObj(prefs) && prefs.motion === 'reduced' ? 'reduced' : 'system',
+    sidebar: isObj(prefs) && prefs.sidebar === 'collapsed' ? 'collapsed' : 'expanded',   // V3
+  });
   return before;
 }
 

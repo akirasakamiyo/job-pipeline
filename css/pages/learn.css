@@ -434,3 +434,6 @@
 .topic-map__body { display: flex; flex-direction: column; min-width: 0; }
 .topic-map__body a { font-weight: 800; color: var(--ink); min-height: 24px; }
 .topic-map__meta { font-size: var(--fs-xs); color: var(--ink-soft); }
+
+/* V3: area konten lebih sempit karena sidebar global — jaga kolom pendek tetap utuh */
+.learn-table td:first-child, .learn-table th:first-child { min-width: 3ch; }

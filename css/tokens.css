@@ -111,8 +111,8 @@
   --container: 1200px;
   --container-narrow: 760px;
   --gutter: clamp(16px, 4vw, 40px);
-  --topbar-h: 64px;
-  --bottombar-h: 72px;
+  --topbar-h: 60px;      /* V3: tinggi header HP (<768px); 0 di layar lebih lebar karena navigasi di sidebar kiri */
+  --bottombar-h: 0px;    /* V3: bottom tab bar diganti drawer sidebar */
 
   /* ---------- 12. Lapisan (z-index) ---------------------------------- */
   --z-bg: -1;
@@ -124,8 +124,8 @@
   --z-curtain: 120;
 }
 
-@media (min-width: 1024px) {
-  :root { --topbar-h: 76px; }
+@media (min-width: 768px) {
+  :root { --topbar-h: 0px; }
 }
 
 /* ---------- Scope warna modul ----------------------------------------

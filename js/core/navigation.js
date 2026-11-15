@@ -1,243 +1,247 @@
 /* =====================================================================
-   navigation.js — Navigasi global
+   navigation.js — Navigasi global: SIDEBAR KIRI (Dashboard V3)
    ---------------------------------------------------------------------
-   Topbar (desktop), bottom tab bar + sheet "Lainnya" (mobile) dirender
-   dari SATU konfigurasi (NAV_ITEMS) agar konsisten di semua halaman.
+   Satu implementasi untuk SEMUA halaman. Setiap halaman cukup memiliki
+   placeholder <div data-topbar></div>; modul ini merender:
+     1. <aside class="appnav">  — sidebar (brand, 2 grup menu, profil,
+                                  progres, tombol ciutkan/perluas)
+     2. <header class="mobilebar"> — header HP dengan tombol hamburger
+     3. backdrop untuk drawer (HP) & overlay (tablet)
 
-   ready:false → halaman belum ada: tampil "Segera" & TIDAK bisa diklik.
-   soon:true   → halaman sudah ada tetapi fiturnya dibangun di tahap
-                 berikutnya (dipakai untuk label jujur di kartu/tile).
+   Perilaku per lebar layar (diatur CSS; JS hanya mengelola state):
+     ≥1200px   : sidebar penuh (±264px). Bisa diciutkan → ikon saja (80px).
+                 Preferensi disimpan di ujap:prefs.sidebar dan dipasang
+                 lebih awal oleh skrip boot di <head> (tanpa lompatan layout).
+     768–1199px: rel ikon (80px) + tooltip. Tombol perluas membuka sidebar
+                 penuh sebagai overlay di atas konten.
+     <768px    : drawer off-canvas dari kiri + backdrop. Esc / backdrop /
+                 memilih menu menutup drawer. Scroll latar dikunci.
+
+   Status terbuka (overlay/drawer) memakai kelas html.nav-open.
    ===================================================================== */
 
 import { $, $$, h, icon } from './dom.js';
 import * as motion from './motion.js';
+import * as storage from './storage.js';
 import { initRings, setProgress } from './ui.js';
 
 export const HOME_HREF = 'dashboard.html';
 
-export const NAV_ITEMS = [
-  { id: 'dashboard', label: 'Dashboard', short: 'Home',    href: 'dashboard.html', icon: 'home',   ready: true, tab: true },
-  { id: 'modules',   label: 'Modul',     short: 'Modul',   href: 'modules.html',   icon: 'route',  ready: true, tab: true },
-  { id: 'practice',  label: 'Latihan',   short: 'Latihan', href: 'practice.html',  icon: 'spark',  ready: true, tab: true },
-  { id: 'tracker',   label: 'Tracker',   short: 'Tracker', href: 'tracker.html',   icon: 'kanban', ready: true, tab: true },
-  { id: 'resources', label: 'Resources', short: 'Sumber',  href: 'resources.html', icon: 'book',   ready: true, tab: false },
-  { id: 'progress',  label: 'Progres',   short: 'Progres', href: 'progress.html',  icon: 'chart',  ready: true, tab: false },
+/** Struktur menu: 2 grup sesuai arsitektur informasi V3 */
+export const NAV_GROUPS = [
+  { id: 'learning', label: 'Learning', items: [
+    { id: 'dashboard', label: 'Dashboard', href: 'dashboard.html', icon: 'home' },
+    { id: 'modules', label: 'Learning Modules', href: 'modules.html', icon: 'route' },
+    { id: 'practice', label: 'Practice Center', href: 'practice.html', icon: 'spark' },
+    { id: 'evaluation', label: 'Evaluation', href: 'evaluation.html', icon: 'target' },
+  ] },
+  { id: 'career', label: 'Career Tools', items: [
+    { id: 'tracker', label: 'Job Tracker', href: 'tracker.html', icon: 'kanban' },
+    { id: 'achievements', label: 'Achievements', href: 'progress.html', icon: 'trophy' },
+    { id: 'resources', label: 'Resources & Guides', href: 'resources.html', icon: 'book' },
+  ] },
 ];
 
-/** true bila fitur halaman tsb. masih dibangun di tahap berikutnya */
-export const isSoon = (id) => Boolean(NAV_ITEMS.find((item) => item.id === id)?.soon);
+/** Kompatibilitas: daftar datar semua menu */
+export const NAV_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
 
-/* Item tambahan khusus menu "Lainnya" di mobile */
-const MORE_EXTRA = [
-  { id: 'evaluation', label: 'Evaluasi Akhir', href: 'evaluation.html', icon: 'trophy', ready: true },
-  { id: 'styleguide', label: 'Design System', href: 'styleguide.html', icon: 'grid', ready: true },
-];
+/** Semua halaman sudah tersedia; dipertahankan agar pemanggil lama tetap jalan */
+export const isSoon = () => false;
 
-/* Halaman turunan menandai menu induknya sebagai aktif */
-const PAGE_PARENT = { module: 'modules', evaluation: 'practice' };
-const currentPage = () => {
+/* Halaman → menu yang aktif (halaman turunan menandai induknya) */
+const PAGE_TO_NAV = { module: 'modules', progress: 'achievements' };
+const currentNav = () => {
   const page = document.body.dataset.page || '';
-  return PAGE_PARENT[page] || page;
+  return PAGE_TO_NAV[page] || page;
 };
 
-/* ---------- Logo ---------- */
-function brandMark() {
-  // Logo = file favicon yang sama, agar identitas konsisten
-  return h('img', { class: 'brand__mark', src: 'assets/images/favicon.svg', alt: '', width: 38, height: 38 });
+const root = document.documentElement;
+const mqMobile = window.matchMedia('(max-width: 767px)');
+const mqTablet = window.matchMedia('(min-width: 768px) and (max-width: 1199px)');
+
+/** Mode visual saat ini: drawer (HP) · rail (ikon saja) · full */
+function navMode() {
+  if (mqMobile.matches) return 'drawer';
+  if (mqTablet.matches) return root.classList.contains('nav-open') ? 'full' : 'rail';
+  return root.dataset.navPref === 'collapsed' ? 'rail' : 'full';
 }
 
-function brand() {
-  return h('a', { class: 'brand', href: HOME_HREF, 'aria-label': 'The Ultimate Job Application Pipeline — beranda' },
-    brandMark(),
-    h('span', { class: 'brand__text' },
-      h('span', { class: 'brand__kicker' }, 'The Ultimate Job Application'),
-      h('span', { class: 'brand__name' }, 'Pipeline')));
+let els = {};
+
+/* ---------- Render ---------- */
+
+function brand(className, { compact = false } = {}) {
+  // Nama tautan diambil dari teks yang terlihat (WCAG 2.5.3) + keterangan tujuan untuk pembaca layar
+  return h('a', { class: className, href: HOME_HREF },
+    h('img', { class: 'brand__mark', src: 'assets/images/favicon.svg', alt: '', width: 38, height: 38 }),
+    h('span', { class: 'appnav__brandtext' },
+      h('span', { class: 'appnav__brandname' }, 'Job Pipeline'),
+      compact ? null : h('span', { class: 'appnav__brandsub' }, 'Career Learning Platform')),
+    h('span', { class: 'sr-only' }, ' — ke Dashboard'));
 }
 
-/* ---------- Link (aktif / segera) ---------- */
-function navLink(item, className) {
-  const isCurrent = item.id === currentPage();
-  if (!item.ready) {
-    return h('span', {
-      class: `${className} is-soon`,
-      'aria-disabled': 'true',
-      title: 'Halaman ini dibangun di tahap berikutnya',
-    }, icon(item.icon), item.label,
-    h('span', { class: 'soon-tag', 'aria-hidden': 'true' }, 'Segera'),
-    h('span', { class: 'sr-only' }, '(segera tersedia)'));
-  }
-  return h('a', { class: className, href: item.href, 'aria-current': isCurrent ? 'page' : null },
-    icon(item.icon), item.label);
+function navLink(item) {
+  const active = item.id === currentNav();
+  return h('a', {
+    class: 'appnav__link',
+    href: item.href,
+    'aria-current': active ? 'page' : null,
+    'aria-label': item.label,              // nama aksesibel tetap ada saat label disembunyikan (mode ikon)
+    'data-tooltip': item.label,
+    'data-tooltip-side': 'right',
+    'data-tooltip-rail': '',               // tooltip hanya tampil di mode ikon (ui.js)
+  },
+  h('span', { class: 'appnav__icon' }, icon(item.icon)),
+  h('span', { class: 'appnav__label' }, item.label));
 }
 
-/* ---------- Topbar ---------- */
-function renderTopbar(host) {
-  const progress = h('a', { class: 'nav-progress', href: 'progress.html', hidden: true, 'data-nav-progress': true, 'aria-label': 'Progres — lihat detail progres belajar', 'data-tooltip': 'Progres seluruh modul' },
-    // Tahap 7 (WCAG 2.5.3): ring di sini hanya penanda visual — angka persen sudah
-    // tertulis di sebelahnya, jadi label di dalam ring tidak ditampilkan & ring
-    // disembunyikan dari pembaca layar (tidak diumumkan dua kali).
+function render(host) {
+  const groups = NAV_GROUPS.map((g) => h('div', { class: 'appnav__group' },
+    h('p', { class: 'appnav__grouptitle', id: `nav-g-${g.id}` }, h('span', { class: 'appnav__grouptext' }, g.label)),
+    h('ul', { class: 'appnav__list', role: 'list', 'aria-labelledby': `nav-g-${g.id}` }, g.items.map((item) => h('li', {}, navLink(item))))));
+
+  // Profil (nama dari state; diisi setNavUser) & progres ringkas (setNavProgress)
+  els.avatar = h('span', { class: 'appnav__avatar', 'aria-hidden': 'true' }, '?');
+  els.userName = h('span', { class: 'appnav__username' }, 'Profil belajar');
+  els.profile = h('a', {
+    class: 'appnav__profile', href: 'dashboard.html#profil',
+    'aria-label': 'Profil belajar — ubah nama dan status', 'data-tooltip': 'Profil belajar', 'data-tooltip-side': 'right', 'data-tooltip-rail': '',
+  }, els.avatar, h('span', { class: 'appnav__profiletext' }, els.userName, h('span', { class: 'appnav__usersub' }, 'Ubah profil')));
+
+  els.progress = h('a', {
+    class: 'appnav__progress', href: 'progress.html', 'data-nav-progress': true, hidden: true,
+    'aria-label': 'Progres belajar — lihat detail', 'data-tooltip': 'Progres seluruh modul', 'data-tooltip-side': 'right', 'data-tooltip-rail': '',
+  },
+  h('div', { class: 'ring ring--sm', 'data-ring': true, 'data-value': '0', 'data-show-label': 'false', 'aria-hidden': 'true' }),
+  h('span', { class: 'appnav__progresstext' },
+    h('span', { class: 'appnav__progresslabel' }, 'Progres belajar'),
+    h('span', { class: 'appnav__progressbar' }, h('span', { class: 'bar bar--thin', 'data-nav-progress-bar': true }, h('span', { class: 'bar__fill' }))),
+    h('strong', { 'data-nav-progress-text': true }, '0%')));
+
+  els.toggle = h('button', {
+    type: 'button', class: 'appnav__toggle', 'aria-controls': 'app-nav',
+    'data-tooltip-side': 'right', 'data-tooltip-rail': '',
+  }, icon('arrow-left', 'appnav__toggleicon'), h('span', { class: 'appnav__label' }, 'Ciutkan menu'));
+
+  els.close = h('button', { type: 'button', class: 'btn btn--ghost btn--icon appnav__close', 'aria-label': 'Tutup menu' }, icon('x'));
+
+  els.aside = h('aside', { class: 'appnav', id: 'app-nav', 'aria-label': 'Navigasi utama' },
+    h('div', { class: 'appnav__head' }, brand('appnav__brand'), els.close),
+    h('nav', { class: 'appnav__nav', 'aria-label': 'Menu utama' }, groups),
+    h('div', { class: 'appnav__foot' }, els.profile, els.progress, els.toggle));
+
+  els.backdrop = h('div', { class: 'appnav-backdrop', hidden: true });
+
+  // Header HP: hamburger + brand + progres
+  els.burger = h('button', {
+    type: 'button', class: 'btn btn--ghost btn--icon mobilebar__menu', 'aria-controls': 'app-nav', 'aria-expanded': 'false', 'aria-label': 'Buka menu navigasi',
+  }, icon('menu'));
+  els.mobilePct = h('a', { class: 'mobilebar__progress', href: 'progress.html', hidden: true, 'aria-label': 'Progres — lihat detail progres belajar' },
     h('div', { class: 'ring ring--sm', 'data-ring': true, 'data-value': '0', 'data-show-label': 'false', 'aria-hidden': 'true' }),
-    h('span', { class: 'nav-progress__text' },
-      h('small', {}, 'Progres'),
-      h('strong', { 'data-nav-progress-text': true }, '0%')));
+    h('strong', { 'data-nav-progress-text': true }, '0%'));
+  const mobilebar = h('header', { class: 'mobilebar' }, els.burger, brand('mobilebar__brand', { compact: true }), els.mobilePct);
 
-  const header = h('header', { class: 'topbar' },
-    h('div', { class: 'topbar__inner' },
-      brand(),
-      h('nav', { class: 'nav', 'aria-label': 'Navigasi utama' },
-        h('ul', { class: 'nav__list', role: 'list' },
-          NAV_ITEMS.map((item) => h('li', {}, navLink(item, 'nav__link'))))),
-      h('div', { class: 'topbar__actions' }, progress)));
-
-  host.replaceWith(header);
-  initRings(header);
-  initNavIndicator($('.nav', header));
-
-  // Topbar berubah menjadi kaca buram setelah di-scroll
-  let ticking = false;
-  const update = () => {
-    header.classList.toggle('is-scrolled', window.scrollY > 8);
-    ticking = false;
-  };
-  window.addEventListener('scroll', () => {
-    if (!ticking) { ticking = true; requestAnimationFrame(update); }
-  }, { passive: true });
-  update();
+  host.replaceWith(mobilebar);
+  // Sidebar diletakkan SETELAH skip link agar Tab pertama tetap "Lewati ke konten utama"
+  const skip = $('.skip-link');
+  if (skip) skip.after(els.aside, els.backdrop); else document.body.prepend(els.aside, els.backdrop);
+  initRings(els.aside);
+  initRings(mobilebar);
 }
 
-/* ---------- Indikator hover yang meluncur (desktop) ----------
-   Pil tipis bergerak ke link yang di-hover/difokus lalu memudar saat
-   kursor keluar. Link aktif tetap memakai pil gelap (aria-current).  */
-function initNavIndicator(nav) {
-  const list = nav && $('.nav__list', nav);
-  if (!list) return;
-  // Pil diletakkan di <nav> (bukan di dalam <ul>) agar struktur daftar tetap valid
-  const pill = h('span', { class: 'nav__hover', 'aria-hidden': 'true' });
-  nav.prepend(pill);
-  nav.classList.add('has-indicator');
-  const gsap = window.gsap;
+/* ---------- Buka / tutup (overlay tablet & drawer HP) ---------- */
 
-  const moveTo = (link) => {
-    const navRect = nav.getBoundingClientRect();
-    const rect = link.getBoundingClientRect();
-    const vars = { x: rect.left - navRect.left, width: rect.width, opacity: 1 };
-    pill.style.top = `${rect.top - navRect.top}px`;
-    pill.style.height = `${rect.height}px`;
-    if (!gsap || motion.isReduced()) {
-      pill.style.transform = `translateX(${vars.x}px)`;
-      pill.style.width = `${vars.width}px`;
-      pill.style.opacity = '1';
-      return;
-    }
-    // Saat muncul pertama kali: langsung di posisi, lalu memudar masuk
-    if (Number(getComputedStyle(pill).opacity) < 0.05) gsap.set(pill, { x: vars.x, width: vars.width });
-    gsap.to(pill, { ...vars, duration: 0.35, ease: 'power3.out', overwrite: true });
-  };
-  const hide = () => {
-    if (!gsap || motion.isReduced()) { pill.style.opacity = '0'; return; }
-    gsap.to(pill, { opacity: 0, duration: 0.25, overwrite: 'auto' });
-  };
+let lastFocus = null;
 
-  list.addEventListener('pointerover', (e) => {
-    const link = e.target.closest('.nav__link');
-    if (link && !link.classList.contains('is-soon') && link.getAttribute('aria-current') !== 'page') moveTo(link);
-    else if (link) hide();
-  });
-  list.addEventListener('pointerleave', hide);
-  list.addEventListener('focusin', (e) => {
-    const link = e.target.closest('.nav__link');
-    if (link && link.getAttribute('aria-current') !== 'page') moveTo(link);
-  });
-  list.addEventListener('focusout', (e) => { if (!list.contains(e.relatedTarget)) hide(); });
+function open() {
+  if (root.classList.contains('nav-open')) return;
+  lastFocus = document.activeElement;
+  root.classList.add('nav-open');
+  els.backdrop.hidden = false;
+  els.aside.inert = false;
+  els.aside.removeAttribute('aria-hidden');
+  if (mqMobile.matches) {
+    els.aside.setAttribute('role', 'dialog');
+    els.aside.setAttribute('aria-modal', 'true');
+  }
+  document.body.style.overflow = 'hidden';            // cegah scroll latar
+  sync();
+  // Animasi geser & lebar memakai transisi CSS (otomatis mati di mode gerak minimal)
+  ($('[aria-current="page"]', els.aside) || $('.appnav__link', els.aside))?.focus({ preventScroll: true });
 }
 
-/* ---------- Bottom bar + sheet (mobile) ---------- */
-function renderBottombar(host) {
-  const tabs = NAV_ITEMS.filter((item) => item.tab);
-  const moreItems = [...NAV_ITEMS.filter((item) => !item.tab), ...MORE_EXTRA];
-  const moreActive = moreItems.some((item) => item.id === currentPage());
-
-  const tabEl = (item) => {
-    const isCurrent = item.id === currentPage();
-    const inner = [h('span', { class: 'tab__pill' }, icon(item.icon)), item.short];
-    if (!item.ready) {
-      return h('span', { class: 'tab is-soon', 'aria-disabled': 'true', title: 'Segera tersedia' }, ...inner);
-    }
-    return h('a', { class: 'tab', href: item.href, 'aria-current': isCurrent ? 'page' : null }, ...inner);
+function close({ restoreFocus = true } = {}) {
+  if (!root.classList.contains('nav-open')) return;
+  const finish = () => {
+    root.classList.remove('nav-open');
+    els.backdrop.hidden = true;
+    els.aside.removeAttribute('role');
+    els.aside.removeAttribute('aria-modal');
+    document.body.style.overflow = '';
+    sync();
+    if (restoreFocus) (mqMobile.matches ? els.burger : els.toggle)?.focus?.();
   };
+  finish();
+}
 
-  const moreBtn = h('button', {
-    type: 'button',
-    class: 'tab',
-    'aria-expanded': 'false',
-    'aria-controls': 'more-sheet',
-    'aria-current': moreActive ? 'page' : null,
-  }, h('span', { class: 'tab__pill' }, icon('more')), 'Lainnya');
+/** Ciutkan/perluas di desktop (disimpan) atau buka/tutup overlay di tablet */
+function toggle() {
+  if (mqTablet.matches) { root.classList.contains('nav-open') ? close() : open(); return; }
+  const collapsed = root.dataset.navPref !== 'collapsed';
+  if (collapsed) root.dataset.navPref = 'collapsed'; else delete root.dataset.navPref;
+  storage.update('prefs', (p) => ({ ...p, sidebar: collapsed ? 'collapsed' : 'expanded' }), {});
+  sync();
+  window.ScrollTrigger?.refresh?.();
+}
 
-  const bar = h('nav', { class: 'bottombar', 'aria-label': 'Navigasi utama (seluler)' },
-    h('ul', { class: 'bottombar__list', role: 'list' },
-      tabs.map((item) => h('li', {}, tabEl(item))),
-      h('li', {}, moreBtn)));
+/** Menyelaraskan label tombol, ARIA, inert, dan mode untuk tooltip */
+function sync() {
+  const mode = navMode();
+  root.dataset.navMode = mode;
+  const isOpen = root.classList.contains('nav-open');
+  const drawerClosed = mqMobile.matches && !isOpen;
+  els.aside.inert = drawerClosed;                     // drawer tertutup: tidak bisa difokus
+  if (drawerClosed) els.aside.setAttribute('aria-hidden', 'true'); else els.aside.removeAttribute('aria-hidden');
+  els.burger.setAttribute('aria-expanded', String(mqMobile.matches && isOpen));
 
-  const sheetLink = (item) => {
-    const isCurrent = item.id === currentPage();
-    const content = [h('span', { class: 'icon-tile' }, icon(item.icon)), item.label];
-    if (!item.ready) {
-      return h('span', { class: 'sheet__link is-soon', 'aria-disabled': 'true' }, ...content, h('span', { class: 'soon-tag' }, 'Segera'));
-    }
-    return h('a', { class: 'sheet__link', href: item.href, 'aria-current': isCurrent ? 'page' : null }, ...content);
-  };
+  const expandedNow = mode === 'full';
+  const label = mqTablet.matches
+    ? (isOpen ? 'Tutup menu lengkap' : 'Tampilkan menu lengkap')
+    : (expandedNow ? 'Ciutkan menu' : 'Perluas menu');
+  els.toggle.setAttribute('aria-label', label);
+  els.toggle.setAttribute('aria-expanded', String(expandedNow));
+  els.toggle.dataset.tooltip = label;
+  $('.appnav__label', els.toggle).textContent = label;
+}
 
-  const panel = h('div', { class: 'sheet__panel', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'more-sheet-title' },
-    h('div', { class: 'sheet__handle', 'aria-hidden': 'true' }),
-    h('div', { class: 'sheet__head' },
-      h('h2', { class: 'h3', id: 'more-sheet-title' }, 'Menu lainnya'),
-      h('button', { type: 'button', class: 'btn btn--ghost btn--icon', 'aria-label': 'Tutup menu', 'data-sheet-close': true }, icon('x'))),
-    h('ul', { class: 'sheet__list', role: 'list' }, moreItems.map((item) => h('li', {}, sheetLink(item)))));
+function bindEvents() {
+  els.burger.addEventListener('click', open);
+  els.close.addEventListener('click', () => close());
+  els.toggle.addEventListener('click', toggle);
+  els.backdrop.addEventListener('click', () => close());
 
-  const sheet = h('div', { class: 'sheet', id: 'more-sheet', hidden: true },
-    h('div', { class: 'sheet__backdrop', 'data-sheet-close': true }),
-    panel);
+  // Memilih menu menutup drawer/overlay (navigasi tetap berjalan)
+  els.aside.addEventListener('click', (e) => {
+    if (e.target.closest('a[href]') && root.classList.contains('nav-open')) close({ restoreFocus: false });
+  });
 
-  host.replaceWith(bar);
-  document.body.append(sheet);
-
-  const gsap = window.gsap;
-  const openSheet = () => {
-    sheet.hidden = false;
-    moreBtn.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-    if (!motion.isReduced()) {
-      gsap.fromTo(panel, { yPercent: 100 }, { yPercent: 0, duration: 0.45, ease: 'power3.out' });
-      gsap.fromTo(sheet.firstElementChild, { opacity: 0 }, { opacity: 1, duration: 0.3 });
-    }
-    $('a, button', panel)?.focus();
-  };
-  const closeSheet = () => {
-    const finish = () => {
-      sheet.hidden = true;
-      moreBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-      moreBtn.focus();
-    };
-    if (motion.isReduced()) return finish();
-    gsap.to(panel, { yPercent: 100, duration: 0.3, ease: 'power2.in', onComplete: finish });
-    gsap.to(sheet.firstElementChild, { opacity: 0, duration: 0.25 });
-  };
-
-  moreBtn.addEventListener('click', () => (sheet.hidden ? openSheet() : closeSheet()));
-  sheet.addEventListener('click', (e) => { if (e.target.closest('[data-sheet-close]')) closeSheet(); });
-  sheet.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeSheet();
-    // Kunci fokus di dalam panel
+  document.addEventListener('keydown', (e) => {
+    if (!root.classList.contains('nav-open')) return;
+    if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+    // Kunci fokus di dalam sidebar selama drawer/overlay terbuka
     if (e.key === 'Tab') {
-      const focusables = $$('a[href], button:not([disabled])', panel);
+      const focusables = $$('a[href], button:not([disabled])', els.aside).filter((el) => el.offsetParent !== null);
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   });
+
+  // Pindah breakpoint: tutup drawer/overlay agar tidak "menggantung"
+  const onBreakpoint = () => { if (root.classList.contains('nav-open')) close({ restoreFocus: false }); sync(); };
+  mqMobile.addEventListener('change', onBreakpoint);
+  mqTablet.addEventListener('change', onBreakpoint);
 }
 
 /* ---------- Transisi halaman untuk link internal ---------- */
@@ -261,22 +265,37 @@ function bindPageTransitions() {
 
 /* ---------- API publik ---------- */
 
-/** Merender kerangka navigasi ke placeholder [data-topbar] & [data-bottombar] */
+/** Merender sidebar + header HP ke placeholder [data-topbar] */
 export function initNavigation() {
-  const top = $('[data-topbar]');
-  const bottom = $('[data-bottombar]');
-  if (top) renderTopbar(top);
-  if (bottom) renderBottombar(bottom);
+  const host = $('[data-topbar]');
+  $('[data-bottombar]')?.remove();                    // bottom bar lama tidak dipakai lagi
+  if (host) {
+    render(host);
+    bindEvents();
+    sync();
+  }
   bindPageTransitions();
 }
 
-/** Menampilkan & memperbarui progres total di topbar (dipakai state.js nanti) */
+/** Menampilkan & memperbarui progres total di sidebar dan header HP */
 export function setNavProgress(value) {
-  const wrap = $('[data-nav-progress]');
-  if (!wrap) return;
-  wrap.hidden = false;
-  setProgress($('.ring', wrap), value);
-  $('[data-nav-progress-text]', wrap).textContent = `${Math.round(value)}%`;
+  const pct = Math.round(value);
+  $$('[data-nav-progress], .mobilebar__progress').forEach((wrap) => { wrap.hidden = false; });
+  $$('.appnav__progress .ring, .mobilebar__progress .ring').forEach((ring) => setProgress(ring, pct));
+  const bar = $('[data-nav-progress-bar]');
+  if (bar) setProgress(bar, pct);
+  $$('[data-nav-progress-text]').forEach((el) => { el.textContent = `${pct}%`; });
   // Nama aksesibel memuat teks yang terlihat ("Progres 40%") — WCAG 2.5.3
-  wrap.setAttribute('aria-label', `Progres ${Math.round(value)}% — lihat detail progres belajar`);
+  $('[data-nav-progress]')?.setAttribute('aria-label', `Progres belajar ${pct}% — lihat detail`);
+  $('.mobilebar__progress')?.setAttribute('aria-label', `${pct}% progres belajar — lihat detail`);
+}
+
+/** Nama & inisial pengguna di bagian bawah sidebar */
+export function setNavUser(user = {}) {
+  if (!els.userName) return;
+  const name = String(user.name || '').trim();
+  els.userName.textContent = name || 'Profil belajar';
+  els.avatar.textContent = name ? name.charAt(0).toUpperCase() : '?';
+  els.profile.setAttribute('aria-label', `${name || 'Profil belajar'} — ubah profil`);
+  els.profile.dataset.tooltip = name || 'Profil belajar';
 }

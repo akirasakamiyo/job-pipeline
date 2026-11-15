@@ -11,7 +11,6 @@
 import { $, $$, h, icon } from '../core/dom.js';
 import { toast, openModal, closeModal, setProgress, initRings } from '../core/ui.js';
 import { loadJSON } from '../core/data.js';
-import { isSoon } from '../core/navigation.js';
 import * as state from '../core/state.js';
 import * as motion from '../core/motion.js';
 import { moduleCard } from '../features/module-card.js';
@@ -20,6 +19,7 @@ let firstRender = true;
 
 export async function init() {
   render(state.getSummary());
+  initRailControls();
   initProfileDialog();
   await renderResources();
 
@@ -90,12 +90,16 @@ function renderHero(s) {
     cta.href = s.next.href;
   }
 
-  // Ringkasan di hero
-  $('[data-hero-stats]').replaceChildren(
-    h('div', {}, h('dt', {}, 'Modul selesai'), h('dd', { class: 'num' }, numberEl(s.completed, ''), h('small', {}, ` /${s.modules.length}`))),
-    h('div', {}, h('dt', {}, 'Bagian selesai'), h('dd', { class: 'num' }, numberEl(s.lessonsDone, ''), h('small', {}, ` /${s.lessonsTotal}`))),
-    h('div', {}, h('dt', {}, 'Total XP'), h('dd', { class: 'num' }, numberEl(s.xp, ''))),
-  );
+  // V3: ringkasan isi platform — semua angka dihitung dari data (katalog & daftar alat).
+  // Progres pribadi ada di panel Progres Belajar agar tidak diulang di hero.
+  $('[data-hero-stats]').replaceChildren(...[
+    { icon: 'route', value: s.modules.length, label: 'Modul belajar' },
+    { icon: 'book', value: s.lessonsTotal, label: 'Bagian materi' },
+    { icon: 'spark', value: s.activitiesTotal, label: 'Latihan interaktif' },
+    { icon: 'briefcase', value: TOOLS.length, label: 'Alat praktis melamar' },
+  ].map((f) => h('li', { class: 'hero-fact' },
+    h('span', { class: 'hero-fact__icon' }, icon(f.icon)),
+    h('span', {}, h('strong', { class: 'num' }, String(f.value)), ' ', f.label))));
 
   // Kartu "berikutnya" di samping ilustrasi
   const card = $('[data-continue-card]');
@@ -147,28 +151,20 @@ function renderProgress(s) {
   $('[data-overall-pct]').textContent = `${s.overallPct}%`;
   $('[data-steps-caption]').textContent = `${s.stepsDone} dari ${s.stepsTotal} langkah selesai (bagian + kuis + tandai selesai)`;
 
-  const counts = [
-    ['Total modul', s.modules.length, 'var(--ink)'],
-    ['Selesai', s.completed, 'var(--success)'],
-    ['Sedang dipelajari', s.inProgress, 'var(--cobalt)'],
-    ['Belum mulai', s.notStarted, 'var(--line-strong)'],
-  ];
-  $('[data-counts]').replaceChildren(...counts.map(([label, value, dot]) =>
+  // V3: panel ini merangkum statistik; urutan modul ada di Roadmap (tidak diulang)
+  const remaining = s.modules.length - s.completed;
+  const active = s.allDone ? null : s.current;
+  $('[data-counts]').replaceChildren(
     h('div', { class: 'count-pill' },
-      h('span', { class: 'count-pill__value num' }, numberEl(value, '')),
-      h('span', { class: 'count-pill__label' }, h('span', { class: 'count-pill__dot', style: { '--dot': dot } }), label))));
-
-  $('[data-module-progress]').replaceChildren(...s.modules.map((m) =>
-    h('li', {},
-      h('a', { class: 'module-progress__row', href: m.href, 'data-module': m.id },
-        h('span', { class: 'code' }, m.code),
-        h('span', { class: 'module-progress__title' }, m.title),
-        h('span', { class: 'module-progress__pct' }, `${m.pct}%`),
-        h('div', {
-          class: 'bar', 'data-progress': m.pct, style: { '--value': m.pct },
-          role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': String(m.pct),
-          'aria-label': `Progres ${m.title}`,
-        }, h('span', { class: 'bar__fill' }))))));
+      h('span', { class: 'count-pill__value num' }, numberEl(s.completed, ''), h('small', {}, `/${s.modules.length}`)),
+      h('span', { class: 'count-pill__label' }, h('span', { class: 'count-pill__dot', style: { '--dot': 'var(--success)' } }), 'Modul selesai')),
+    h('div', { class: 'count-pill' },
+      h('span', { class: 'count-pill__value num' }, numberEl(remaining, '')),
+      h('span', { class: 'count-pill__label' }, h('span', { class: 'count-pill__dot', style: { '--dot': 'var(--line-strong)' } }), 'Modul tersisa')),
+    h('a', { class: 'count-pill count-pill--active', href: active ? s.next.href : 'progress.html', 'data-module': active?.id || null },
+      h('span', { class: 'count-pill__label' }, h('span', { class: 'count-pill__dot', style: { '--dot': 'var(--cobalt)' } }), 'Modul aktif'),
+      h('span', { class: 'count-pill__active' }, active ? `${active.code} · ${active.title}` : 'Semua modul selesai'),
+      h('span', { class: 'count-pill__meta' }, active ? `${active.pct}% · ${active.lessonsDone}/${active.lessonsTotal} bagian` : 'Lihat pencapaianmu')));
 }
 
 /* ---------- ROADMAP ---------- */
@@ -214,8 +210,24 @@ function renderRoadmap(s) {
       h('span', { class: 'roadmap__body' },
         h('span', { class: 'roadmap__title' }, m.title),
         h('span', { class: 'roadmap__meta' }, meta)),
-      isCurrent ? h('span', { class: 'chip chip--progress' }, 'Kamu di sini') : null));
+      isCurrent ? h('span', { class: 'chip chip--progress' }, 'Kamu di sini')
+        : m.status === 'done' ? h('span', { class: 'chip chip--done' }, 'Selesai')
+          : h('span', { class: 'chip' }, m.status === 'progress' ? 'Berjalan' : 'Berikutnya')));
   }));
+
+  // Tujuan belajar berikutnya (tujuan nyata dari state, bukan teks statis)
+  const next = $('[data-roadmap-next]');
+  if (s.allDone) {
+    next.href = 'evaluation.html';
+    next.replaceChildren(h('span', { class: 'roadmap__next-label' }, 'Semua stasiun selesai'),
+      h('span', { class: 'roadmap__next-title' }, 'Uji pemahaman di Evaluasi Akhir'), icon('arrow-right'));
+  } else {
+    const what = s.next.type === 'lesson' ? s.next.lesson.title : s.next.type === 'quiz' ? `Kuis ${s.next.module.title}` : `Tandai ${s.next.module.title} selesai`;
+    next.href = s.next.href;
+    next.dataset.module = s.next.module.id;
+    next.replaceChildren(h('span', { class: 'roadmap__next-label' }, `Tujuan berikutnya · ${s.next.module.code}`),
+      h('span', { class: 'roadmap__next-title' }, what), icon('arrow-right'));
+  }
 }
 
 /* ---------- KARTU MODUL ---------- */
@@ -231,48 +243,36 @@ function renderModules(s) {
 
 /* ---------- ALAT BANTU ---------- */
 
+/** V3: tujuh alat praktis — semuanya berfungsi & menuju lokasi nyata */
+const TOOLS = [
+  { id: 'subject', title: 'Email Subject Generator', icon: 'wand', module: 'tx', href: 'practice.html#generator' },
+  { id: 'tracker', title: 'Job Application Tracker', icon: 'kanban', module: 'tr', href: 'tracker.html' },
+  { id: 'checklist', title: 'Interactive Checklist', icon: 'check', module: 'id', href: 'practice.html#checklist' },
+  { id: 'simulator', title: 'Email Writing Simulator', icon: 'edit', module: 'tx', href: 'practice.html#simulator' },
+  { id: 'review', title: 'CV & Portfolio Review', icon: 'file', module: 'cv', href: 'practice.html#review' },
+  { id: 'linkedin', title: 'LinkedIn Profile Checklist', icon: 'users', module: 'li', href: 'module.html?id=li#li-12' },
+  { id: 'outreach', title: 'Warm Outreach Generator', icon: 'send', module: 'li', href: 'module.html?id=li#li-16' },
+];
+
 function renderTools(s) {
   // Deskripsi tile memakai data nyata dari setiap alat
-  const quizzesPassed = s.modules.filter((m) => m.quizPassed).length;
   const t = s.tracker;
-  const tools = [
-    {
-      title: 'Email Subject Generator',
-      desc: s.tools.subjects.length ? `${s.tools.subjects.length} subjek tersimpan di riwayat.` : 'Susun subjek lamaran dalam hitungan detik.',
-      icon: 'wand', module: 'tx', href: 'practice.html#generator', soon: isSoon('practice'),
-    },
-    {
-      title: 'Job Tracker',
-      desc: t.total ? `${t.total} lamaran · ${t.byStatus.Interview} interview · ${t.byStatus.Accepted} diterima.` : 'Catat & pantau setiap lamaran.',
-      icon: 'kanban', module: 'tr', href: 'tracker.html', soon: isSoon('tracker'),
-    },
-    {
-      title: 'Checklist pra-kirim',
-      desc: `${s.tools.presend.pct}% siap · ${s.tools.presend.done}/${s.tools.presend.total} item dicek.`,
-      icon: 'check', module: 'id', href: 'practice.html#checklist', soon: isSoon('practice'),
-    },
-    {
-      title: 'Kuis modul',
-      desc: `${quizzesPassed} dari ${s.modules.length} kuis lulus.`,
-      icon: 'target', module: 'cv', href: 'practice.html#kuis', soon: false,
-    },
-    {
-      title: 'Email Writing Simulator',
-      desc: s.simulator.attempts ? `Skor rubrik terbaik ${s.simulator.best}.` : 'Tulis email lamaran & nilai dengan rubrik.',
-      icon: 'edit', module: 'tx', href: 'practice.html#simulator', soon: false,
-    },
-    {
-      title: 'Evaluasi Akhir',
-      desc: s.evaluation.attempts ? `Skor terbaik ${s.evaluation.best}${s.evaluation.passed ? ' · lulus' : ''}.` : '15 soal skenario lintas modul.',
-      icon: 'trophy', module: 'li', href: 'evaluation.html', soon: false,
-    },
-  ];
-  $('[data-tools]').replaceChildren(...tools.map((t) =>
-    h('a', { class: 'tool-tile', href: t.href, 'data-module': t.module },
-      h('span', { class: 'tool-tile__icon' }, icon(t.icon)),
-      h('span', { class: 'tool-tile__title' }, t.title),
-      h('span', { class: 'tool-tile__desc' }, t.desc),
-      t.soon ? h('span', { class: 'soon-tag' }, 'Segera') : null,
+  const st = state.getState();
+  const liChecklist = Object.keys(st.modules.li?.checklist || {}).filter((k) => k.startsWith('li-c')).length;
+  const desc = {
+    subject: s.tools.subjects.length ? `${s.tools.subjects.length} subjek tersimpan di riwayat.` : 'Susun subjek lamaran dalam hitungan detik.',
+    tracker: t.total ? `${t.total} lamaran · ${t.followUpDue ? `${t.followUpDue} perlu follow-up` : `${t.byStatus.Interview} interview`}.` : 'Belum ada lamaran tercatat.',
+    checklist: `${s.tools.presend.done}/${s.tools.presend.total} item pra-kirim dicek.`,
+    simulator: s.simulator.attempts ? `Skor rubrik terbaik ${s.simulator.best}.` : 'Tulis email lamaran & nilai dengan rubrik.',
+    review: `${s.tools.review.done}/${s.tools.review.total} item CV & portofolio dicek.`,
+    linkedin: liChecklist ? `${liChecklist}/8 bagian profil dirapikan.` : 'Rapikan 8 bagian utama profil.',
+    outreach: 'Susun pesan perkenalan yang hangat.',
+  };
+  $('[data-tools]').replaceChildren(...TOOLS.map((tool) =>
+    h('a', { class: 'tool-tile', href: tool.href, 'data-module': tool.module },
+      h('span', { class: 'tool-tile__icon' }, icon(tool.icon)),
+      h('span', { class: 'tool-tile__title' }, tool.title),
+      h('span', { class: 'tool-tile__desc' }, desc[tool.id]),
       icon('arrow-right', 'tool-tile__arrow'))));
 }
 
@@ -282,15 +282,28 @@ const ACTIVITY_ICON = { lesson: 'check', 'quiz-pass': 'target', quiz: 'target', 
 
 function renderActivity(s) {
   const host = $('[data-activity]');
+  // V3: bagian yang terakhir dibuka (state.lastVisited) sebagai pintasan nyata
+  const lv = state.getState().lastVisited;
+  const lvMod = lv && s.modules.find((m) => m.id === lv.module);
+  const lvLesson = lvMod && lv.lesson ? lvMod.lessons.find((l) => l.id === lv.lesson) : null;
+  const resume = lvMod
+    ? h('a', { class: 'resume-row', href: `${lvMod.href}${lvLesson ? `#${lvLesson.id}` : ''}`, 'data-module': lvMod.id },
+      h('span', { class: 'code' }, lvMod.code),
+      h('span', { class: 'resume-row__body' },
+        h('span', { class: 'resume-row__label' }, 'Terakhir dibuka'),
+        h('span', { class: 'resume-row__title' }, lvLesson ? lvLesson.title : lvMod.title)),
+      icon('arrow-right'))
+    : null;
   if (!s.activity.length) {
     host.replaceChildren(h('div', { class: 'empty-state' },
       h('span', { class: 'empty-state__icon' }, icon('clock')),
       h('p', { class: 'empty-state__title' }, 'Belum ada aktivitas'),
       h('p', {}, 'Setiap bagian, kuis, dan modul yang kamu selesaikan akan muncul di sini.'),
       h('a', { class: 'btn btn--secondary btn--sm', href: s.next?.href || 'modules.html' }, 'Mulai bagian pertama')));
+    if (resume) host.prepend(resume);
     return;
   }
-  host.replaceChildren(h('ol', { class: 'activity', role: 'list' }, s.activity.slice(0, 5).map((a) =>
+  host.replaceChildren(resume || '', h('ol', { class: 'activity', role: 'list' }, s.activity.slice(0, 5).map((a) =>
     h('li', { class: 'activity__item', 'data-module': a.module || null },
       h('span', { class: 'activity__icon' }, icon(ACTIVITY_ICON[a.type] || 'check')),
       h('p', { class: 'activity__text' }, a.text, h('time', { class: 'activity__time', datetime: a.at }, timeAgo(a.at)))))));
@@ -304,11 +317,17 @@ function renderAchievements(s) {
   const earned = main.filter((b) => b.earned);
   $('[data-badge-count]').textContent = earned.length;
   $('[data-badge-total]').textContent = main.length;
+  const badgeBar = $('[data-badge-bar]');
+  badgeBar.setAttribute('aria-valuemax', String(main.length));
+  badgeBar.setAttribute('aria-valuenow', String(earned.length));
+  badgeBar.style.setProperty('--value', String(Math.round((earned.length / main.length) * 100)));
   const xp = $('[data-xp]');
   if (firstRender) { xp.dataset.count = s.xp; xp.textContent = s.xp; } else motion.countUp(xp, s.xp);
 
   const next = main.find((b) => !b.earned);
-  $('[data-next-badge]').textContent = next ? `Badge berikutnya: ${next.name} — ${next.desc.toLowerCase()}.` : 'Semua badge sudah kamu kumpulkan!';
+  $('[data-next-badge]').textContent = !earned.length
+    ? `Belum ada badge. Badge pertama yang paling dekat: ${next.name} — ${next.desc.charAt(0).toLowerCase()}${next.desc.slice(1)}.`
+    : next ? `Badge berikutnya: ${next.name} — ${next.desc.charAt(0).toLowerCase()}${next.desc.slice(1)}.` : 'Semua badge utama sudah kamu kumpulkan!';
 
   // Badge yang sudah didapat ditampilkan lebih dulu
   const ordered = [...earned, ...main.filter((b) => !b.earned)];
@@ -335,12 +354,41 @@ async function renderResources() {
           h('span', { class: 'link-row__icon' }, icon('book')),
           h('span', { class: 'link-row__body' },
             h('span', { class: 'link-row__title' }, r.title),
-            h('span', { class: 'link-row__meta' }, `${r.type} · ${r.source}`)),
+            r.about ? h('span', { class: 'link-row__desc' }, r.about) : null,
+            h('span', { class: 'link-row__meta' }, `${r.type} · ${r.source}`,
+              r.verified ? null : h('span', { class: 'verify-tag link-row__verify' }, 'Perlu verifikasi'))),
           icon('external', 'link-row__ext'),
           h('span', { class: 'sr-only' }, '(membuka tab baru)')))));
   } catch {
     host.replaceChildren(h('li', { class: 'text-soft text-sm' }, 'Daftar resources gagal dimuat.'));
   }
+}
+
+/* ---------- KONTROL CAROUSEL MODUL (V3, tampilan HP) ----------
+   Tombol panah + titik posisi. Disembunyikan CSS bila rail bukan carousel. */
+function initRailControls() {
+  const rail = $('[data-module-rail]');
+  const dotsHost = $('[data-rail-dots]');
+  const prev = $('[data-rail-prev]');
+  const next = $('[data-rail-next]');
+  const cards = () => $$('.module-card', rail);
+  const step = () => (cards()[1] ? cards()[1].offsetLeft - cards()[0].offsetLeft : rail.clientWidth);
+  const index = () => Math.round(rail.scrollLeft / Math.max(1, step()));
+  const go = (i) => rail.scrollTo({ left: i * step(), behavior: motion.isReduced() ? 'auto' : 'smooth' });
+
+  dotsHost.replaceChildren(...cards().map((c, i) => h('li', {},
+    h('button', { type: 'button', class: 'rail-dot', 'aria-label': `Ke modul ${i + 1}`, onclick: () => go(i) }))));
+  const update = () => {
+    const i = Math.min(cards().length - 1, index());
+    $$('.rail-dot', dotsHost).forEach((d, k) => d.setAttribute('aria-current', k === i ? 'true' : 'false'));
+    prev.disabled = rail.scrollLeft <= 2;
+    next.disabled = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 2;
+  };
+  prev.addEventListener('click', () => go(Math.max(0, index() - 1)));
+  next.addEventListener('click', () => go(Math.min(cards().length - 1, index() + 1)));
+  rail.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+  window.addEventListener('resize', update);
+  update();
 }
 
 /* ---------- PROFIL (onboarding singkat) ---------- */
@@ -351,13 +399,23 @@ function initProfileDialog() {
   const nameInput = $('#p-name', form);
   const statusInput = $('#p-status', form);
 
-  $('[data-open-profile]').addEventListener('click', () => {
+  const openProfile = () => {
     const { user } = state.getState();
     nameInput.value = user.name;
     if (user.status) statusInput.value = user.status;
     setError('');
     openModal(dialog);
-  });
+  };
+  $('[data-open-profile]').addEventListener('click', openProfile);
+
+  // V3: pintasan profil di sidebar (dashboard.html#profil) langsung membuka dialog
+  const fromHash = () => {
+    if (window.location.hash !== '#profil') return;
+    history.replaceState(null, '', window.location.pathname);
+    setTimeout(openProfile, 300);
+  };
+  fromHash();
+  window.addEventListener('hashchange', fromHash);
 
   function setError(message) {
     const field = nameInput.closest('.field');

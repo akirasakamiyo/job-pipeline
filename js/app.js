@@ -2,8 +2,8 @@
    app.js — Titik masuk aplikasi (dipakai SEMUA halaman)
    ---------------------------------------------------------------------
    Urutan boot:
-   1. Render navigasi global (topbar, bottom bar)
-   2. Muat katalog modul & tampilkan progres nyata di topbar
+   1. Render navigasi global (V3: sidebar kiri + header HP)
+   2. Muat katalog modul & tampilkan progres nyata di sidebar
    3. Sinkronkan achievement (badge baru → notifikasi, di halaman mana pun)
    4. Bangun komponen umum (ring progres)
    5. Muat modul khusus halaman berdasarkan <body data-page="...">
@@ -11,7 +11,7 @@
    7. Beri tahu pengguna bila ada data LocalStorage yang rusak & dipulihkan
    ===================================================================== */
 
-import { initNavigation, setNavProgress } from './core/navigation.js';
+import { initNavigation, setNavProgress, setNavUser } from './core/navigation.js';
 import { initRings, toast, initTooltips, achievement } from './core/ui.js';
 import { initBackground } from './core/background.js';
 import * as loader from './core/loader.js';
@@ -61,7 +61,9 @@ async function boot() {
     await state.load();
     announceAchievements();
     state.subscribe(() => announceAchievements());
-    // Progres nyata di topbar (kecuali preview design system yang memakai nilai demo)
+    // Progres nyata & nama profil di sidebar (kecuali preview design system yang memakai nilai demo)
+    setNavUser(state.getState().user);
+    state.subscribe((summary) => setNavUser(summary.user));
     if (document.body.dataset.page !== 'styleguide') {
       setNavProgress(state.getSummary().overallPct);
       state.subscribe((summary) => setNavProgress(summary.overallPct));
