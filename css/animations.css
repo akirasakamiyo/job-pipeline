@@ -1,0 +1,72 @@
+/* =====================================================================
+   animations.css — Keyframes CSS & aturan gerak
+   GSAP (js/core/motion.js) menangani animasi utama. File ini berisi:
+   1. Keyframes kecil yang lebih efisien di CSS (spinner, shimmer, pulse)
+   2. Status awal elemen [data-reveal] sebelum GSAP siap
+   3. Mode gerak minimal (prefers-reduced-motion / preferensi pengguna)
+   ===================================================================== */
+
+@keyframes spin { to { rotate: 360deg; } }
+
+@keyframes shimmer {
+  from { translate: -100% 0; }
+  to   { translate: 100% 0; }
+}
+
+/* Titik berdenyut — dipakai untuk penanda "perlu tindakan" */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgb(229 72 77 / .45); }
+  100% { box-shadow: 0 0 0 10px rgb(229 72 77 / 0); }
+}
+.pulse-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--danger);
+  animation: pulse-ring 1.6s var(--ease-out) infinite;
+}
+
+/* ---------- Status awal reveal ----------
+   Elemen disembunyikan HANYA bila:
+   - JS aktif (.js), dan
+   - GSAP belum mengambil alih (.motion-ready belum ada), dan
+   - failsafe belum terpicu (.motion-fallback).
+   Jadi konten tidak pernah "hilang" walau skrip gagal dimuat.          */
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not(.motion-ready):not(.motion-fallback):not(.reduce-motion) [data-reveal],
+  html.js:not(.motion-ready):not(.motion-fallback):not(.reduce-motion) [data-intro],
+  html.js:not(.motion-ready):not(.motion-fallback):not(.reduce-motion) [data-stagger] > * {
+    opacity: 0;
+  }
+}
+
+/* ---------- Mode gerak minimal ----------
+   Berlaku otomatis dari setelan OS, atau manual lewat kelas
+   .reduce-motion (preferensi pengguna yang disimpan di LocalStorage).  */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after {
+  animation-duration: .01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ---------- Hemat daya (Tahap 6) ----------
+   motion.js menambahkan .is-hidden saat tab tidak terlihat:
+   semua animasi CSS dijeda (GSAP dijeda terpisah).                     */
+html.is-hidden *, html.is-hidden *::before, html.is-hidden *::after {
+  animation-play-state: paused !important;
+}
+
+/* Gerak minimal: dekorasi karier diam, riak tombol tidak dibuat (JS) */
+@media (prefers-reduced-motion: reduce) {
+  .deco-career { will-change: auto; }
+}
+html.reduce-motion .deco-career { will-change: auto; }

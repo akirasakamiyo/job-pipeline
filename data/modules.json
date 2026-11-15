@@ -1,0 +1,143 @@
+{
+  "version": 2,
+  "quizPassScore": 70,
+  "note": "lessons = bagian belajar yang dihitung progres. Kuis & 'Mark as completed' dihitung terpisah. Isi tiap bagian ada di data/content/<id>.json. Durasi menit adalah estimasi baca.",
+  "modules": [
+    {
+      "id": "id",
+      "number": 1,
+      "code": "ID",
+      "title": "Digital Identity Foundation",
+      "headline": "Membersihkan Rumah Digital Sebelum Menyapa HRD",
+      "tagline": "Gmail & Google Drive",
+      "description": "Bangun identitas digital yang dipercaya HRD: alamat email profesional, tanda tangan email, dan Google Drive yang rapi dengan izin berbagi yang tepat.",
+      "illustration": "assets/illustrations/email.svg",
+      "outcomes": [
+        "Menerapkan aturan satu email khusus untuk urusan karier",
+        "Membuat alamat Gmail dan tanda tangan email yang profesional",
+        "Merapikan Google Drive dan mengatur izin berbagi dengan aman"
+      ],
+      "lessons": [
+        { "id": "id-1", "kind": "intro", "title": "Tujuan & pengantar", "minutes": 3 },
+        { "id": "id-2", "kind": "topic", "title": "The Email Rule", "minutes": 3 },
+        { "id": "id-3", "kind": "topic", "title": "Professional Gmail Address", "minutes": 4 },
+        { "id": "id-4", "kind": "topic", "title": "The Power of Email Signature", "minutes": 4 },
+        { "id": "id-5", "kind": "topic", "title": "Google Drive Hygiene", "minutes": 4 },
+        { "id": "id-6", "kind": "topic", "title": "Sharing Permissions", "minutes": 4 },
+        { "id": "id-7", "kind": "topic", "title": "Digital Identity Checklist", "minutes": 3 },
+        { "id": "id-8", "kind": "visual", "title": "Visual: anatomi identitas digital", "minutes": 2 },
+        { "id": "id-9", "kind": "example", "title": "Contoh praktis: sebelum & sesudah", "minutes": 3 },
+        { "id": "id-10", "kind": "exercise", "title": "Latihan: pilah alamat email", "minutes": 3 }
+      ]
+    },
+    {
+      "id": "cv",
+      "number": 2,
+      "code": "CV",
+      "title": "The Core Arsenal",
+      "headline": "Senjata Utama: Menyiapkan Dokumen yang Lolos ATS & Rekruter",
+      "tagline": "CV & Portfolio",
+      "description": "Siapkan CV dalam format dan nama file yang tepat, susun informasinya agar mudah dipindai rekruter dan sistem ATS, lalu hubungkan dengan portofolio.",
+      "illustration": "assets/illustrations/cv.svg",
+      "outcomes": [
+        "Menyimpan CV sebagai PDF dengan nama file dan ukuran yang tepat",
+        "Menyusun hierarki informasi CV yang mudah dipindai",
+        "Mengintegrasikan portofolio lewat tautan yang aman dan rapi"
+      ],
+      "lessons": [
+        { "id": "cv-1", "kind": "intro", "title": "Tujuan & pengantar", "minutes": 3 },
+        { "id": "cv-2", "kind": "topic", "title": "PDF Format & Naming File", "minutes": 4 },
+        { "id": "cv-3", "kind": "topic", "title": "File Size Optimization", "minutes": 3 },
+        { "id": "cv-4", "kind": "topic", "title": "Recruiter CV Scanning", "minutes": 4 },
+        { "id": "cv-5", "kind": "topic", "title": "CV Information Hierarchy", "minutes": 5 },
+        { "id": "cv-6", "kind": "topic", "title": "Portfolio Integration", "minutes": 4 },
+        { "id": "cv-7", "kind": "topic", "title": "Portfolio Link Strategy", "minutes": 3 },
+        { "id": "cv-8", "kind": "visual", "title": "Visual: hierarki CV", "minutes": 2 },
+        { "id": "cv-9", "kind": "example", "title": "Contoh praktis: poin pencapaian", "minutes": 3 },
+        { "id": "cv-10", "kind": "exercise", "title": "Latihan: nama file & poin CV", "minutes": 4 }
+      ]
+    },
+    {
+      "id": "li",
+      "number": 3,
+      "code": "LI",
+      "title": "Recon & Networking",
+      "headline": "Cari Tahu Target & Mainkan Strategi Warm Outreach",
+      "tagline": "LinkedIn Strategy",
+      "description": "Optimalkan profil LinkedIn, samakan headline dengan CV, kenali perusahaan dan orang yang merekrut, lalu bangun koneksi dengan pendekatan warm outreach yang sopan.",
+      "illustration": "assets/illustrations/network.svg",
+      "outcomes": [
+        "Mengoptimalkan profil LinkedIn dan menyinkronkan headline",
+        "Meriset perusahaan dan menemukan hiring manager secara etis",
+        "Menjalankan warm outreach dengan etika networking yang baik"
+      ],
+      "lessons": [
+        { "id": "li-1", "kind": "intro", "title": "Tujuan & pengantar", "minutes": 3 },
+        { "id": "li-2", "kind": "topic", "title": "LinkedIn Profile Optimization", "minutes": 5 },
+        { "id": "li-3", "kind": "topic", "title": "Headline Synchronization", "minutes": 3 },
+        { "id": "li-4", "kind": "topic", "title": "Finding Hiring Managers", "minutes": 4 },
+        { "id": "li-5", "kind": "topic", "title": "Company Research", "minutes": 4 },
+        { "id": "li-6", "kind": "topic", "title": "Warm Outreach", "minutes": 5 },
+        { "id": "li-7", "kind": "topic", "title": "Professional Networking Etiquette", "minutes": 3 },
+        { "id": "li-8", "kind": "visual", "title": "Visual: alur warm outreach", "minutes": 2 },
+        { "id": "li-9", "kind": "example", "title": "Contoh praktis: pesan koneksi", "minutes": 3 },
+        { "id": "li-10", "kind": "exercise", "title": "Latihan: headline & pesan", "minutes": 4 }
+      ]
+    },
+    {
+      "id": "tx",
+      "number": 4,
+      "code": "TX",
+      "title": "Masterclass Execution",
+      "headline": "Eksekusi Akhir: Meracik Email Lamaran yang Bikin HR Langsung Klik",
+      "tagline": "The Art of Sending the Email",
+      "description": "Racik email lamaran dari subjek sampai tanda tangan: formula tiga paragraf (hook, value proposition, call to action) dan pemeriksaan red flag sebelum menekan Kirim.",
+      "illustration": "assets/illustrations/interview.svg",
+      "outcomes": [
+        "Menulis subjek email dengan formula yang jelas",
+        "Menyusun email lamaran dengan formula tiga paragraf",
+        "Memeriksa red flag sebelum mengirim"
+      ],
+      "lessons": [
+        { "id": "tx-1", "kind": "intro", "title": "Tujuan & pengantar", "minutes": 3 },
+        { "id": "tx-2", "kind": "topic", "title": "Email Subject Formula", "minutes": 4 },
+        { "id": "tx-3", "kind": "topic", "title": "Professional Email Structure", "minutes": 4 },
+        { "id": "tx-4", "kind": "topic", "title": "The 3-Paragraph Formula", "minutes": 3 },
+        { "id": "tx-5", "kind": "topic", "title": "The Hook", "minutes": 3 },
+        { "id": "tx-6", "kind": "topic", "title": "The Value Proposition", "minutes": 4 },
+        { "id": "tx-7", "kind": "topic", "title": "The Call to Action", "minutes": 3 },
+        { "id": "tx-8", "kind": "topic", "title": "Red Flags Checklist", "minutes": 3 },
+        { "id": "tx-9", "kind": "visual", "title": "Visual: anatomi email lamaran", "minutes": 2 },
+        { "id": "tx-10", "kind": "example", "title": "Contoh praktis: email lengkap", "minutes": 4 },
+        { "id": "tx-11", "kind": "exercise", "title": "Latihan: subjek & kalimat pembuka", "minutes": 4 }
+      ]
+    },
+    {
+      "id": "tr",
+      "number": 5,
+      "code": "TR",
+      "title": "Post-Send Strategy & Tracking",
+      "headline": "Manajemen Lamaran & Etika Follow-Up",
+      "tagline": "Follow-up & Job Tracker",
+      "description": "Kelola semua lamaran dalam satu tracker, pahami status tiap lamaran, dan kirim follow-up yang sopan di waktu yang tepat.",
+      "illustration": "assets/illustrations/portfolio.svg",
+      "outcomes": [
+        "Membuat tracker lamaran di Google Sheets atau Notion",
+        "Memahami dan memperbarui status setiap lamaran",
+        "Mengirim follow-up yang sopan di waktu yang tepat"
+      ],
+      "lessons": [
+        { "id": "tr-1", "kind": "intro", "title": "Tujuan & pengantar", "minutes": 3 },
+        { "id": "tr-2", "kind": "topic", "title": "Job Application Tracking", "minutes": 3 },
+        { "id": "tr-3", "kind": "topic", "title": "Google Sheets / Notion Tracker", "minutes": 5 },
+        { "id": "tr-4", "kind": "topic", "title": "Application Status", "minutes": 3 },
+        { "id": "tr-5", "kind": "topic", "title": "Follow-Up Etiquette", "minutes": 3 },
+        { "id": "tr-6", "kind": "topic", "title": "Follow-Up Timing", "minutes": 3 },
+        { "id": "tr-7", "kind": "topic", "title": "Professional Follow-Up Message", "minutes": 4 },
+        { "id": "tr-8", "kind": "visual", "title": "Visual: perjalanan status lamaran", "minutes": 2 },
+        { "id": "tr-9", "kind": "example", "title": "Contoh praktis: isi tracker", "minutes": 3 },
+        { "id": "tr-10", "kind": "exercise", "title": "Latihan: pilah pesan follow-up", "minutes": 3 }
+      ]
+    }
+  ]
+}

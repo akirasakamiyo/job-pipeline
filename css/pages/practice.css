@@ -1,0 +1,127 @@
+/* =====================================================================
+   pages/practice.css — Halaman Latihan
+   Subject Generator · checklist pra-kirim · daftar kuis
+   Komponen dasar (card, field, btn, checklist, ring, bar) dari
+   components.css; .builder__output & .builder__checks dari learn-style
+   didefinisikan ulang di sini agar halaman ini mandiri.
+   ===================================================================== */
+
+#main { display: flex; flex-direction: column; gap: clamp(32px, 5vw, 56px); }
+.practice-jump { margin-top: var(--s-2); }
+.practice-jump .chip-btn { text-decoration: none; }
+.practice-jump .icon { width: 16px; height: 16px; }
+
+.tool-card { display: grid; gap: var(--s-6); scroll-margin-top: calc(var(--topbar-h) + 16px); }
+.tool-card__head { display: flex; gap: var(--s-4); align-items: flex-start; }
+.tool-card__head .tool-tile__icon { flex: none; margin: 0; width: 52px; height: 52px; border-radius: 16px; }
+.tool-card__head > div { display: grid; gap: 6px; }
+.tool-section { scroll-margin-top: calc(var(--topbar-h) + 16px); }
+.fmt { font-family: var(--font-mono); font-size: .85em; padding: 2px 8px; border-radius: 6px; background: var(--paper-2); overflow-wrap: anywhere; }
+
+/* ---------- Subject Generator ---------- */
+.gen-layout { display: grid; gap: var(--s-6); }
+@media (min-width: 900px) { .gen-layout { grid-template-columns: 1fr 1.05fr; align-items: start; } }
+.gen-form { display: grid; gap: var(--s-4); }
+.gen-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-2); }
+@media (max-width: 479px) { .gen-actions .btn { flex: 1 1 auto; } }
+
+.gen-preview { display: grid; gap: var(--s-4); padding: var(--s-5); border-radius: var(--r-lg); background: var(--mod-tint); min-width: 0; }
+
+.inbox-row {
+  display: flex; align-items: center; gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1.5px solid var(--ink);
+  box-shadow: var(--sh-sticker);
+  min-width: 0;
+}
+.inbox-row__avatar {
+  flex: none; display: grid; place-items: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--mod); color: #fff;
+  font: 700 16px/1 var(--font-body);
+}
+.inbox-row__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.inbox-row__from { font-weight: 800; font-size: var(--fs-sm); }
+.inbox-row__subject {
+  font-size: var(--fs-sm); color: var(--ink-2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;   /* seperti di kotak masuk sungguhan */
+}
+.inbox-row__subject.is-placeholder { color: var(--ink-mute); font-style: italic; }
+.inbox-row__time { flex: none; font: 600 var(--fs-xs)/1 var(--font-mono); color: var(--ink-soft); align-self: flex-start; margin-top: 4px; }
+
+.gen-output { display: grid; gap: 6px; }
+.gen-count { font: 600 var(--fs-xs)/1 var(--font-mono); color: var(--ink-soft); text-align: right; }
+
+.builder__output {
+  display: block;
+  padding: 12px var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--ink); color: #fff;
+  font: 700 var(--fs-sm)/1.45 var(--font-mono);
+  overflow-wrap: anywhere;
+}
+.builder__output.is-empty { background: var(--surface); color: var(--ink-soft); font-weight: 500; border: 1px dashed var(--line-strong); }
+.builder__checks { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: var(--fs-sm); font-weight: 600; }
+.builder__checks li { display: flex; align-items: center; gap: 8px; }
+.builder__checks .icon { width: 18px; height: 18px; padding: 2px; border-radius: 50%; stroke-width: 3; color: #fff; flex: none; }
+.builder__checks .is-ok .icon { background: var(--success); }
+.builder__checks .is-bad { color: var(--danger-text); }
+.builder__checks .is-bad .icon { background: var(--danger); }
+.builder__checks .is-soft { color: var(--warning-text); }
+.builder__checks .is-soft .icon { background: var(--warning); }
+
+.gen-history { border-top: 1px dashed var(--line); padding-top: var(--s-5); }
+.gen-history .section-head { margin-bottom: var(--s-3); }
+.gen-history__list { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.gen-history__item {
+  display: flex; align-items: center; gap: var(--s-2);
+  padding: 8px 8px 8px var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+.gen-history__text { flex: 1; min-width: 0; font: 600 var(--fs-sm)/1.4 var(--font-mono); overflow-wrap: anywhere; }
+.gen-history__time { display: block; font: 500 var(--fs-xs)/1.4 var(--font-body); color: var(--ink-soft); }
+.gen-history__item .btn--icon { width: 40px; min-height: 40px; }
+.gen-history__empty { color: var(--ink-soft); font-size: var(--fs-sm); padding: var(--s-3) 0; }
+
+/* ---------- Checklist pra-kirim ---------- */
+.presend-progress { display: flex; align-items: center; gap: var(--s-5); padding: var(--s-4) var(--s-5); border-radius: var(--r-lg); background: var(--mod-tint); }
+.presend-progress__body { flex: 1; display: grid; gap: 6px; }
+@media (max-width: 479px) { .presend-progress { flex-direction: column; align-items: stretch; text-align: left; } .presend-progress .ring { align-self: center; } }
+.presend-list { gap: var(--s-2); }
+@media (min-width: 900px) { .presend-list { grid-template-columns: 1fr 1fr; } }
+
+.presend-done {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4);
+  padding: var(--s-4) var(--s-5);
+  border-radius: var(--r-lg);
+  border: var(--bw) solid var(--ink);
+  background: var(--signal-tint);
+  box-shadow: var(--sh-sticker);
+}
+.presend-done:focus { outline: none; }
+.presend-done > div { flex: 1; min-width: 200px; }
+.presend-done__stamp {
+  display: grid; place-items: center;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--signal); border: var(--bw) solid var(--ink);
+  rotate: -8deg;
+}
+
+/* ---------- Kuis ---------- */
+.quiz-grid { display: grid; gap: var(--s-4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); }
+.quiz-tile { display: grid; gap: var(--s-3); align-content: start; padding: var(--s-5); }
+.quiz-tile__top { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); }
+.quiz-tile__title { font-size: var(--fs-h3); }
+.quiz-tile__score { display: flex; align-items: baseline; gap: 6px; }
+.quiz-tile__score .num { font-size: var(--fs-h2); }
+.quiz-tile .btn { margin-top: auto; }
+
+/* Performa (Tahap 6): ruang awal untuk daftar yang dirender JS — cegah CLS */
+[data-presend-list]:empty { min-height: 520px; }
+@media (min-width: 900px) { [data-presend-list]:empty { min-height: 300px; } }
+[data-gen-checks]:empty { min-height: 168px; }
+.quiz-grid:empty { min-height: 240px; }

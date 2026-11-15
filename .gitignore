@@ -1,0 +1,11 @@
+# Sistem operasi & editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Cadangan data pribadi dari halaman Progres — JANGAN di-commit
+ujap-cadangan-*.json
+
+# Folder alat lokal (bila nanti memakai npm untuk pengujian)
+node_modules/

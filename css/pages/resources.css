@@ -1,0 +1,43 @@
+/* =====================================================================
+   pages/resources.css — Halaman Resources & references (Tahap 7)
+   Komponen (card, chip-btn, field, callout, verify-tag, code) dari
+   components.css. File ini hanya tata letak kartu sumber.
+   ===================================================================== */
+
+#main { display: flex; flex-direction: column; gap: var(--s-5); padding-bottom: var(--s-7); }
+.page-head { padding-bottom: 0; }
+.res-notice { max-width: 860px; }
+
+.res-panel { display: grid; gap: var(--s-4); }
+.res-filter { display: grid; gap: var(--s-2); }
+.res-filter .chip-btn { height: auto; min-height: 40px; white-space: normal; text-align: left; }
+.res-panel__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
+
+.res-grid { display: grid; gap: var(--s-4); margin: 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
+.res-card {
+  display: flex; flex-direction: column; gap: var(--s-3);
+  padding: var(--s-5);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  min-width: 0;
+  transition: border-color var(--dur-2), translate var(--dur-2) var(--ease-out), box-shadow var(--dur-2);
+}
+.res-card:hover { border-color: var(--line-strong); translate: 0 -3px; box-shadow: var(--sh-2); }
+.res-card__top { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+.res-card__icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--mod-tint, var(--paper-2)); color: var(--mod-text, var(--ink)); margin-right: var(--s-1); }
+.res-card__icon .icon { width: 20px; height: 20px; }
+.res-card__title { font: 700 var(--fs-lg)/1.35 var(--font-body); overflow-wrap: anywhere; }
+.res-card__about { font-size: var(--fs-sm); color: var(--ink-2); }
+.res-card__source { font-size: var(--fs-xs); font-weight: 700; color: var(--ink-soft); }
+.res-card__modules { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.res-card__mod { display: inline-flex; align-items: center; min-height: 40px; border-radius: var(--r-xs); }
+.res-card__mod:hover .code { filter: brightness(1.15); }
+.res-card__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2) var(--s-3); margin-top: auto; padding-top: var(--s-3); border-top: 1px dashed var(--line); }
+.res-card__host { font-size: var(--fs-xs); color: var(--ink-soft); overflow-wrap: anywhere; }
+
+/* Performa: ruang awal untuk daftar yang dirender JS — cegah CLS */
+.res-grid:empty { min-height: 480px; }
+[data-module-filter]:empty { min-height: 136px; }
+@media (min-width: 768px) { [data-module-filter]:empty { min-height: 88px; } }
+[data-kind-filter]:empty { min-height: 40px; }

@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <!-- Keamanan (Tahap 7): Content Security Policy. Hanya skrip dari situs ini + skrip boot inline (di-hash)
+       yang boleh berjalan. Bila skrip boot di <head> diubah, hash sha256 di bawah WAJIB diperbarui (lihat README). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-KAA7GRYrWs7pgVEZEBioOLtygPnBFlkJ6tK8iBlfbIw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Design System · The Ultimate Job Application Pipeline</title>
+  <meta name="description" content="Design system The Ultimate Job Application Pipeline: warna, tipografi, komponen, ilustrasi, dan sistem animasi.">
+  <meta name="theme-color" content="#FBF7F0">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+
+  <!-- Boot kecil (wajib inline, sebelum CSS): tandai JS aktif & siapkan tirai transisi.
+       Failsafe 2,5 detik memastikan konten tetap tampil bila skrip gagal dimuat. -->
+  <script>
+    (function (d) {
+      var h = d.documentElement; h.classList.add('js');
+      try {
+        var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches ||
+          (JSON.parse(localStorage.getItem('ujap:prefs') || '{}').motion === 'reduced');
+        if (sessionStorage.getItem('ujap:transition') === '1' && !reduced) h.classList.add('is-entering');
+      } catch (e) {}
+      setTimeout(function () { h.classList.add('motion-fallback'); h.classList.remove('is-entering'); }, 2500);
+    })(document);
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..800,0..100,0..1&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/pages/styleguide.css">
+
+  <!-- GSAP disimpan lokal (vendor/) agar jalan offline & tidak bergantung CDN -->
+  <script defer src="vendor/gsap/gsap.min.js"></script>
+  <script defer src="vendor/gsap/ScrollTrigger.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+  <!-- Performa: unduh modul JS & data secara paralel (bukan berantai) -->
+  <link rel="modulepreload" href="js/core/navigation.js">
+  <link rel="modulepreload" href="js/core/dom.js">
+  <link rel="modulepreload" href="js/core/motion.js">
+  <link rel="modulepreload" href="js/core/ui.js">
+  <link rel="modulepreload" href="js/core/state.js">
+  <link rel="modulepreload" href="js/core/storage.js">
+  <link rel="modulepreload" href="js/core/data.js">
+  <link rel="modulepreload" href="js/core/tracker-store.js">
+  <link rel="modulepreload" href="js/core/loader.js">
+  <link rel="modulepreload" href="js/core/background.js">
+  <link rel="modulepreload" href="js/pages/styleguide.js">
+</head>
+
+<body data-page="styleguide">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <!-- Latar dekoratif: mengambang pelan, tidak bisa difokus/diklik -->
+  <div class="bg-deco" aria-hidden="true">
+    <span class="deco deco--sun" data-float="14"></span>
+    <span class="deco deco--ring" data-float="10"></span>
+    <span class="deco deco--pill" data-float="12"></span>
+    <svg class="deco deco--plus" viewBox="0 0 24 24" data-float="8"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+    <span class="deco deco--dot" data-float="6"></span>
+    <svg class="deco deco--wave" viewBox="0 0 90 20" data-float="8"><path d="M2 10c7-8 14-8 21 0s14 8 21 0 14-8 21 0 14 8 21 0" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/></svg>
+  </div>
+
+  <div data-topbar></div>
+
+  <noscript>
+    <p class="container" style="padding:16px;margin-top:16px;background:#FFF3D9;border-radius:14px">
+      Aktifkan JavaScript untuk memakai navigasi, progres belajar, dan fitur interaktif.
+    </p>
+  </noscript>
+
+  <main id="main">
+    <!-- ================= HERO ================= -->
+    <section class="sg-hero container">
+      <div class="sg-hero__copy stack" style="--stack-gap: var(--s-5)">
+        <p class="eyebrow" data-reveal="fade">Design System · v1.0 · Tahap 2</p>
+        <h1 class="display" data-reveal="up">Satu jalur, <span class="highlight">lima stasiun</span>, menuju kerja impian.</h1>
+        <p class="lead" data-reveal="up">Fondasi visual The Ultimate Job Application Pipeline: warna, tipografi, komponen, ilustrasi, dan gerak. Semua halaman LMS dibangun dari bagian-bagian di halaman ini.</p>
+        <div class="cluster" data-reveal="up">
+          <a class="btn btn--primary btn--lg" href="#warna">Jelajahi komponen <svg class="icon icon--trail" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+          <a class="btn btn--secondary btn--lg" href="styleguide.html?transisi=1">Uji transisi halaman</a>
+        </div>
+      </div>
+
+      <div class="sg-hero__art" data-reveal="scale">
+        <img decoding="async" src="assets/illustrations/workspace.svg" alt="Ilustrasi meja kerja dengan laptop, lampu, tanaman, dan email yang terbang" width="400" height="300">
+        <div class="float-card sg-hero__chip sg-hero__chip--a" data-module="cv" data-float="10">
+          <span class="float-card__icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-file"/></svg></span>
+          <span>CV_Rina_Frontend.pdf<small>Siap dilampirkan</small></span>
+        </div>
+        <div class="float-card sg-hero__chip sg-hero__chip--b" data-module="tr" data-float="8">
+          <span class="float-card__icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-send"/></svg></span>
+          <span>Terkirim · 09.12<small>Follow-up dalam 7 hari</small></span>
+        </div>
+        <div class="float-card sg-hero__chip sg-hero__chip--c" data-float="12">
+          <span class="float-card__icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-flame"/></svg></span>
+          <span>+100 XP</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="container with-sidebar sg-body">
+      <!-- ================= SIDEBAR ================= -->
+      <aside class="sidebar" aria-label="Bagian design system" data-scrollspy>
+        <p class="sidebar__title eyebrow">Isi halaman</p>
+        <ul class="sidebar__list" role="list">
+          <li><a class="sidebar__link" href="#warna"><span class="sidebar__num">01</span>Warna</a></li>
+          <li><a class="sidebar__link" href="#tipografi"><span class="sidebar__num">02</span>Tipografi</a></li>
+          <li><a class="sidebar__link" href="#fondasi"><span class="sidebar__num">03</span>Spasi &amp; radius</a></li>
+          <li><a class="sidebar__link" href="#tombol"><span class="sidebar__num">04</span>Tombol</a></li>
+          <li><a class="sidebar__link" href="#input"><span class="sidebar__num">05</span>Input</a></li>
+          <li><a class="sidebar__link" href="#modul"><span class="sidebar__num">06</span>Kartu modul</a></li>
+          <li><a class="sidebar__link" href="#progres"><span class="sidebar__num">07</span>Progres</a></li>
+          <li><a class="sidebar__link" href="#badge"><span class="sidebar__num">08</span>Badge</a></li>
+          <li><a class="sidebar__link" href="#checklist"><span class="sidebar__num">09</span>Checklist</a></li>
+          <li><a class="sidebar__link" href="#kuis"><span class="sidebar__num">10</span>Kuis</a></li>
+          <li><a class="sidebar__link" href="#modal"><span class="sidebar__num">11</span>Modal &amp; toast</a></li>
+          <li><a class="sidebar__link" href="#selesai"><span class="sidebar__num">12</span>Completion</a></li>
+          <li><a class="sidebar__link" href="#ilustrasi"><span class="sidebar__num">13</span>Ilustrasi</a></li>
+          <li><a class="sidebar__link" href="#gerak"><span class="sidebar__num">14</span>Gerak</a></li>
+        </ul>
+      </aside>
+
+      <div class="sg-content">
+
+        <!-- ================= 01 WARNA ================= -->
+        <section class="sg-section" id="warna" aria-labelledby="h-warna">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">01 · Warna</p>
+            <h2 id="h-warna">Rambu transit yang hangat</h2>
+            <p class="text-soft">Kuning sinyal untuk aksi utama, tinta gelap untuk teks, dan cobalt untuk elemen interaktif. Kotak "Aa" menghitung kontras secara langsung (minimal AA = 4,5 : 1).</p>
+          </header>
+
+          <h3 class="sg-sub">Brand &amp; netral</h3>
+          <div class="swatches" data-stagger>
+            <div class="swatch" style="--sw: var(--signal)" data-on="#1E1B2E"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><strong>Primary · Signal</strong><code>#FFC83D</code><span>CTA utama, highlight, XP</span></div></div>
+            <div class="swatch" style="--sw: var(--ink)" data-on="#FFFFFF"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><strong>Secondary · Ink</strong><code>#1E1B2E</code><span>Teks, outline, bayangan stiker</span></div></div>
+            <div class="swatch" style="--sw: var(--cobalt)" data-on="#FFFFFF"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><strong>Accent · Cobalt</strong><code>#3B5BDB</code><span>Link, fokus, status aktif</span></div></div>
+            <div class="swatch" style="--sw: var(--paper)" data-on="#1E1B2E"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><strong>Background · Paper</strong><code>#FBF7F0</code><span>Latar halaman</span></div></div>
+            <div class="swatch" style="--sw: var(--surface)" data-on="#5B5770"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><strong>Surface</strong><code>#FFFFFF</code><span>Kartu &amp; panel (teks sekunder)</span></div></div>
+          </div>
+
+          <h3 class="sg-sub">Status</h3>
+          <div class="swatches" data-stagger>
+            <div class="swatch" style="--sw: var(--success-tint)" data-on="#157A41"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><strong>Success</strong><code>#1F9D55 / #157A41</code><span>Jawaban benar, modul selesai</span></div></div>
+            <div class="swatch" style="--sw: var(--warning-tint)" data-on="#8A5A00"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><strong>Warning</strong><code>#E8A317 / #8A5A00</code><span>Perlu follow-up, peringatan</span></div></div>
+            <div class="swatch" style="--sw: var(--danger-tint)" data-on="#C1272D"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><strong>Error</strong><code>#E5484D / #C1272D</code><span>Jawaban salah, validasi gagal</span></div></div>
+          </div>
+
+          <h3 class="sg-sub">Warna jalur modul</h3>
+          <div class="swatches swatches--lines" data-stagger>
+            <div class="swatch" data-module="id" style="--sw: var(--mod-text)" data-on="#FFFFFF"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><span class="code">ID</span><strong>Digital Identity</strong><span>Cobalt</span></div></div>
+            <div class="swatch" data-module="cv" style="--sw: var(--mod-text)" data-on="#FFFFFF"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><span class="code">CV</span><strong>Core Arsenal</strong><span>Tangerine</span></div></div>
+            <div class="swatch" data-module="li" style="--sw: var(--mod-text)" data-on="#FFFFFF"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><span class="code">LI</span><strong>Recon &amp; Networking</strong><span>Teal</span></div></div>
+            <div class="swatch" data-module="tx" style="--sw: var(--mod-text)" data-on="#FFFFFF"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><span class="code">TX</span><strong>Execution</strong><span>Berry</span></div></div>
+            <div class="swatch" data-module="tr" style="--sw: var(--mod-text)" data-on="#FFFFFF"><div class="swatch__chip"><span class="swatch__aa" data-contrast></span></div><div class="swatch__meta"><span class="code">TR</span><strong>Tracking</strong><span>Lime</span></div></div>
+          </div>
+        </section>
+
+        <!-- ================= 02 TIPOGRAFI ================= -->
+        <section class="sg-section" id="tipografi" aria-labelledby="h-tipo">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">02 · Tipografi</p>
+            <h2 id="h-tipo">Editorial di judul, jernih di isi</h2>
+            <p class="text-soft">Fraunces (serif lembut berkarakter) untuk judul &amp; angka, Plus Jakarta Sans (karya desainer Indonesia) untuk bacaan, JetBrains Mono untuk label dan kode stasiun.</p>
+          </header>
+
+          <div class="card type-specimen stack" style="--stack-gap: var(--s-5)" data-reveal="up">
+            <div class="type-row"><span class="eyebrow">Display · Fraunces 700</span><p class="display">Kirim lamaran.</p></div>
+            <div class="type-row"><span class="eyebrow">H1 · Fraunces 650</span><p class="h1">Identitas digital yang dipercaya HRD</p></div>
+            <div class="type-row"><span class="eyebrow">H2</span><p class="h2">Subjek email dalam 60 karakter</p></div>
+            <div class="type-row"><span class="eyebrow">H3</span><p class="h3">Follow-up tanpa terkesan memaksa</p></div>
+            <div class="type-row"><span class="eyebrow">Body · Plus Jakarta Sans 400</span><p class="prose">Rekruter rata-rata hanya membaca sebuah CV dalam hitungan detik. Karena itu, nama file, subjek email, dan kalimat pembuka harus langsung menjawab: siapa kamu dan posisi apa yang kamu lamar.</p></div>
+            <div class="type-row"><span class="eyebrow">Label · JetBrains Mono 700</span><p class="cluster"><span class="eyebrow">Lesson 2 dari 4</span><span class="eyebrow">· 6 menit</span><span class="code" data-module="tx">TX</span></p></div>
+            <div class="type-row"><span class="eyebrow">Angka progres · tabular</span>
+              <div class="cluster" style="--cluster-gap: var(--s-6)">
+                <p class="num num--xl"><span data-count="86">86</span>%</p>
+                <p class="num num--lg"><span data-count="1240">1.240</span> <span class="text-soft" style="font-size:.5em">XP</span></p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 03 FONDASI ================= -->
+        <section class="sg-section" id="fondasi" aria-labelledby="h-fondasi">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">03 · Spasi, radius, bayangan</p>
+            <h2 id="h-fondasi">Ritme 4px, sudut membulat</h2>
+          </header>
+          <div class="foundation" data-stagger>
+            <div class="card card--flat">
+              <h3 class="h4">Spasi</h3>
+              <ul class="space-scale" role="list">
+                <li><span style="--w:4px"></span><code>--s-1 · 4</code></li>
+                <li><span style="--w:8px"></span><code>--s-2 · 8</code></li>
+                <li><span style="--w:12px"></span><code>--s-3 · 12</code></li>
+                <li><span style="--w:16px"></span><code>--s-4 · 16</code></li>
+                <li><span style="--w:24px"></span><code>--s-5 · 24</code></li>
+                <li><span style="--w:32px"></span><code>--s-6 · 32</code></li>
+                <li><span style="--w:48px"></span><code>--s-7 · 48</code></li>
+                <li><span style="--w:64px"></span><code>--s-8 · 64</code></li>
+              </ul>
+            </div>
+            <div class="card card--flat">
+              <h3 class="h4">Radius</h3>
+              <div class="radius-row">
+                <div style="--r: var(--r-sm)"><code>sm 10</code></div>
+                <div style="--r: var(--r-md)"><code>md 14</code></div>
+                <div style="--r: var(--r-lg)"><code>lg 22</code></div>
+                <div style="--r: var(--r-xl)"><code>xl 32</code></div>
+                <div style="--r: var(--r-pill)"><code>pill</code></div>
+              </div>
+            </div>
+            <div class="card card--flat">
+              <h3 class="h4">Bayangan</h3>
+              <div class="shadow-row">
+                <div style="box-shadow: var(--sh-1)"><code>sh-1</code></div>
+                <div style="box-shadow: var(--sh-2)"><code>sh-2</code></div>
+                <div style="box-shadow: var(--sh-3)"><code>sh-3</code></div>
+                <div style="box-shadow: var(--sh-sticker); border: 2px solid var(--ink)"><code>sticker</code></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 04 TOMBOL ================= -->
+        <section class="sg-section" id="tombol" aria-labelledby="h-tombol">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">04 · Tombol</p>
+            <h2 id="h-tombol">Satu aksi utama per layar</h2>
+            <p class="text-soft">Tombol utama memakai bayangan stiker yang "tertekan" saat diklik. Semua tombol di bawah berfungsi.</p>
+          </header>
+          <div class="card stack" style="--stack-gap: var(--s-6)" data-reveal="up">
+            <div class="demo-row">
+              <span class="eyebrow">Varian</span>
+              <div class="cluster">
+                <button type="button" class="btn btn--primary" data-demo="save">Simpan progres</button>
+                <button type="button" class="btn btn--dark" data-demo="start">Mulai belajar <svg class="icon icon--trail" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></button>
+                <button type="button" class="btn btn--secondary" data-demo="open-modal"><svg class="icon icon--lead" aria-hidden="true"><use href="assets/icons/sprite.svg#i-eye"/></svg> Lihat detail</button>
+                <button type="button" class="btn btn--ghost" data-demo="ghost">Lewati dulu</button>
+              </div>
+            </div>
+            <div class="demo-row">
+              <span class="eyebrow">Ukuran</span>
+              <div class="cluster">
+                <button type="button" class="btn btn--primary btn--sm" data-demo="size" data-size="kecil">Kecil</button>
+                <button type="button" class="btn btn--primary" data-demo="size" data-size="normal">Normal</button>
+                <button type="button" class="btn btn--primary btn--lg" data-demo="size" data-size="besar">Besar</button>
+              </div>
+            </div>
+            <div class="demo-row">
+              <span class="eyebrow">Ikon &amp; status</span>
+              <div class="cluster">
+                <button type="button" class="btn btn--secondary btn--icon" aria-label="Salin contoh subjek email" data-demo="copy"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-copy"/></svg></button>
+                <button type="button" class="btn btn--secondary btn--icon" aria-label="Hapus data contoh" data-demo="delete"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-trash"/></svg></button>
+                <button type="button" class="btn btn--danger" data-demo="delete">Hapus lamaran</button>
+                <button type="button" class="btn btn--primary" disabled>Nonaktif</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 05 INPUT ================= -->
+        <section class="sg-section" id="input" aria-labelledby="h-input">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">05 · Input</p>
+            <h2 id="h-input">Formulir yang memandu, bukan menghakimi</h2>
+            <p class="text-soft">Label selalu terlihat, petunjuk di bawah, pesan kesalahan spesifik. Coba kirim formulir kosong.</p>
+          </header>
+          <form class="card form-demo" id="demo-form" novalidate data-reveal="up">
+            <div class="field">
+              <label class="field__label" for="f-name">Nama lengkap <span class="field__req" aria-hidden="true">*</span></label>
+              <input class="input" id="f-name" name="name" type="text" autocomplete="name" placeholder="cth. Rina Putri Andini" required aria-describedby="f-name-hint">
+              <p class="field__hint" id="f-name-hint">Dipakai di subjek email dan nama file CV.</p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="f-email">Email profesional <span class="field__req" aria-hidden="true">*</span></label>
+              <div class="input-wrap">
+                <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-mail"/></svg>
+                <input class="input" id="f-email" name="email" type="email" autocomplete="email" placeholder="nama.belakang@gmail.com" required aria-describedby="f-email-hint">
+              </div>
+              <p class="field__hint" id="f-email-hint">Hindari nama panggilan atau angka acak.</p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="f-source">Sumber lowongan</label>
+              <select class="select" id="f-source" name="source">
+                <option>Portal lowongan</option>
+                <option>LinkedIn</option>
+                <option>Referral</option>
+                <option>Website perusahaan</option>
+              </select>
+            </div>
+            <div class="field form-demo__wide">
+              <label class="field__label" for="f-note">Catatan <span class="field__count" data-counter-for="f-note">0/160</span></label>
+              <textarea class="textarea" id="f-note" name="note" maxlength="200" data-soft-limit="160" placeholder="cth. Dihubungi lewat referral kakak tingkat."></textarea>
+            </div>
+            <div class="form-demo__wide cluster">
+              <button type="submit" class="btn btn--primary">Simpan data</button>
+              <button type="reset" class="btn btn--ghost">Kosongkan</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- ================= 06 KARTU MODUL ================= -->
+        <section class="sg-section" id="modul" aria-labelledby="h-modul">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">06 · Kartu modul &amp; chip filter</p>
+            <h2 id="h-modul">Setiap modul adalah stasiun</h2>
+            <p class="text-soft">Garis warna jalur, kode stasiun, status, dan progres dalam satu kartu. Chip di bawah benar-benar menyaring kartu.</p>
+          </header>
+
+          <div class="cluster sg-filter" role="group" aria-label="Saring kartu modul berdasarkan status" data-reveal="fade">
+            <button type="button" class="chip chip-btn" aria-pressed="true" data-filter="all">Semua</button>
+            <button type="button" class="chip chip-btn" aria-pressed="false" data-filter="progress">Berjalan</button>
+            <button type="button" class="chip chip-btn" aria-pressed="false" data-filter="done">Selesai</button>
+            <button type="button" class="chip chip-btn" aria-pressed="false" data-filter="todo">Belum mulai</button>
+          </div>
+          <p class="sr-only" aria-live="polite" data-filter-status></p>
+
+          <div class="grid module-grid" style="--grid-min: 250px" data-stagger>
+            <article class="card card--interactive module-card" data-module="id" data-status="done" data-tilt>
+              <span class="module-card__line" aria-hidden="true"></span>
+              <div class="module-card__head"><span class="code">ID</span><span class="chip chip--done"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-check"/></svg>Selesai</span></div>
+              <div class="module-card__art"><img decoding="async" src="assets/illustrations/email.svg" alt="" width="400" height="300" loading="lazy"></div>
+              <div class="stack" style="--stack-gap: 6px">
+                <span class="module-card__num">MODUL 01</span>
+                <h3 class="module-card__title">Digital Identity Foundation</h3>
+                <p class="module-card__desc">Gmail profesional &amp; Google Drive yang rapi.</p>
+              </div>
+              <div class="module-card__meta"><span><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-book"/></svg>4 lesson</span><span><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-clock"/></svg>25 menit</span></div>
+              <div class="module-card__foot"><div class="bar" style="--value:100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Progres modul 1"><span class="bar__fill"></span></div><span class="module-card__pct">100%</span></div>
+              <button type="button" class="btn btn--secondary btn--block" data-demo="module">Ulas kembali</button>
+            </article>
+
+            <article class="card card--interactive module-card" data-module="cv" data-status="progress" data-tilt>
+              <span class="module-card__line" aria-hidden="true"></span>
+              <div class="module-card__head"><span class="code">CV</span><span class="chip chip--progress">Berjalan</span></div>
+              <div class="module-card__art"><img decoding="async" src="assets/illustrations/cv.svg" alt="" width="400" height="300" loading="lazy"></div>
+              <div class="stack" style="--stack-gap: 6px">
+                <span class="module-card__num">MODUL 02</span>
+                <h3 class="module-card__title">The Core Arsenal</h3>
+                <p class="module-card__desc">CV ramah ATS &amp; portofolio yang meyakinkan.</p>
+              </div>
+              <div class="module-card__meta"><span><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-book"/></svg>5 lesson</span><span><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-clock"/></svg>35 menit</span></div>
+              <div class="module-card__foot"><div class="bar bar--live" style="--value:40" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" aria-label="Progres modul 2"><span class="bar__fill"></span></div><span class="module-card__pct">40%</span></div>
+              <button type="button" class="btn btn--primary btn--block" data-demo="module">Lanjutkan <svg class="icon icon--trail" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></button>
+            </article>
+
+            <article class="card card--interactive module-card" data-module="li" data-status="todo" data-tilt>
+              <span class="module-card__line" aria-hidden="true"></span>
+              <div class="module-card__head"><span class="code">LI</span><span class="chip">Belum mulai</span></div>
+              <div class="module-card__art"><img decoding="async" src="assets/illustrations/network.svg" alt="" width="400" height="300" loading="lazy"></div>
+              <div class="stack" style="--stack-gap: 6px">
+                <span class="module-card__num">MODUL 03</span>
+                <h3 class="module-card__title">Recon &amp; Networking</h3>
+                <p class="module-card__desc">Strategi LinkedIn &amp; riset perusahaan.</p>
+              </div>
+              <div class="module-card__meta"><span><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-book"/></svg>4 lesson</span><span><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-clock"/></svg>30 menit</span></div>
+              <div class="module-card__foot"><div class="bar" style="--value:0" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Progres modul 3"><span class="bar__fill"></span></div><span class="module-card__pct">0%</span></div>
+              <button type="button" class="btn btn--secondary btn--block" data-demo="module">Mulai modul</button>
+            </article>
+
+            <article class="card card--interactive module-card is-locked" data-module="tx" data-status="todo" data-tilt>
+              <span class="module-card__line" aria-hidden="true"></span>
+              <div class="module-card__head"><span class="code">TX</span><span class="chip chip--locked"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-lock"/></svg>Disarankan nanti</span></div>
+              <div class="module-card__art"><img decoding="async" src="assets/illustrations/interview.svg" alt="" width="400" height="300" loading="lazy"></div>
+              <div class="stack" style="--stack-gap: 6px">
+                <span class="module-card__num">MODUL 04</span>
+                <h3 class="module-card__title">Masterclass Execution</h3>
+                <p class="module-card__desc">Seni mengirim email lamaran.</p>
+              </div>
+              <div class="module-card__meta"><span><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-book"/></svg>5 lesson</span><span><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-clock"/></svg>40 menit</span></div>
+              <div class="module-card__foot"><div class="bar" style="--value:0" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Progres modul 4"><span class="bar__fill"></span></div><span class="module-card__pct">0%</span></div>
+              <button type="button" class="btn btn--secondary btn--block" data-demo="module">Intip isi modul</button>
+            </article>
+          </div>
+        </section>
+
+        <!-- ================= 07 PROGRES ================= -->
+        <section class="sg-section" id="progres" aria-labelledby="h-progres">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">07 · Progres</p>
+            <h2 id="h-progres">Peta jalur, ring, dan statistik</h2>
+            <p class="text-soft">Ubah nilai dengan tombol. Ring, bar, angka, peta jalur, dan indikator di topbar ikut bergerak.</p>
+          </header>
+
+          <div class="progress-demo">
+            <article class="card progress-card" data-reveal="up" data-progress-demo>
+              <div class="ring ring--xl" data-ring data-value="40" data-label="Progres total demo"></div>
+              <div class="progress-card__body">
+                <p class="eyebrow">Progres total</p>
+                <p class="num num--xl"><span data-progress-num>40</span>%</p>
+                <p class="text-soft text-sm" data-progress-caption>8 dari 20 lesson selesai</p>
+                <div class="bar bar--lg bar--live" data-progress-bar style="--value:40" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40" aria-label="Progres total demo (bar)"><span class="bar__fill"></span></div>
+                <div class="cluster" style="margin-top: var(--s-2)">
+                  <button type="button" class="btn btn--secondary btn--sm" data-progress-step="-10" aria-label="Kurangi 10 persen">−10%</button>
+                  <button type="button" class="btn btn--primary btn--sm" data-progress-step="10" aria-label="Tambah 10 persen">+10%</button>
+                  <button type="button" class="btn btn--ghost btn--sm" data-progress-step="reset">Reset</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="card" data-reveal="up">
+              <div class="checklist-head">
+                <div>
+                  <p class="eyebrow">Peta jalur</p>
+                  <h3 class="h3">Posisi keretamu</h3>
+                </div>
+                <div class="cluster">
+                  <button type="button" class="btn btn--secondary btn--icon" aria-label="Stasiun sebelumnya" data-route-step="-1"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-left"/></svg></button>
+                  <button type="button" class="btn btn--primary btn--icon" aria-label="Stasiun berikutnya" data-route-step="1"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></button>
+                </div>
+              </div>
+              <div class="route" data-route role="img" style="--value:25">
+                <div class="route__rail"><span class="route__fill"></span></div>
+                <ol class="route__stops" role="list">
+                  <li class="route__stop is-done" data-module="id"><span class="route__dot"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-check"/></svg></span><span class="route__label">ID</span></li>
+                  <li class="route__stop is-current" data-module="cv"><span class="route__dot"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-check"/></svg></span><span class="route__label">CV</span></li>
+                  <li class="route__stop" data-module="li"><span class="route__dot"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-check"/></svg></span><span class="route__label">LI</span></li>
+                  <li class="route__stop" data-module="tx"><span class="route__dot"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-check"/></svg></span><span class="route__label">TX</span></li>
+                  <li class="route__stop" data-module="tr"><span class="route__dot"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-check"/></svg></span><span class="route__label">TR</span></li>
+                </ol>
+                <span class="route__train" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-train"/></svg></span>
+              </div>
+              <p class="route-caption" data-route-caption aria-live="polite"></p>
+            </article>
+
+            <div class="stat-grid" data-stagger>
+              <div class="stat"><span class="stat__icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-flame"/></svg></span><span class="stat__value num"><span data-count="340">340</span></span><span class="stat__label">XP terkumpul</span></div>
+              <div class="stat" data-module="tx"><span class="stat__icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-target"/></svg></span><span class="stat__value num"><span data-count="85">85</span>%</span><span class="stat__label">Rata-rata kuis</span></div>
+              <div class="stat" data-module="tr"><span class="stat__icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-briefcase"/></svg></span><span class="stat__value num"><span data-count="6">6</span></span><span class="stat__label">Lamaran dilacak</span></div>
+              <div class="stat" data-module="li">
+                <div class="ring" data-ring data-value="75" data-label="Kelengkapan profil demo"></div>
+                <span class="stat__label">Kelengkapan profil</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 08 BADGE ================= -->
+        <section class="sg-section" id="badge" aria-labelledby="h-badge">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">08 · Badge pencapaian</p>
+            <h2 id="h-badge">Stempel untuk setiap stasiun</h2>
+          </header>
+          <div class="card stack" style="--stack-gap: var(--s-6)" data-reveal="up">
+            <ul class="badge-grid" role="list" data-badges>
+              <li class="badge" data-module="id"><div class="badge__seal"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-mail"/></svg><span class="badge__lock"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-lock"/></svg></span></div><div><p class="badge__name">Identitas Siap</p><p class="badge__desc">Modul 1 selesai</p></div></li>
+              <li class="badge" data-module="cv"><div class="badge__seal"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-file"/></svg><span class="badge__lock"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-lock"/></svg></span></div><div><p class="badge__name">Senjata Lengkap</p><p class="badge__desc">Modul 2 selesai</p></div></li>
+              <li class="badge is-locked" data-module="li"><div class="badge__seal"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-users"/></svg><span class="badge__lock"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-lock"/></svg></span></div><div><p class="badge__name">Jejaring Aktif</p><p class="badge__desc">Modul 3 selesai</p></div></li>
+              <li class="badge is-locked" data-module="tx"><div class="badge__seal"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-send"/></svg><span class="badge__lock"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-lock"/></svg></span></div><div><p class="badge__name">Pengirim Ulung</p><p class="badge__desc">Modul 4 selesai</p></div></li>
+              <li class="badge is-locked" data-module="tr"><div class="badge__seal"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-trophy"/></svg><span class="badge__lock"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-lock"/></svg></span></div><div><p class="badge__name">Pipeline Master</p><p class="badge__desc">Semua modul selesai</p></div></li>
+            </ul>
+            <div class="cluster">
+              <button type="button" class="btn btn--primary" data-badge-unlock>Buka badge berikutnya</button>
+              <button type="button" class="btn btn--ghost" data-badge-reset>Kunci ulang</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 09 CHECKLIST ================= -->
+        <section class="sg-section" id="checklist" aria-labelledby="h-check">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">09 · Checklist interaktif</p>
+            <h2 id="h-check">Centang aksi nyata, rasakan progresnya</h2>
+          </header>
+          <div class="card" data-module="id" data-checklist-demo data-reveal="up">
+            <div class="checklist-head">
+              <div>
+                <span class="code">ID</span>
+                <h3 class="h3" style="margin-top: var(--s-2)">Siapkan identitas digital</h3>
+                <p class="text-soft text-sm"><span data-check-count>0</span> dari <span data-check-total>5</span> selesai</p>
+              </div>
+              <div class="ring" data-ring data-value="0" data-label="Progres checklist"></div>
+            </div>
+            <ul class="checklist" role="list">
+              <li><label class="check"><input type="checkbox"><span class="check__box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg></span><span class="check__text"><span class="check__title">Buat Gmail dengan format nama profesional</span><span class="check__hint">cth. rina.andini@gmail.com</span></span></label></li>
+              <li><label class="check"><input type="checkbox"><span class="check__box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg></span><span class="check__text"><span class="check__title">Aktifkan verifikasi 2 langkah</span><span class="check__hint">Lindungi akun yang dipakai melamar.</span></span></label></li>
+              <li><label class="check"><input type="checkbox"><span class="check__box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg></span><span class="check__text"><span class="check__title">Pasang foto profil &amp; tanda tangan email</span></span></label></li>
+              <li><label class="check"><input type="checkbox"><span class="check__box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg></span><span class="check__text"><span class="check__title">Buat folder "Lamaran Kerja" di Google Drive</span></span></label></li>
+              <li><label class="check"><input type="checkbox"><span class="check__box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg></span><span class="check__text"><span class="check__title">Atur akses tautan menjadi "Siapa saja yang memiliki link · Viewer"</span></span></label></li>
+            </ul>
+            <div class="cluster" style="margin-top: var(--s-4)">
+              <button type="button" class="btn btn--ghost btn--sm" data-check-reset>Reset checklist</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 10 KUIS ================= -->
+        <section class="sg-section" id="kuis" aria-labelledby="h-kuis">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">10 · Kartu kuis</p>
+            <h2 id="h-kuis">Umpan balik instan, penjelasan jelas</h2>
+          </header>
+          <form class="card quiz-card" data-quiz-demo data-reveal="up">
+            <div class="quiz-card__top">
+              <span class="eyebrow">Soal 3 dari 5</span>
+              <div class="bar bar--thin" style="--value:60" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="Progres kuis"><span class="bar__fill"></span></div>
+            </div>
+            <fieldset class="stack" style="--stack-gap: var(--s-5)">
+              <legend class="quiz-card__q">Subjek email lamaran mana yang paling tepat?</legend>
+              <div class="options" data-options>
+                <label class="option" data-correct="false"><input type="radio" name="demo-q" value="a"><span class="option__key">A</span><span>Lamaran</span><svg class="icon option__mark" aria-hidden="true"><use href="assets/icons/sprite.svg#i-x"/></svg></label>
+                <label class="option" data-correct="true"><input type="radio" name="demo-q" value="b"><span class="option__key">B</span><span>Lamaran Frontend Developer – Rina Putri Andini</span><svg class="icon option__mark" aria-hidden="true"><use href="assets/icons/sprite.svg#i-check"/></svg></label>
+                <label class="option" data-correct="false"><input type="radio" name="demo-q" value="c"><span class="option__key">C</span><span>URGENT!!! MOHON DIBACA 🙏</span><svg class="icon option__mark" aria-hidden="true"><use href="assets/icons/sprite.svg#i-x"/></svg></label>
+                <label class="option" data-correct="false"><input type="radio" name="demo-q" value="d"><span class="option__key">D</span><span>(tanpa subjek)</span><svg class="icon option__mark" aria-hidden="true"><use href="assets/icons/sprite.svg#i-x"/></svg></label>
+              </div>
+            </fieldset>
+            <div data-feedback aria-live="polite"></div>
+            <div class="quiz-card__foot">
+              <span class="text-soft text-sm">Pilih satu jawaban.</span>
+              <button type="submit" class="btn btn--primary" data-quiz-submit disabled>Periksa jawaban</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- ================= 11 MODAL & TOAST ================= -->
+        <section class="sg-section" id="modal" aria-labelledby="h-modal">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">11 · Modal &amp; toast</p>
+            <h2 id="h-modal">Konfirmasi yang aman, notifikasi yang singkat</h2>
+          </header>
+          <div class="card stack" style="--stack-gap: var(--s-6)" data-reveal="up">
+            <div class="demo-row">
+              <span class="eyebrow">Modal</span>
+              <div class="cluster">
+                <button type="button" class="btn btn--secondary" data-demo="open-modal">Buka modal informasi</button>
+                <button type="button" class="btn btn--secondary" data-demo="delete">Buka dialog konfirmasi</button>
+              </div>
+            </div>
+            <div class="demo-row">
+              <span class="eyebrow">Toast</span>
+              <div class="cluster">
+                <button type="button" class="btn btn--secondary btn--sm" data-toast="success">Sukses</button>
+                <button type="button" class="btn btn--secondary btn--sm" data-toast="info">Info</button>
+                <button type="button" class="btn btn--secondary btn--sm" data-toast="warning">Peringatan</button>
+                <button type="button" class="btn btn--secondary btn--sm" data-toast="error">Error</button>
+                <button type="button" class="btn btn--secondary btn--sm" data-toast="undo">Dengan "Urungkan"</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 12 COMPLETION ================= -->
+        <section class="sg-section" id="selesai" aria-labelledby="h-selesai">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">12 · Completion state</p>
+            <h2 id="h-selesai">Rayakan setiap stasiun</h2>
+          </header>
+          <div class="cluster" data-reveal="fade">
+            <button type="button" class="btn btn--dark" data-completion-show>Simulasikan modul selesai</button>
+          </div>
+          <section class="completion" data-module="id" data-completion hidden aria-labelledby="completion-title" tabindex="-1">
+            <div class="completion__stamp"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-trophy"/></svg></div>
+            <p class="eyebrow">Modul 01 · Selesai</p>
+            <h3 class="h2 completion__title" id="completion-title">Identitas digitalmu siap tempur!</h3>
+            <p class="completion__text">Email profesional dan folder Drive sudah rapi. Stasiun berikutnya: menyusun CV dan portofolio.</p>
+            <dl class="completion__stats">
+              <div><dt>Skor kuis</dt><dd class="num"><span data-completion-count="90">0</span>%</dd></div>
+              <div><dt>XP</dt><dd class="num">+<span data-completion-count="100">0</span></dd></div>
+              <div><dt>Lesson</dt><dd class="num"><span data-completion-count="4">0</span>/4</dd></div>
+            </dl>
+            <div class="cluster" style="justify-content: center">
+              <button type="button" class="btn btn--primary" data-demo="module">Lanjut ke Modul 02 <svg class="icon icon--trail" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></button>
+              <button type="button" class="btn btn--ghost" data-completion-hide>Tutup demo</button>
+            </div>
+          </section>
+        </section>
+
+        <!-- ================= 13 ILUSTRASI ================= -->
+        <section class="sg-section" id="ilustrasi" aria-labelledby="h-ilustrasi">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">13 · Ilustrasi</p>
+            <h2 id="h-ilustrasi">Potongan kertas, garis tinta</h2>
+            <p class="text-soft">SVG buatan sendiri (bebas lisensi pihak ketiga): bentuk datar, outline tinta 3px, bayangan stiker, palet jalur. Tanpa logo merek.</p>
+          </header>
+          <div class="grid illus-grid" style="--grid-min: 220px" data-stagger>
+            <figure class="illus" data-module="id"><img decoding="async" src="assets/illustrations/workspace.svg" alt="Meja kerja dengan laptop" width="400" height="300" loading="lazy"><figcaption>workspace.svg · Ruang kerja digital</figcaption></figure>
+            <figure class="illus" data-module="tx"><img decoding="async" src="assets/illustrations/email.svg" alt="Amplop email lamaran dan pesawat kertas" width="400" height="300" loading="lazy"><figcaption>email.svg · Email lamaran</figcaption></figure>
+            <figure class="illus" data-module="cv"><img decoding="async" src="assets/illustrations/cv.svg" alt="Dokumen CV dengan stempel centang" width="400" height="300" loading="lazy"><figcaption>cv.svg · CV siap kirim</figcaption></figure>
+            <figure class="illus" data-module="id"><img decoding="async" src="assets/illustrations/portfolio.svg" alt="Folder portofolio berisi karya" width="400" height="300" loading="lazy"><figcaption>portfolio.svg · Portofolio</figcaption></figure>
+            <figure class="illus" data-module="li"><img decoding="async" src="assets/illustrations/network.svg" alt="Kartu profil di tengah jaringan koneksi" width="400" height="300" loading="lazy"><figcaption>network.svg · Networking</figcaption></figure>
+            <figure class="illus" data-module="tr"><img decoding="async" src="assets/illustrations/interview.svg" alt="Dua orang dalam sesi wawancara kerja" width="400" height="300" loading="lazy"><figcaption>interview.svg · Wawancara &amp; kantor</figcaption></figure>
+          </div>
+        </section>
+
+        <!-- ================= 14 GERAK ================= -->
+        <section class="sg-section" id="gerak" aria-labelledby="h-gerak">
+          <header class="sg-head" data-reveal="up">
+            <p class="eyebrow">14 · Sistem gerak</p>
+            <h2 id="h-gerak">Cepat, bermakna, bisa dimatikan</h2>
+            <p class="text-soft">Durasi 120–700 ms, easing <code>power3.out</code>, hanya <code>transform</code> &amp; <code>opacity</code>. Preferensi di bawah disimpan di perangkatmu dan berlaku di seluruh LMS.</p>
+          </header>
+
+          <div class="card stack" style="--stack-gap: var(--s-5)" data-reveal="up">
+            <div class="demo-row">
+              <span class="eyebrow" id="motion-pref-label">Preferensi gerak</span>
+              <div class="segmented" role="radiogroup" aria-labelledby="motion-pref-label">
+                <label><input type="radio" name="motion-pref" value="system"><span>Ikuti sistem</span></label>
+                <label><input type="radio" name="motion-pref" value="reduced"><span>Kurangi gerak</span></label>
+              </div>
+            </div>
+            <p class="text-soft text-sm" data-motion-status aria-live="polite"></p>
+          </div>
+
+          <div class="motion-grid" data-reveal="up">
+            <button type="button" class="motion-tile" data-motion-demo="fade"><span class="motion-tile__box"></span><strong>Fade-in</strong><span>Klik untuk putar</span></button>
+            <button type="button" class="motion-tile" data-motion-demo="up"><span class="motion-tile__box"></span><strong>Slide-up</strong><span>Klik untuk putar</span></button>
+            <button type="button" class="motion-tile" data-motion-demo="cards"><span class="motion-tile__stack"><i></i><i></i><i></i></span><strong>Card entrance</strong><span>Klik untuk putar</span></button>
+            <button type="button" class="motion-tile" data-motion-demo="pop"><span class="motion-tile__box motion-tile__box--round"></span><strong>Pop (benar)</strong><span>Klik untuk putar</span></button>
+            <button type="button" class="motion-tile" data-motion-demo="shake"><span class="motion-tile__box motion-tile__box--danger"></span><strong>Shake (salah)</strong><span>Klik untuk putar</span></button>
+            <button type="button" class="motion-tile" data-motion-demo="confetti"><span class="motion-tile__box motion-tile__box--signal"></span><strong>Confetti</strong><span>Klik untuk putar</span></button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a class="brand" href="styleguide.html" aria-label="Design System">
+        <img class="brand__mark" src="assets/images/favicon.svg" alt="" width="38" height="38">
+        <span class="brand__text"><span class="brand__kicker">The Ultimate Job Application</span><span class="brand__name">Pipeline</span></span>
+      </a>
+      <p>Progres belajar tersimpan di perangkatmu sendiri. Tanpa akun, tanpa server.</p>
+    </div>
+  </footer>
+
+  <div data-bottombar></div>
+
+  <!-- Modal informasi (contoh <dialog> statis) -->
+  <dialog class="modal" id="demo-modal" aria-labelledby="demo-modal-title">
+    <div class="modal__head">
+      <div>
+        <div class="modal__icon"><svg class="icon icon--lg" aria-hidden="true"><use href="assets/icons/sprite.svg#i-file"/></svg></div>
+        <h2 class="h3" id="demo-modal-title">Format nama file CV</h2>
+      </div>
+      <button type="button" class="btn btn--ghost btn--icon" aria-label="Tutup" data-modal-close><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-x"/></svg></button>
+    </div>
+    <div class="modal__body">
+      <p>Gunakan pola <strong>CV_NamaLengkap_Posisi.pdf</strong> agar rekruter mudah mencari filemu di antara ratusan lampiran.</p>
+      <p class="text-sm text-soft">Contoh: <code>CV_RinaPutriAndini_FrontendDeveloper.pdf</code></p>
+    </div>
+    <div class="modal__foot">
+      <button type="button" class="btn btn--secondary" data-modal-close>Tutup</button>
+      <button type="button" class="btn btn--primary" data-demo="copy-filename">Salin contoh</button>
+    </div>
+  </dialog>
+</body>
+</html>

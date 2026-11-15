@@ -1,0 +1,169 @@
+{
+  "module": "id",
+  "objectives": [
+    "Menjelaskan mengapa alamat email adalah kesan pertama sebelum CV dibaca",
+    "Membuat alamat Gmail khusus karier dengan format nama yang profesional",
+    "Menyusun tanda tangan email yang ringkas dan informatif",
+    "Merapikan struktur folder dan penamaan file di Google Drive",
+    "Mengatur izin berbagi tautan agar aman dan bisa dibuka HRD"
+  ],
+  "sections": {
+    "id-1": {
+      "blocks": [
+        { "type": "objectives" },
+        { "type": "p", "text": "Sebelum HRD membuka CV-mu, mereka lebih dulu melihat **nama pengirim**, **alamat email**, dan—bila kamu mengirim tautan—**isi folder Google Drive**-mu. Semua itu adalah \"rumah digital\" yang ikut dinilai." },
+        { "type": "callout", "tone": "key", "title": "Gambaran besar", "text": "Modul ini merapikan tiga hal: email (alamat + tanda tangan), penyimpanan file (Google Drive), dan akses berbagi. Hasil akhirnya: identitas digital yang siap dipakai untuk setiap lamaran." },
+        { "type": "steps", "items": [
+          { "title": "Email", "text": "Alamat khusus karier dan tanda tangan yang rapi." },
+          { "title": "Drive", "text": "Folder lamaran dengan nama file yang konsisten." },
+          { "title": "Izin berbagi", "text": "Tautan bisa dibuka HRD tanpa membuka akses berlebihan." }
+        ] }
+      ]
+    },
+    "id-2": {
+      "blocks": [
+        { "type": "p", "text": "**The Email Rule**: pakai **satu alamat email khusus untuk urusan karier**. Alamat ini dipakai untuk melamar, mendaftar portal lowongan, dan menghubungi rekruter—tidak dicampur dengan langganan promo, game, atau media sosial." },
+        { "type": "compare", "items": [
+          { "label": "Email campur aduk", "tone": "bad", "lines": ["Kotak masuk penuh promo & notifikasi", "Balasan HRD mudah tenggelam", "Alamat dibuat asal saat masih sekolah"] },
+          { "label": "Email khusus karier", "tone": "good", "lines": ["Hanya berisi urusan lamaran & profesional", "Balasan HRD langsung terlihat", "Alamat memakai nama asli"] }
+        ] },
+        { "type": "callout", "tone": "warn", "title": "Hindari email sekolah/kampus/kantor lama", "text": "Akun institusi bisa dinonaktifkan setelah kamu lulus atau keluar. Jika itu terjadi, balasan rekruter tidak akan pernah sampai." },
+        { "type": "recall", "q": "Mengapa email kampus tidak disarankan sebagai email utama melamar kerja?", "options": ["Karena alamatnya terlalu panjang", "Karena akunnya bisa dinonaktifkan setelah lulus", "Karena tidak bisa melampirkan PDF"], "answer": 1, "explain": "Akun institusi dikelola kampus/kantor dan dapat ditutup kapan saja, sehingga balasan rekruter bisa hilang." }
+      ]
+    },
+    "id-3": {
+      "blocks": [
+        { "type": "p", "text": "Alamat email profesional cukup memakai **nama asli** yang mudah dibaca dan diketik. Tujuannya: HRD langsung tahu siapa pengirimnya tanpa menebak." },
+        { "type": "dodont",
+          "do": ["namadepan.namabelakang@gmail.com", "namadepan.inisial@gmail.com", "inisial.namabelakang@gmail.com", "Tambahkan inisial tengah bila nama sudah dipakai orang lain"],
+          "dont": ["Nama panggilan lucu atau julukan", "Deretan angka acak", "Kata seperti \"cute\", \"gamer\", \"sayang\"", "Karakter yang membingungkan, mis. banyak garis bawah"] },
+        { "type": "steps", "items": [
+          { "title": "Buat akun Google baru", "text": "Pilih opsi akun untuk diri sendiri, lalu isi nama depan dan belakang sesuai identitas." },
+          { "title": "Pilih alamat", "text": "Coba format nama asli. Jika sudah dipakai, gunakan variasi dengan inisial—bukan angka acak." },
+          { "title": "Amankan akun", "text": "Tambahkan nomor/email pemulihan dan aktifkan Verifikasi 2 Langkah." },
+          { "title": "Pasang foto profil", "text": "Foto wajah yang jelas dan sopan—foto ini muncul di kotak masuk penerima." }
+        ] },
+        { "type": "callout", "tone": "info", "title": "Tampilan menu bisa berubah", "text": "Langkah pembuatan akun Google dapat sedikit berbeda dari waktu ke waktu. Ikuti petunjuk di layar dan Pusat Bantuan Google bila ragu." }
+      ]
+    },
+    "id-4": {
+      "blocks": [
+        { "type": "p", "text": "**Tanda tangan email** muncul otomatis di akhir setiap email. Isinya cukup informasi yang memudahkan HRD menghubungi dan mengenalmu lebih jauh." },
+        { "type": "list", "items": ["**Nama lengkap**", "**Peran/posisi yang dituju** atau jurusan & kampus", "**Nomor telepon** aktif (format +62)", "**Tautan LinkedIn** dan/atau **portofolio**"] },
+        { "type": "email", "variant": "signature", "signature": ["Rina Putri Andini", "Frontend Developer | Lulusan Teknik Informatika", "+62 812-0000-0000", "linkedin.com/in/rinaputriandini", "Portofolio: (tautan Google Drive)"] },
+        { "type": "dodont",
+          "do": ["Singkat: 3–5 baris", "Teks biasa yang terbaca di semua perangkat", "Tautan yang sudah dites bisa dibuka"],
+          "dont": ["Kutipan motivasi atau ayat panjang", "Gambar/banner besar", "Banyak warna dan jenis huruf", "Nomor yang jarang aktif"] },
+        { "type": "steps", "items": [
+          { "title": "Buka Setelan Gmail", "text": "Klik ikon roda gigi → Lihat semua setelan." },
+          { "title": "Tab Umum → Tanda tangan", "text": "Buat tanda tangan baru dan isi sesuai contoh di atas." },
+          { "title": "Atur default", "text": "Pilih tanda tangan ini untuk email baru dan balasan, lalu Simpan perubahan di bagian bawah halaman." }
+        ] }
+      ]
+    },
+    "id-5": {
+      "blocks": [
+        { "type": "p", "text": "**Drive hygiene** berarti Google Drive-mu tertata sehingga kamu bisa menemukan dan membagikan file yang tepat dalam hitungan detik—bukan menggulir puluhan file bernama \"Document1\"." },
+        { "type": "tree", "title": "Contoh struktur folder", "root": "Lamaran Kerja", "children": [
+          { "name": "01_CV", "children": ["CV_RinaPutriAndini_FrontendDeveloper.pdf"] },
+          { "name": "02_Portofolio", "children": ["Portofolio_RinaPutriAndini.pdf"] },
+          { "name": "03_Sertifikat" },
+          { "name": "04_Surat_Lamaran" },
+          { "name": "99_Arsip", "children": ["(versi lama)"] }
+        ] },
+        { "type": "callout", "tone": "tip", "title": "Pola nama file yang konsisten", "text": "Jenis_NamaLengkap_Posisi — contoh: CV_RinaPutriAndini_FrontendDeveloper.pdf. Awali nama folder dengan angka agar urutannya tetap." },
+        { "type": "compare", "items": [
+          { "label": "Berantakan", "tone": "bad", "lines": ["CV final revisi 3 (1).pdf", "Document1.pdf", "scan ijazah.jpg", "Semua file di satu tempat"] },
+          { "label": "Rapi", "tone": "good", "lines": ["CV_RinaPutriAndini_FrontendDeveloper.pdf", "Portofolio_RinaPutriAndini.pdf", "Ijazah_RinaPutriAndini.pdf", "Folder bernomor sesuai jenis"] }
+        ] }
+      ]
+    },
+    "id-6": {
+      "blocks": [
+        { "type": "p", "text": "Saat membagikan file atau folder Google Drive, ada dua hal yang perlu diatur: **siapa yang bisa membuka** (akses umum) dan **apa yang bisa mereka lakukan** (peran)." },
+        { "type": "compare", "items": [
+          { "label": "Akses umum", "tone": "neutral", "lines": ["**Dibatasi**: hanya orang yang ditambahkan", "**Siapa saja yang memiliki link**: siapa pun yang punya tautan bisa membuka"] },
+          { "label": "Peran", "tone": "neutral", "lines": ["**Pelihat (Viewer)**: hanya bisa melihat", "**Pengomentar**: bisa memberi komentar", "**Editor**: bisa mengubah & menghapus"] }
+        ] },
+        { "type": "callout", "tone": "key", "title": "Setelan yang disarankan untuk HRD", "text": "Siapa saja yang memiliki link + Pelihat (Viewer). HRD bisa membuka tanpa meminta akses, tetapi tidak bisa mengubah filemu." },
+        { "type": "flags",
+          "green": ["Tautan dites di jendela penyamaran (incognito) sebelum dikirim", "Peran Pelihat untuk semua tautan lamaran", "Hanya folder lamaran yang dibagikan, bukan seluruh Drive"],
+          "red": ["Peran Editor untuk orang yang tidak dikenal", "Akses Dibatasi sehingga HRD harus meminta izin", "Membagikan folder yang berisi dokumen pribadi (KTP, KK) secara terbuka"] },
+        { "type": "recall", "q": "HRD membalas \"Saya tidak bisa membuka tautan portofolio Anda\". Apa penyebab paling mungkin?", "options": ["File terlalu besar", "Akses umum masih Dibatasi", "Peran diatur sebagai Pelihat"], "answer": 1, "explain": "Bila akses umum Dibatasi, hanya orang yang ditambahkan yang bisa membuka. Ubah ke \"Siapa saja yang memiliki link\" dengan peran Pelihat." }
+      ]
+    },
+    "id-7": {
+      "blocks": [
+        { "type": "p", "text": "Gunakan checklist ini untuk memastikan identitas digitalmu siap. Centang setiap langkah yang **sudah benar-benar kamu kerjakan**—statusnya tersimpan otomatis." },
+        { "type": "checklist", "id": "identity", "items": [
+          { "id": "id-c1", "text": "Punya email khusus karier dengan format nama asli", "hint": "Contoh: rina.andini@gmail.com" },
+          { "id": "id-c2", "text": "Verifikasi 2 Langkah dan info pemulihan sudah aktif" },
+          { "id": "id-c3", "text": "Foto profil Google yang jelas dan sopan" },
+          { "id": "id-c4", "text": "Tanda tangan email terpasang untuk email baru & balasan" },
+          { "id": "id-c5", "text": "Folder \"Lamaran Kerja\" dengan subfolder bernomor di Drive" },
+          { "id": "id-c6", "text": "Semua file lamaran memakai pola Jenis_Nama_Posisi" },
+          { "id": "id-c7", "text": "Tautan lamaran diatur \"Siapa saja yang memiliki link · Pelihat\" dan sudah dites di incognito" }
+        ] }
+      ]
+    },
+    "id-8": {
+      "blocks": [
+        { "type": "p", "text": "Dua gambar ini merangkum identitas digital yang rapi: dari alamat email sampai tautan yang dibagikan." },
+        { "type": "anatomy", "title": "Anatomi alamat email profesional", "parts": [
+          { "text": "rina", "label": "Nama depan", "note": "Nama asli, bukan julukan" },
+          { "text": ".", "label": "Pemisah", "note": "Titik memudahkan dibaca" },
+          { "text": "andini", "label": "Nama belakang", "note": "Atau inisial bila nama sudah dipakai" },
+          { "text": "@gmail.com", "label": "Domain", "note": "Penyedia email yang umum & stabil" }
+        ] },
+        { "type": "flow", "title": "Dari file sampai dibuka HRD", "steps": [
+          { "label": "Simpan", "note": "File masuk folder bernomor" },
+          { "label": "Beri nama", "note": "Jenis_Nama_Posisi" },
+          { "label": "Atur akses", "note": "Siapa saja dengan link · Pelihat" },
+          { "label": "Tes", "note": "Buka di jendela incognito" },
+          { "label": "Kirim", "note": "Tempel tautan di email / CV" }
+        ] }
+      ]
+    },
+    "id-9": {
+      "blocks": [
+        { "type": "p", "text": "Berikut identitas digital fiktif \"Rina\" sebelum dan sesudah dirapikan." },
+        { "type": "compare", "items": [
+          { "label": "Sebelum", "tone": "bad", "lines": ["Email: rinacute99@...", "Tanpa tanda tangan email", "Tautan portofolio: akses Dibatasi", "File: \"porto fix bgt.pdf\""] },
+          { "label": "Sesudah", "tone": "good", "lines": ["Email: rina.andini@gmail.com", "Tanda tangan 4 baris + LinkedIn", "Tautan: Siapa saja dengan link · Pelihat", "File: Portofolio_RinaPutriAndini.pdf"] }
+        ] },
+        { "type": "email", "variant": "email", "from": "Rina Putri Andini <rina.andini@gmail.com>", "to": "Tim Rekrutmen", "subject": "Lamaran Frontend Developer – Rina Putri Andini", "body": ["(Isi email lamaran dibahas di Modul 4.)"], "signature": ["Rina Putri Andini", "Frontend Developer | Lulusan Teknik Informatika", "+62 812-0000-0000", "linkedin.com/in/rinaputriandini"], "attachments": ["CV_RinaPutriAndini_FrontendDeveloper.pdf"] },
+        { "type": "callout", "tone": "info", "title": "Data contoh", "text": "Nama, alamat email, dan nomor telepon di atas adalah contoh fiktif." }
+      ]
+    },
+    "id-10": {
+      "blocks": [
+        { "type": "p", "text": "Uji instingmu: pilih apakah setiap alamat email ini **layak dipakai melamar** atau **sebaiknya dihindari**." },
+        { "type": "classify", "id": "id-emails", "labels": { "good": "Layak", "bad": "Hindari" }, "items": [
+          { "text": "rina.andini@gmail.com", "answer": "good", "why": "Nama asli, mudah dibaca dan diketik." },
+          { "text": "rinacute99@gmail.com", "answer": "bad", "why": "Kata \"cute\" dan angka acak terkesan tidak profesional." },
+          { "text": "r.putriandini@gmail.com", "answer": "good", "why": "Inisial + nama belakang tetap jelas." },
+          { "text": "rina.2004@kampus.ac.id", "answer": "bad", "why": "Email kampus bisa dinonaktifkan setelah lulus." },
+          { "text": "gamer_sejati_rina@gmail.com", "answer": "bad", "why": "Julukan hobi tidak relevan untuk lamaran." },
+          { "text": "rinaputri.andini@gmail.com", "answer": "good", "why": "Nama lengkap dengan pemisah yang rapi." }
+        ] }
+      ]
+    }
+  },
+  "quiz": [
+    { "q": "Apa inti dari \"The Email Rule\"?", "options": ["Membuat banyak email untuk tiap lowongan", "Memakai satu email khusus untuk urusan karier", "Selalu memakai email kampus", "Mengganti email setiap tahun"], "answer": 1, "explain": "Satu email khusus karier membuat balasan HRD tidak tenggelam dan identitasmu konsisten." },
+    { "q": "Alamat mana yang paling profesional?", "options": ["si.rina.imut@gmail.com", "rina123456@gmail.com", "rina.andini@gmail.com", "rina_gamer@gmail.com"], "answer": 2, "explain": "Format nama asli dengan pemisah titik paling mudah dikenali HRD." },
+    { "q": "Mana yang SEBAIKNYA tidak ada di tanda tangan email lamaran?", "options": ["Nama lengkap", "Tautan LinkedIn", "Kutipan motivasi panjang", "Nomor telepon aktif"], "answer": 2, "explain": "Tanda tangan sebaiknya ringkas dan informatif; kutipan panjang mengalihkan perhatian." },
+    { "q": "Pengaturan berbagi yang disarankan untuk tautan portofolio ke HRD adalah…", "options": ["Dibatasi · Editor", "Siapa saja yang memiliki link · Editor", "Siapa saja yang memiliki link · Pelihat", "Dibatasi · Pelihat"], "answer": 2, "explain": "HRD bisa membuka tanpa meminta izin, tetapi tidak bisa mengubah file." },
+    { "q": "Nama file mana yang paling rapi?", "options": ["CV final revisi 3 (1).pdf", "CV_RinaPutriAndini_FrontendDeveloper.pdf", "Document1.pdf", "cv rina.PDF"], "answer": 1, "explain": "Pola Jenis_Nama_Posisi membuat file mudah dicari dan langsung dikenali." }
+  ],
+  "summary": {
+    "takeaways": [
+      "Satu email khusus karier dengan format nama asli.",
+      "Tanda tangan email 3–5 baris: nama, peran, nomor, LinkedIn/portofolio.",
+      "Drive tertata: folder bernomor + pola nama file Jenis_Nama_Posisi.",
+      "Tautan untuk HRD: Siapa saja yang memiliki link · Pelihat, lalu tes di incognito."
+    ],
+    "next": "Berikutnya kamu akan menyiapkan dokumen utama: CV dan portofolio."
+  },
+  "references": ["google-learning-center", "mayer-2020"]
+}

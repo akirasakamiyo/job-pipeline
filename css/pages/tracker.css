@@ -1,0 +1,117 @@
+/* =====================================================================
+   pages/tracker.css — Job Application Tracker
+   Ringkasan · toolbar · tabel responsif (tabel di layar lebar,
+   kartu di HP) · dialog form.
+   ===================================================================== */
+
+#main { display: flex; flex-direction: column; gap: var(--s-5); }
+
+.tracker-head { flex-direction: column; align-items: flex-start; max-width: none; padding-bottom: 0; }
+@media (min-width: 768px) {
+  .tracker-head { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+  .tracker-head > .stack { max-width: 60ch; }
+}
+
+/* ---------- Ringkasan ---------- */
+.tracker-summary { display: grid; gap: var(--s-3); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 600px) { .tracker-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .tracker-summary { grid-template-columns: 1.4fr repeat(5, minmax(0, 1fr)); } }
+
+.sum-card {
+  display: grid; gap: 4px; align-content: start;
+  padding: var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  text-align: left;
+  font: inherit; color: inherit;
+}
+button.sum-card { cursor: pointer; transition: border-color var(--dur-2), translate var(--dur-2) var(--ease-out); }
+button.sum-card:hover { border-color: var(--ink); translate: 0 -2px; }
+button.sum-card[aria-pressed="true"] { border-color: var(--ink); box-shadow: var(--sh-sticker); }
+.sum-card__label { display: flex; align-items: center; gap: 6px; font-size: var(--fs-xs); font-weight: 700; color: var(--ink-soft); }
+.sum-card__value { font-size: var(--fs-h2); }
+.sum-card__dot { width: 9px; height: 9px; border-radius: 50%; background: var(--dot); }
+.sum-card--total { background: var(--ink); color: #fff; border-color: var(--ink); grid-column: 1 / -1; }
+.sum-card--total .sum-card__label, .sum-card--total small { color: rgb(255 255 255 / .75); }
+.sum-card--total small { font-size: var(--fs-xs); font-weight: 600; }
+@media (min-width: 1100px) { .sum-card--total { grid-column: auto; } }
+
+/* ---------- Toolbar ---------- */
+.tracker-panel { display: grid; gap: var(--s-4); }
+.tracker-toolbar { display: grid; gap: var(--s-3); }
+@media (min-width: 768px) { .tracker-toolbar { grid-template-columns: 2fr 1fr 1fr; align-items: end; } }
+.tracker-toolbar .input[type="search"]::-webkit-search-cancel-button { cursor: pointer; }
+.tracker-count { font-size: var(--fs-sm); font-weight: 700; color: var(--ink-soft); }
+
+/* ---------- Status chip ---------- */
+.status { white-space: nowrap; }
+.status--cobalt { background: var(--cobalt-tint); color: var(--cobalt-strong); }
+.status--warn { background: var(--warning-tint); color: var(--warning-text); }
+.status--teal { background: var(--m-li-tint); color: var(--m-li-text); }
+.status--done { background: var(--success-tint); color: var(--success-text); }
+.status--danger { background: var(--danger-tint); color: var(--danger-text); }
+
+/* ---------- Tabel responsif ---------- */
+.app-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+.app-table th {
+  text-align: left; padding: 10px var(--s-3);
+  background: var(--paper-2); font-weight: 800; white-space: nowrap;
+}
+.app-table th:first-child { border-radius: var(--r-sm) 0 0 var(--r-sm); }
+.app-table th:last-child { border-radius: 0 var(--r-sm) var(--r-sm) 0; text-align: right; }
+.app-table td { padding: 12px var(--s-3); border-bottom: 1px solid var(--line); vertical-align: top; }
+.app-table tbody tr { transition: background-color var(--dur-2); }
+.app-table tbody tr:hover { background: var(--paper); }
+.app-table__company { font-weight: 800; }
+.app-table__notes { max-width: 26ch; color: var(--ink-soft); overflow-wrap: anywhere; }
+.app-table__notes p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.app-table__contact { overflow-wrap: anywhere; max-width: 22ch; }
+.app-table__actions { white-space: nowrap; text-align: right; }
+.app-table__actions .btn--icon { width: 40px; min-height: 40px; }
+.app-table .muted { color: var(--ink-mute); }
+
+/* HP & tablet kecil: setiap baris menjadi kartu */
+@media (max-width: 767px) {
+  .app-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .app-table, .app-table tbody, .app-table tr, .app-table td { display: block; width: 100%; }
+  .app-table tbody { display: grid; gap: var(--s-3); }
+  .app-table tr {
+    display: grid; grid-template-columns: 1fr auto; gap: 4px var(--s-3);
+    padding: var(--s-4);
+    border: 1.5px solid var(--line);
+    border-radius: var(--r-md);
+    background: var(--surface);
+  }
+  .app-table td { padding: 0; border: 0; }
+  .app-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font: 700 10px/1.6 var(--font-mono); letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .app-table__company { grid-column: 1; font-size: var(--fs-lg); }
+  .app-table__company::before { display: none !important; }
+  .app-table__status { grid-column: 2; grid-row: 1; align-self: start; }
+  .app-table__status::before { display: none !important; }
+  .app-table__position { grid-column: 1 / -1; margin-top: -4px; }
+  .app-table__position::before { display: none !important; }
+  .app-table__date, .app-table__contact { grid-column: span 1; margin-top: var(--s-2); max-width: none; }
+  .app-table__notes { grid-column: 1 / -1; max-width: none; margin-top: var(--s-2); }
+  .app-table__actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: var(--s-2); margin-top: var(--s-2); padding-top: var(--s-3); border-top: 1px dashed var(--line); }
+}
+
+/* ---------- Dialog form ---------- */
+.tracker-modal { width: min(100% - 32px, 640px); }
+.app-form__grid { display: grid; gap: var(--s-4); }
+@media (min-width: 600px) {
+  .app-form__grid { grid-template-columns: 1fr 1fr; }
+  .app-form__wide { grid-column: 1 / -1; }
+}
+.app-form .textarea { min-height: 100px; }
+
+/* Performa (Tahap 6): ruang awal untuk konten yang dirender JS — cegah CLS */
+.tracker-summary:empty { min-height: 216px; }
+@media (min-width: 600px) { .tracker-summary:empty { min-height: 260px; } }
+@media (min-width: 1100px) { .tracker-summary:empty { min-height: 116px; } }
+[data-list]:empty { min-height: 320px; }

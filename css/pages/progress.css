@@ -1,0 +1,93 @@
+/* =====================================================================
+   pages/progress.css — Halaman Detail progres (Tahap 7)
+   Komponen (card, ring, bar, stat, badge, activity, callout, segmented,
+   chip, code) berasal dari components.css. File ini hanya tata letak.
+   ===================================================================== */
+
+#main { display: flex; flex-direction: column; gap: clamp(28px, 4.5vw, 48px); padding-bottom: var(--s-7); }
+.page-head { padding-bottom: 0; }
+.prog-section { scroll-margin-top: calc(var(--topbar-h) + 16px); }
+.prog-section > .section-head { margin-bottom: var(--s-4); }
+
+/* ---------- Ringkasan ---------- */
+.prog-overview { display: grid; gap: var(--s-6); }
+.prog-overview__main { display: flex; flex-direction: column; align-items: center; gap: var(--s-5); text-align: center; }
+.prog-overview__main .btn { align-self: center; }
+@media (min-width: 600px) {
+  .prog-overview__main { flex-direction: row; text-align: left; }
+  .prog-overview__main .btn { align-self: flex-start; }
+}
+.prog-stats { display: grid; gap: var(--s-3); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.prog-stats .stat:last-child { grid-column: 1 / -1; }
+@media (min-width: 768px) {
+  .prog-stats { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .prog-stats .stat:last-child { grid-column: auto; }
+}
+@media (min-width: 1100px) {
+  .prog-overview { grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); align-items: center; }
+}
+.prog-stats .stat { padding: var(--s-4); min-width: 0; }
+.prog-stats .stat__value { font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem); }
+
+/* ---------- Per modul ---------- */
+.prog-modules { display: grid; gap: var(--s-4); margin: 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.prog-module {
+  display: flex; flex-direction: column; gap: var(--s-3);
+  padding: var(--s-5);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-top: 5px solid var(--mod);
+  min-width: 0;
+}
+.prog-module__head { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+.prog-module__title { font-size: var(--fs-h3); line-height: 1.25; }
+.prog-module__bar { display: flex; align-items: center; gap: var(--s-3); }
+.prog-module__bar .bar { flex: 1; }
+.prog-module__pct { font-weight: 700; font-size: var(--fs-sm); min-width: 4ch; text-align: right; }
+.prog-module__facts { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: var(--fs-sm); color: var(--ink-soft); }
+.prog-module__cta { margin-top: auto; align-self: flex-start; }
+
+/* ---------- Badge ---------- */
+.prog-badges { display: grid; gap: var(--s-5) var(--s-4); margin: 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(min(100%, 132px), 1fr)); }
+.prog-badges .badge__seal { width: 76px; height: 76px; }
+.prog-badges .badge__seal .icon { width: 30px; height: 30px; }
+.badge__when { color: var(--success-text); font-weight: 700; margin-top: 2px; }
+
+/* ---------- Data & pengaturan ---------- */
+#data > .callout { margin-bottom: var(--s-4); }
+.prog-data { display: grid; gap: var(--s-4); }
+@media (min-width: 900px) { .prog-data { grid-template-columns: 1fr 1fr; align-items: start; } }
+.prog-data__card { display: flex; flex-direction: column; gap: var(--s-3); min-width: 0; }
+.prog-data__card .btn, .prog-data__card .segmented { align-self: flex-start; }
+.prog-data__card .cluster .btn { align-self: auto; }
+.prog-data__card--danger { border-color: var(--danger); }
+@media (max-width: 479px) {
+  .prog-data__card .cluster .btn { flex: 1 1 100%; }
+  .prog-data__card .segmented { align-self: stretch; }
+  .prog-data__card .segmented label { flex: 1; }
+  .prog-data__card .segmented span { justify-content: center; width: 100%; }
+}
+
+.prog-reset { display: grid; gap: var(--s-2); margin: 0; padding: 0; border: 0; min-width: 0; }
+.prog-reset legend { margin-bottom: var(--s-2); padding: 0; }
+.prog-radio {
+  display: flex; align-items: flex-start; gap: var(--s-3);
+  padding: 12px var(--s-3);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: border-color var(--dur-2), background-color var(--dur-2);
+}
+.prog-radio:hover { border-color: var(--line-strong); }
+.prog-radio:has(input:checked) { border-color: var(--ink); background: var(--paper); }
+.prog-radio input { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--ink); }
+.prog-radio span { display: grid; gap: 2px; min-width: 0; }
+.prog-radio strong { font-size: var(--fs-sm); }
+.prog-radio small { font-size: var(--fs-xs); color: var(--ink-soft); }
+
+/* Performa: ruang awal untuk konten yang dirender JS — cegah CLS */
+.prog-stats:empty { min-height: 250px; }
+@media (min-width: 768px) { .prog-stats:empty { min-height: 120px; } }
+.prog-modules:empty { min-height: 640px; }
+.prog-badges:empty { min-height: 300px; }

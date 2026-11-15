@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <!-- Keamanan (Tahap 7): Content Security Policy. Hanya skrip dari situs ini + skrip boot inline (di-hash)
+       yang boleh berjalan. Bila skrip boot di <head> diubah, hash sha256 di bawah WAJIB diperbarui (lihat README). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-KAA7GRYrWs7pgVEZEBioOLtygPnBFlkJ6tK8iBlfbIw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Job Tracker · The Ultimate Job Application Pipeline</title>
+  <meta name="description" content="Catat, cari, saring, dan pantau setiap lamaran kerja. Data tersimpan di perangkatmu.">
+  <meta name="theme-color" content="#FBF7F0">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+
+  <!-- Boot kecil (inline): tandai JS aktif & siapkan tirai transisi. Failsafe 2,5 detik. -->
+  <script>
+    (function (d) {
+      var h = d.documentElement; h.classList.add('js');
+      try {
+        var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches ||
+          (JSON.parse(localStorage.getItem('ujap:prefs') || '{}').motion === 'reduced');
+        if (sessionStorage.getItem('ujap:transition') === '1' && !reduced) h.classList.add('is-entering');
+      } catch (e) {}
+      setTimeout(function () { h.classList.add('motion-fallback'); h.classList.remove('is-entering'); }, 2500);
+    })(document);
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..800,0..100,0..1&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/pages/modules.css">
+  <link rel="stylesheet" href="css/pages/tracker.css">
+
+  <script defer src="vendor/gsap/gsap.min.js"></script>
+  <script defer src="vendor/gsap/ScrollTrigger.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+  <!-- Performa: unduh modul JS & data secara paralel (bukan berantai) -->
+  <link rel="modulepreload" href="js/core/navigation.js">
+  <link rel="modulepreload" href="js/core/dom.js">
+  <link rel="modulepreload" href="js/core/motion.js">
+  <link rel="modulepreload" href="js/core/ui.js">
+  <link rel="modulepreload" href="js/core/state.js">
+  <link rel="modulepreload" href="js/core/storage.js">
+  <link rel="modulepreload" href="js/core/data.js">
+  <link rel="modulepreload" href="js/core/tracker-store.js">
+  <link rel="modulepreload" href="js/core/loader.js">
+  <link rel="modulepreload" href="js/core/background.js">
+  <link rel="modulepreload" href="js/pages/tracker-page.js">
+  <link rel="preload" href="data/modules.json" as="fetch" crossorigin>
+</head>
+
+<body data-page="tracker" data-module="tr">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="bg-deco" aria-hidden="true">
+    <span class="deco deco--sun" data-float="14"></span>
+    <span class="deco deco--ring" data-float="10"></span>
+    <span class="deco deco--dot" data-float="6"></span>
+  </div>
+
+  <div data-topbar></div>
+
+  <noscript>
+    <p class="container" style="padding:16px;margin-top:16px;background:#FFF3D9;border-radius:14px">
+      Aktifkan JavaScript untuk memakai Job Tracker.
+    </p>
+  </noscript>
+
+  <main id="main" class="container">
+    <header class="page-head tracker-head">
+      <div class="stack" style="--stack-gap: var(--s-3)">
+        <p class="eyebrow" data-intro="fade">Job Application Tracker</p>
+        <h1 class="h1" data-intro="up">Pantau setiap lamaran</h1>
+        <p class="lead" data-intro="up">Catat perusahaan, posisi, tanggal, status, dan kontak HR. Semua tersimpan di perangkat ini.</p>
+      </div>
+      <button type="button" class="btn btn--primary btn--lg" data-add data-intro="up">
+        <svg class="icon icon--lead" aria-hidden="true"><use href="assets/icons/sprite.svg#i-plus"/></svg>Tambah lamaran
+      </button>
+    </header>
+
+    <!-- Ringkasan -->
+    <section class="tracker-summary" aria-label="Ringkasan lamaran" data-summary></section>
+
+    <!-- Toolbar: cari, saring, urutkan -->
+    <section class="card tracker-panel" aria-labelledby="list-title">
+      <div class="tracker-toolbar">
+        <h2 class="sr-only" id="list-title">Daftar lamaran</h2>
+        <div class="field tracker-toolbar__search">
+          <label class="field__label" for="t-search">Cari</label>
+          <div class="input-wrap">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-search"/></svg>
+            <input class="input" id="t-search" type="search" placeholder="Perusahaan, posisi, kontak, catatan…" autocomplete="off" data-search>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field__label" for="t-filter">Status</label>
+          <select class="select" id="t-filter" data-filter></select>
+        </div>
+        <div class="field">
+          <label class="field__label" for="t-sort">Urutkan</label>
+          <select class="select" id="t-sort" data-sort>
+            <option value="date-desc">Tanggal terbaru</option>
+            <option value="date-asc">Tanggal terlama</option>
+            <option value="company-asc">Perusahaan A–Z</option>
+            <option value="company-desc">Perusahaan Z–A</option>
+            <option value="status">Status (alur lamaran)</option>
+            <option value="updated">Terakhir diperbarui</option>
+          </select>
+        </div>
+      </div>
+      <p class="tracker-count" aria-live="polite" data-result-count></p>
+      <div data-list></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a class="brand" href="dashboard.html" aria-label="The Ultimate Job Application Pipeline — ke Dashboard">
+        <img class="brand__mark" src="assets/images/favicon.svg" alt="" width="38" height="38">
+        <span class="brand__text"><span class="brand__kicker">The Ultimate Job Application</span><span class="brand__name">Pipeline</span></span>
+      </a>
+      <p>Data tracker tersimpan di perangkatmu sendiri. Tanpa akun, tanpa server.</p>
+    </div>
+  </footer>
+
+  <div data-bottombar></div>
+
+  <!-- Dialog tambah / ubah lamaran -->
+  <dialog class="modal tracker-modal" id="app-dialog" aria-labelledby="app-dialog-title">
+    <form class="app-form" data-form novalidate>
+      <div class="modal__head">
+        <div>
+          <div class="modal__icon"><svg class="icon icon--lg" aria-hidden="true"><use href="assets/icons/sprite.svg#i-briefcase"/></svg></div>
+          <h2 class="h3" id="app-dialog-title" data-form-title>Tambah lamaran</h2>
+        </div>
+        <button type="button" class="btn btn--ghost btn--icon" aria-label="Tutup" data-modal-close><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-x"/></svg></button>
+      </div>
+      <div class="modal__body app-form__grid">
+        <div class="field">
+          <label class="field__label" for="f-company">Nama perusahaan <span class="field__req" aria-hidden="true">*</span></label>
+          <input class="input" id="f-company" name="company" type="text" maxlength="80" required autocomplete="organization" aria-describedby="f-company-hint">
+          <p class="field__hint" id="f-company-hint">Tulis sesuai nama resmi.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="f-position">Posisi <span class="field__req" aria-hidden="true">*</span></label>
+          <input class="input" id="f-position" name="position" type="text" maxlength="80" required aria-describedby="f-position-hint">
+          <p class="field__hint" id="f-position-hint">Sama dengan judul lowongan.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="f-date">Tanggal melamar <span class="field__req" aria-hidden="true">*</span></label>
+          <input class="input" id="f-date" name="date" type="date" required aria-describedby="f-date-hint">
+          <p class="field__hint" id="f-date-hint">Tanggal email/lamaran dikirim.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="f-status">Status lamaran</label>
+          <select class="select" id="f-status" name="status" aria-describedby="f-status-hint"></select>
+          <p class="field__hint" id="f-status-hint">Perbarui setiap ada perkembangan.</p>
+        </div>
+        <div class="field app-form__wide">
+          <label class="field__label" for="f-contact">Kontak HR</label>
+          <input class="input" id="f-contact" name="contact" type="text" maxlength="120" aria-describedby="f-contact-hint">
+          <p class="field__hint" id="f-contact-hint">Opsional: nama dan/atau email perekrut.</p>
+        </div>
+        <div class="field app-form__wide">
+          <label class="field__label" for="f-notes">Catatan <span class="field__count" data-notes-count>0/500</span></label>
+          <textarea class="textarea" id="f-notes" name="notes" maxlength="500" aria-describedby="f-notes-hint"></textarea>
+          <p class="field__hint" id="f-notes-hint">Opsional: sumber lowongan, tanggal follow-up, hasil riset, jadwal interview.</p>
+        </div>
+      </div>
+      <div class="modal__foot">
+        <button type="button" class="btn btn--secondary" data-modal-close>Batal</button>
+        <button type="submit" class="btn btn--primary" data-form-submit>Simpan lamaran</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

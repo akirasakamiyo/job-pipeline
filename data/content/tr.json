@@ -1,0 +1,555 @@
+{
+  "module": "tr",
+  "objectives": [
+    "Menjelaskan manfaat mencatat setiap lamaran",
+    "Membuat tracker lamaran di Google Sheets atau Notion",
+    "Memahami arti setiap status lamaran",
+    "Menerapkan etika dan waktu follow-up yang tepat",
+    "Menulis pesan follow-up yang profesional"
+  ],
+  "sections": {
+    "tr-1": {
+      "blocks": [
+        {
+          "type": "objectives"
+        },
+        {
+          "type": "p",
+          "text": "Tombol Kirim bukan garis finis. Setelah lamaran terkirim, kamu perlu **mencatat**, **memantau**, dan **menindaklanjuti** dengan sopan."
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": "Catat",
+              "text": "Setiap lamaran masuk tracker pada hari yang sama."
+            },
+            {
+              "title": "Pantau",
+              "text": "Perbarui status setiap ada perkembangan."
+            },
+            {
+              "title": "Tindak lanjuti",
+              "text": "Follow-up di waktu yang tepat dengan pesan yang sopan."
+            }
+          ]
+        }
+      ]
+    },
+    "tr-2": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Saat melamar ke banyak perusahaan, detail mudah terlupa: posisi apa, kapan dikirim, siapa kontaknya. **Tracker** menyelesaikan masalah itu."
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "Tanpa tracker",
+              "tone": "bad",
+              "lines": [
+                "Lupa pernah melamar di mana",
+                "Melamar dua kali ke posisi yang sama",
+                "Bingung saat HRD tiba-tiba menelepon",
+                "Tidak tahu kapan harus follow-up"
+              ]
+            },
+            {
+              "label": "Dengan tracker",
+              "tone": "good",
+              "lines": [
+                "Semua lamaran terlihat di satu tempat",
+                "Siap menjawab saat dihubungi",
+                "Jadwal follow-up jelas",
+                "Bisa mengevaluasi strategi melamar"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "items": [
+            "Perusahaan & posisi",
+            "Tanggal kirim & sumber lowongan",
+            "Kontak (nama/email rekruter)",
+            "Tautan iklan lowongan",
+            "Status & tanggal follow-up",
+            "Catatan (hasil riset, pertanyaan wawancara)"
+          ]
+        }
+      ]
+    },
+    "tr-3": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Tracker bisa dibuat di **Google Sheets** atau **Notion**. Platform ini juga menyediakan **Job Tracker** bawaan yang tersimpan di perangkatmu."
+        },
+        {
+          "type": "table",
+          "head": [
+            "Perusahaan",
+            "Posisi",
+            "Tgl kirim",
+            "Sumber",
+            "Kontak",
+            "Status",
+            "Follow-up"
+          ],
+          "rows": [
+            [
+              "PT Contoh Kreatif",
+              "Frontend Developer",
+              "03/11",
+              "LinkedIn",
+              "Tim Rekrutmen",
+              "Applied",
+              "—"
+            ],
+            [
+              "Studio Contoh",
+              "UI Developer",
+              "28/10",
+              "Website",
+              "Bu Sari",
+              "Under Review",
+              "Follow-up 07/11"
+            ]
+          ]
+        },
+        {
+          "type": "compare",
+          "items": [
+            {
+              "label": "Google Sheets",
+              "tone": "neutral",
+              "lines": [
+                "Tabel klasik, mudah diurutkan & difilter",
+                "Dropdown status lewat validasi data",
+                "Pewarnaan otomatis dengan format bersyarat"
+              ]
+            },
+            {
+              "label": "Notion",
+              "tone": "neutral",
+              "lines": [
+                "Database dengan tampilan tabel atau papan (board)",
+                "Kolom status untuk memindah kartu antar-tahap",
+                "Catatan riset bisa ditulis di halaman tiap lamaran"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Fitur bisa berubah",
+          "text": "Nama menu di Google Sheets dan Notion dapat berubah. Cari panduan terbaru di Pusat Bantuan masing-masing."
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Status di Job Tracker platform ini",
+          "text": "Applied · Under Review · Interview · Accepted · Rejected. Follow-up adalah tindakan, bukan status: catat tanggalnya di kolom Catatan."
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Data contoh",
+          "text": "Isi tabel di atas fiktif."
+        }
+      ]
+    },
+    "tr-4": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Status membuat kamu tahu **langkah berikutnya** untuk tiap lamaran."
+        },
+        {
+          "type": "table",
+          "head": [
+            "Status",
+            "Artinya",
+            "Langkah berikutnya"
+          ],
+          "rows": [
+            [
+              "Applied",
+              "Lamaran sudah dikirim",
+              "Catat tanggal; siapkan jadwal follow-up"
+            ],
+            [
+              "Under Review",
+              "Perusahaan mengonfirmasi lamaran sedang ditinjau",
+              "Tunggu sesuai timeline; follow-up hanya bila lewat"
+            ],
+            [
+              "Interview",
+              "Diundang wawancara/tes",
+              "Persiapan & email terima kasih setelahnya"
+            ],
+            [
+              "Accepted",
+              "Diterima / mendapat tawaran",
+              "Pelajari tawaran sebelum menjawab"
+            ],
+            [
+              "Rejected",
+              "Proses berhenti",
+              "Arsipkan, evaluasi, lanjutkan lamaran lain"
+            ]
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Belum melamar atau tanpa kabar?",
+          "text": "Lowongan incaran bisa dicatat di catatan riset terpisah. Lamaran yang lama tanpa kabar tetap berstatus Applied—tulis \"tanpa kabar\" dan tanggal follow-up di kolom Catatan."
+        },
+        {
+          "type": "recall",
+          "q": "Lamaran sudah dikirim 2 hari lalu dan belum ada kabar. Statusnya…",
+          "options": [
+            "Under Review",
+            "Applied",
+            "Rejected"
+          ],
+          "answer": 1,
+          "explain": "Belum ada konfirmasi dari perusahaan, jadi statusnya tetap Applied sampai ada perkembangan."
+        }
+      ]
+    },
+    "tr-5": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Follow-up menunjukkan minat yang serius—asal dilakukan dengan **sopan** dan **tidak memaksa**."
+        },
+        {
+          "type": "dodont",
+          "do": [
+            "Balas di utas (thread) email lamaran yang sama",
+            "Singkat: 3–5 kalimat",
+            "Sebut posisi dan tanggal kirim",
+            "Tegaskan kembali minat dan satu nilai utama",
+            "Ucapkan terima kasih"
+          ],
+          "dont": [
+            "Menagih atau menyalahkan (\"kok belum dibalas?\")",
+            "Follow-up berkali-kali dalam waktu dekat",
+            "Mengirim ke banyak orang sekaligus",
+            "Melampirkan ulang semua dokumen tanpa diminta",
+            "Menghubungi lewat nomor pribadi tanpa izin"
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "key",
+          "title": "Batas wajar",
+          "text": "Satu atau dua kali follow-up dengan jarak yang wajar. Jika tetap tidak ada kabar, tulis \"tanpa kabar\" di Catatan tracker dan fokus pada lamaran lain."
+        }
+      ]
+    },
+    "tr-6": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kapan waktu yang tepat? **Ikuti timeline dari perusahaan** jika disebutkan di iklan atau email. Jika tidak ada, gunakan patokan umum berikut sebagai titik awal."
+        },
+        {
+          "type": "flow",
+          "title": "Patokan waktu follow-up (praktik umum)",
+          "steps": [
+            {
+              "label": "Hari kirim",
+              "note": "Catat di tracker"
+            },
+            {
+              "label": "± 1 minggu",
+              "note": "Follow-up pertama bila belum ada kabar"
+            },
+            {
+              "label": "± 1 minggu lagi",
+              "note": "Follow-up kedua (opsional)"
+            },
+            {
+              "label": "Tetap tanpa kabar",
+              "note": "Catat di Notes & lanjutkan"
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Setelah wawancara",
+          "text": "Kirim email terima kasih singkat pada hari yang sama atau keesokan harinya."
+        },
+        {
+          "type": "verify",
+          "text": "Rentang waktu follow-up di atas adalah praktik umum yang sering disarankan, bukan aturan baku. Verifikasi dengan sumber (mis. JobStreet/Glints career advice) sebelum dipublikasikan sebagai patokan."
+        }
+      ]
+    },
+    "tr-7": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Pesan follow-up yang baik singkat, sopan, dan mengingatkan nilai yang kamu bawa."
+        },
+        {
+          "type": "email",
+          "variant": "email",
+          "from": "Rina Putri Andini <rina.andini@gmail.com>",
+          "to": "rekrutmen@perusahaan.example",
+          "subject": "Re: Lamaran Frontend Developer – Rina Putri Andini",
+          "greeting": "Yth. Tim Rekrutmen [Perusahaan],",
+          "body": [
+            "Saya ingin menindaklanjuti lamaran saya untuk posisi Frontend Developer yang saya kirim pada [tanggal].",
+            "Saya tetap sangat tertarik untuk berkontribusi, terutama dalam membangun antarmuka yang aksesibel bagi pengguna [Perusahaan]. Jika ada informasi tambahan yang dibutuhkan, saya siap mengirimkannya.",
+            "Terima kasih atas waktu dan perhatiannya."
+          ],
+          "closing": "Hormat saya,",
+          "signature": [
+            "Rina Putri Andini",
+            "+62 812-0000-0000",
+            "linkedin.com/in/rinaputriandini"
+          ]
+        },
+        {
+          "type": "anatomy",
+          "title": "Anatomi pesan follow-up",
+          "parts": [
+            {
+              "text": "Re: subjek asli",
+              "label": "Utas yang sama",
+              "note": "Mudah dilacak"
+            },
+            {
+              "text": "Konteks",
+              "label": "Posisi + tanggal",
+              "note": "1 kalimat"
+            },
+            {
+              "text": "Minat + nilai",
+              "label": "Pengingat",
+              "note": "1–2 kalimat"
+            },
+            {
+              "text": "Terima kasih",
+              "label": "Penutup",
+              "note": "Sopan"
+            }
+          ]
+        }
+      ]
+    },
+    "tr-8": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Setiap lamaran bergerak melalui status-status ini. Tidak semua lamaran melewati semua tahap—dan itu normal."
+        },
+        {
+          "type": "flow",
+          "title": "Perjalanan status lamaran",
+          "steps": [
+            {
+              "label": "Applied",
+              "note": "Catat tanggal kirim"
+            },
+            {
+              "label": "Under Review",
+              "note": "Perusahaan meninjau"
+            },
+            {
+              "label": "Interview",
+              "note": "Persiapan + terima kasih"
+            },
+            {
+              "label": "Accepted",
+              "note": "Pertimbangkan tawaran"
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Cabang lain",
+          "text": "Dari tahap mana pun, lamaran bisa berakhir di Rejected. Lamaran tanpa kabar tetap Applied dengan catatan. Evaluasi, lalu lanjutkan."
+        }
+      ]
+    },
+    "tr-9": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Contoh tracker milik Rina setelah dua minggu melamar (data fiktif):"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Perusahaan",
+            "Posisi",
+            "Kirim",
+            "Status",
+            "Langkah berikutnya"
+          ],
+          "rows": [
+            [
+              "PT Contoh Kreatif",
+              "Frontend Developer",
+              "03/11",
+              "Interview",
+              "Kirim terima kasih setelah wawancara"
+            ],
+            [
+              "Studio Contoh",
+              "UI Developer",
+              "28/10",
+              "Under Review",
+              "Tunggu sesuai timeline perusahaan"
+            ],
+            [
+              "Contoh Digital",
+              "Web Developer",
+              "10/11",
+              "Applied",
+              "Follow-up sekitar 17/11 bila belum ada kabar"
+            ],
+            [
+              "Agensi Contoh",
+              "Junior Frontend",
+              "20/10",
+              "Rejected",
+              "Evaluasi CV, lanjutkan lamaran lain"
+            ]
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Coba langsung",
+          "text": "Gunakan menu Tracker di platform ini untuk mencatat lamaranmu sendiri."
+        }
+      ]
+    },
+    "tr-10": {
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Pilah pesan follow-up berikut: **profesional** atau **sebaiknya dihindari**?"
+        },
+        {
+          "type": "classify",
+          "id": "tr-followups",
+          "labels": {
+            "good": "Profesional",
+            "bad": "Hindari"
+          },
+          "items": [
+            {
+              "text": "\"Pak, kok lamaran saya belum dibalas? Sudah seminggu lho.\"",
+              "answer": "bad",
+              "why": "Nada menagih dan menyalahkan."
+            },
+            {
+              "text": "\"Saya ingin menindaklanjuti lamaran posisi Frontend Developer yang saya kirim pada 3 November. Saya tetap sangat tertarik untuk berkontribusi.\"",
+              "answer": "good",
+              "why": "Singkat, ada konteks, dan sopan."
+            },
+            {
+              "text": "(Mengirim follow-up setiap hari sejak lamaran dikirim)",
+              "answer": "bad",
+              "why": "Terlalu sering dan terkesan memaksa."
+            },
+            {
+              "text": "\"Terima kasih atas waktu wawancara hari ini. Diskusi tentang aksesibilitas produk membuat saya semakin antusias dengan posisi ini.\"",
+              "answer": "good",
+              "why": "Email terima kasih setelah wawancara yang spesifik."
+            },
+            {
+              "text": "\"Halo, ini Rina. Follow up ya.\"",
+              "answer": "bad",
+              "why": "Tidak menyebut posisi atau konteks; terlalu santai."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "quiz": [
+    {
+      "q": "Manfaat utama job application tracker adalah…",
+      "options": [
+        "Menambah jumlah lowongan",
+        "Melihat semua lamaran, status, dan jadwal follow-up di satu tempat",
+        "Menggantikan CV",
+        "Mengirim lamaran otomatis"
+      ],
+      "answer": 1,
+      "explain": "Tracker membantu memantau dan menindaklanjuti setiap lamaran."
+    },
+    {
+      "q": "Perusahaan membalas bahwa lamaranmu sedang ditinjau tim. Status yang tepat adalah…",
+      "options": [
+        "Applied",
+        "Under Review",
+        "Accepted",
+        "Interview"
+      ],
+      "answer": 1,
+      "explain": "Under Review berarti perusahaan sudah mengonfirmasi lamaranmu sedang ditinjau."
+    },
+    {
+      "q": "Follow-up sebaiknya dikirim…",
+      "options": [
+        "Di utas email lamaran yang sama",
+        "Sebagai email baru ke semua karyawan",
+        "Lewat komentar di unggahan perusahaan",
+        "Lewat telepon pribadi HRD"
+      ],
+      "answer": 0,
+      "explain": "Membalas di utas yang sama memudahkan HRD melihat konteks lamaran."
+    },
+    {
+      "q": "Jika perusahaan menyebut \"kami akan menghubungi dalam 2 minggu\", kamu sebaiknya…",
+      "options": [
+        "Follow-up keesokan harinya",
+        "Menunggu sesuai timeline tersebut sebelum follow-up",
+        "Tidak pernah follow-up",
+        "Melamar ulang"
+      ],
+      "answer": 1,
+      "explain": "Timeline dari perusahaan didahulukan dari patokan umum."
+    },
+    {
+      "q": "Mana pesan follow-up yang paling profesional?",
+      "options": [
+        "\"Kok belum dibalas?\"",
+        "\"Follow up ya.\"",
+        "\"Saya ingin menindaklanjuti lamaran posisi [Posisi] yang saya kirim pada [tanggal]…\"",
+        "\"Mohon segera dibalas karena saya butuh kepastian.\""
+      ],
+      "answer": 2,
+      "explain": "Menyebut konteks dengan sopan dan tidak memaksa."
+    }
+  ],
+  "summary": {
+    "takeaways": [
+      "Catat setiap lamaran di hari yang sama: perusahaan, posisi, tanggal, kontak, status.",
+      "Google Sheets atau Notion—pilih yang paling mudah kamu rawat; atau pakai Job Tracker di platform ini.",
+      "Status (Applied → Under Review → Interview → Accepted / Rejected) menentukan langkah berikutnya.",
+      "Ikuti timeline perusahaan; tanpa timeline, follow-up sekitar seminggu setelah kirim (praktik umum).",
+      "Follow-up singkat di utas yang sama, sopan, maksimal satu–dua kali."
+    ],
+    "next": "Selamat! Ini stasiun terakhir. Praktikkan semuanya lewat menu Latihan dan Tracker."
+  },
+  "references": [
+    "google-learning-center",
+    "glints",
+    "jobstreet",
+    "mayer-2020"
+  ]
+}

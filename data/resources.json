@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "note": "Panduan bantuan resmi. URL belum bisa dibuka dari lingkungan pengembangan (akses jaringan diblokir), jadi verified=false → tampil label 'Perlu verifikasi'. Setelah situs online, buka tiap tautan dan ubah verified menjadi true bila halamannya benar.",
+  "resources": [
+    {
+      "id": "google-2sv",
+      "module": "id",
+      "type": "Panduan resmi",
+      "title": "Mengaktifkan Verifikasi 2 Langkah",
+      "source": "Bantuan Akun Google",
+      "url": "https://support.google.com/accounts/answer/185839?hl=id",
+      "about": "Langkah mengaktifkan keamanan tambahan untuk akun Gmail karier (Modul 1).",
+      "verified": false
+    },
+    {
+      "id": "gmail-signature",
+      "module": "id",
+      "type": "Panduan resmi",
+      "title": "Membuat tanda tangan Gmail",
+      "source": "Bantuan Gmail",
+      "url": "https://support.google.com/mail/answer/8395?hl=id",
+      "about": "Cara membuat tanda tangan email profesional (Modul 1).",
+      "verified": false
+    },
+    {
+      "id": "drive-share",
+      "module": "id",
+      "type": "Panduan resmi",
+      "title": "Berbagi file dari Google Drive",
+      "source": "Bantuan Google Drive",
+      "url": "https://support.google.com/drive/answer/2494822?hl=id",
+      "about": "Cara mengatur izin berbagi file CV & portofolio (Modul 1).",
+      "verified": false
+    },
+    {
+      "id": "linkedin-help",
+      "module": "li",
+      "type": "Panduan resmi",
+      "title": "Pusat Bantuan LinkedIn",
+      "source": "LinkedIn",
+      "url": "https://www.linkedin.com/help/linkedin",
+      "about": "Bantuan resmi untuk pengaturan profil dan fitur LinkedIn (Modul 3).",
+      "verified": false
+    }
+  ]
+}

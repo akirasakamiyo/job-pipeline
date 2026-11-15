@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Ilustrasi: email lamaran keluar dari amplop + pesawat kertas -->
+  <circle cx="200" cy="158" r="118" fill="#FCE4EC"/>
+  <!-- surat -->
+  <rect x="134" y="62" width="132" height="150" rx="10" fill="#FFFFFF" stroke="#1E1B2E" stroke-width="3"/>
+  <rect x="150" y="80" width="56" height="7" rx="3.5" fill="#D6336C"/>
+  <rect x="150" y="98" width="100" height="5" rx="2.5" fill="#1E1B2E" opacity=".75"/>
+  <rect x="150" y="110" width="86" height="5" rx="2.5" fill="#1E1B2E" opacity=".3"/>
+  <rect x="150" y="122" width="94" height="5" rx="2.5" fill="#1E1B2E" opacity=".3"/>
+  <rect x="150" y="134" width="64" height="5" rx="2.5" fill="#1E1B2E" opacity=".3"/>
+  <!-- lampiran -->
+  <rect x="150" y="148" width="66" height="20" rx="6" fill="#FFEEDF" stroke="#1E1B2E" stroke-width="2"/>
+  <rect x="156" y="154" width="8" height="8" rx="2" fill="#FF7A1A"/>
+  <rect x="170" y="156" width="38" height="4" rx="2" fill="#1E1B2E" opacity=".6"/>
+  <!-- amplop -->
+  <path d="M110 150h180v88a10 10 0 0 1-10 10H120a10 10 0 0 1-10-10z" fill="#1E1B2E" transform="translate(6 6)"/>
+  <path d="M110 150h180v88a10 10 0 0 1-10 10H120a10 10 0 0 1-10-10z" fill="#D6336C" stroke="#1E1B2E" stroke-width="3"/>
+  <path d="m110 150 90 58 90-58" fill="#E85A8A" stroke="#1E1B2E" stroke-width="3"/>
+  <path d="m112 246 64-50M288 246l-64-50" stroke="#1E1B2E" stroke-width="3"/>
+  <!-- pesawat kertas -->
+  <path d="M286 92c18-6 34-24 44-44" stroke="#1E1B2E" stroke-width="2.5" stroke-dasharray="3 9" opacity=".5"/>
+  <path d="m318 36 54-14-26 50-10-18z" fill="#FFFFFF" stroke="#1E1B2E" stroke-width="3"/>
+  <path d="m336 54 36-32" stroke="#1E1B2E" stroke-width="3"/>
+  <!-- simbol @ -->
+  <circle cx="74" cy="92" r="24" fill="#FFC83D" stroke="#1E1B2E" stroke-width="3"/>
+  <circle cx="74" cy="92" r="7" stroke="#1E1B2E" stroke-width="3"/>
+  <path d="M81 92v4a5 5 0 0 0 10 0v-4a17 17 0 1 0-7 13.7" stroke="#1E1B2E" stroke-width="3"/>
+  <path d="M60 188l8 8M68 188l-8 8M330 200h14M337 193v14" stroke="#1E1B2E" stroke-width="3"/>
+</svg>

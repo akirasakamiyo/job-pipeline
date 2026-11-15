@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <!-- 404 untuk GitHub Pages: dipakai untuk SEMUA URL yang tidak ada, di kedalaman folder
+       berapa pun. Karena itu halaman ini mandiri (CSS inline, tanpa file lain) dan tautan
+       "Dashboard" dihitung ulang oleh skrip kecil agar benar di sub-path repository. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-F0C2QwUXhgrNycFLnzcnog52htFMzYVLWU0ZwEcNH38='; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Halaman tidak ditemukan · The Ultimate Job Application Pipeline</title>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px 16px;
+      font: 16px/1.6 "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #FBF7F0; color: #1E1B2E; }
+    main { width: min(100%, 520px); text-align: center; }
+    .code { display: inline-block; padding: 4px 12px; border-radius: 6px; background: #1E1B2E; color: #fff;
+      font: 700 13px/1.6 ui-monospace, "JetBrains Mono", monospace; letter-spacing: .12em; }
+    h1 { margin: 20px 0 8px; font: 700 clamp(1.8rem, 1.2rem + 3vw, 2.6rem)/1.15 Georgia, "Fraunces", serif; }
+    p { margin: 0 0 24px; color: #4A4659; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 14px;
+      border: 2px solid #1E1B2E; color: #1E1B2E; font-weight: 800; text-decoration: none; }
+    a.primary { background: #FFC83D; box-shadow: 4px 4px 0 #1E1B2E; }
+    a:focus-visible { outline: 3px solid #3B5BDB; outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <main>
+    <span class="code">404 · STASIUN TIDAK DITEMUKAN</span>
+    <h1>Halaman ini tidak ada di jalur</h1>
+    <p>Alamat yang kamu buka mungkin salah ketik atau sudah dipindahkan. Progres belajarmu tetap aman di browser ini.</p>
+    <div class="actions">
+      <a class="primary" href="dashboard.html" data-home="dashboard.html">Ke Dashboard</a>
+      <a href="modules.html" data-home="modules.html">Lihat modul</a>
+    </div>
+  </main>
+  <script>
+    (function () {
+      // GitHub Pages "project site": https://<user>.github.io/<repo>/... → akar situs = /<repo>/
+      var first = location.pathname.split('/').filter(Boolean)[0];
+      var base = /\.github\.io$/.test(location.hostname) && first && !/\.[a-z0-9]+$/i.test(first) ? '/' + first + '/' : '/';
+      var links = document.querySelectorAll('[data-home]');
+      for (var i = 0; i < links.length; i++) links[i].href = base + links[i].getAttribute('data-home');
+    })();
+  </script>
+</body>
+</html>

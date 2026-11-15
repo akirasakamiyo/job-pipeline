@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Ilustrasi: folder portofolio terbuka berisi karya + tautan berbagi -->
+  <circle cx="200" cy="156" r="120" fill="#E8EDFF"/>
+  <!-- folder belakang -->
+  <path d="M92 104a10 10 0 0 1 10-10h56l16 18h124a10 10 0 0 1 10 10v116a10 10 0 0 1-10 10H102a10 10 0 0 1-10-10z" fill="#2F4AB8" stroke="#1E1B2E" stroke-width="3"/>
+  <!-- kartu karya -->
+  <g transform="rotate(-8 160 120)">
+    <rect x="118" y="70" width="84" height="100" rx="8" fill="#FFFFFF" stroke="#1E1B2E" stroke-width="3"/>
+    <rect x="128" y="80" width="64" height="44" rx="5" fill="#FFEEDF"/>
+    <circle cx="146" cy="96" r="7" fill="#FFC83D"/>
+    <path d="m130 122 18-16 14 12 10-8 20 12" fill="#FF7A1A"/>
+    <rect x="128" y="134" width="50" height="5" rx="2.5" fill="#1E1B2E"/>
+    <rect x="128" y="145" width="36" height="4" rx="2" fill="#1E1B2E" opacity=".3"/>
+  </g>
+  <g transform="rotate(6 250 116)">
+    <rect x="206" y="64" width="88" height="104" rx="8" fill="#FFFFFF" stroke="#1E1B2E" stroke-width="3"/>
+    <rect x="216" y="74" width="68" height="46" rx="5" fill="#DDF4F4"/>
+    <rect x="226" y="86" width="20" height="26" rx="3" fill="#12A4A4"/>
+    <rect x="252" y="96" width="22" height="16" rx="3" fill="#8FB82E"/>
+    <rect x="216" y="130" width="54" height="5" rx="2.5" fill="#1E1B2E"/>
+    <rect x="216" y="141" width="40" height="4" rx="2" fill="#1E1B2E" opacity=".3"/>
+  </g>
+  <!-- folder depan -->
+  <path d="M84 150a10 10 0 0 1 10-10h220a10 10 0 0 1 10 10l-14 88a10 10 0 0 1-10 8H106a10 10 0 0 1-10-8z" fill="#1E1B2E" transform="translate(6 6)"/>
+  <path d="M84 150a10 10 0 0 1 10-10h220a10 10 0 0 1 10 10l-14 88a10 10 0 0 1-10 8H106a10 10 0 0 1-10-8z" fill="#3B5BDB" stroke="#1E1B2E" stroke-width="3"/>
+  <rect x="164" y="176" width="80" height="14" rx="7" fill="#FFFFFF" opacity=".9"/>
+  <!-- tautan berbagi -->
+  <g transform="translate(300 54)">
+    <rect x="0" y="0" width="76" height="36" rx="18" fill="#FFC83D" stroke="#1E1B2E" stroke-width="3"/>
+    <path d="M26 18h24" stroke="#1E1B2E" stroke-width="3"/>
+    <rect x="12" y="11" width="18" height="14" rx="7" stroke="#1E1B2E" stroke-width="3"/>
+    <rect x="46" y="11" width="18" height="14" rx="7" stroke="#1E1B2E" stroke-width="3"/>
+  </g>
+  <path d="M60 80l8 8M68 80l-8 8M340 214h14M347 207v14" stroke="#1E1B2E" stroke-width="3"/>
+</svg>

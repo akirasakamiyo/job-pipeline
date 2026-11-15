@@ -1,0 +1,139 @@
+/* =====================================================================
+   tokens.css — Design tokens
+   ---------------------------------------------------------------------
+   Satu-satunya sumber nilai visual (warna, tipografi, spasi, radius,
+   bayangan, gerak, layout). File CSS lain HANYA memakai var(--...)
+   dari sini, sehingga perubahan identitas cukup dilakukan di satu file.
+   ===================================================================== */
+
+:root {
+  /* ---------- 1. Brand ----------------------------------------------
+     Identitas "rambu transit": kuning sinyal + tinta gelap + cobalt.  */
+  --signal: #FFC83D;          /* PRIMARY  — CTA utama, highlight, XP   */
+  --signal-strong: #F5B400;
+  --signal-soft: #FFD96E;
+  --signal-tint: #FFF4D6;
+
+  --ink: #1E1B2E;             /* SECONDARY — teks, outline, bayangan   */
+  --ink-2: #3A3650;
+  --ink-soft: #5B5770;        /* teks sekunder (AA di paper & surface) */
+  --ink-mute: #6F6B80;        /* metadata, placeholder (AA ≥ 4.5)      */
+
+  --cobalt: #3B5BDB;          /* ACCENT — link, fokus, elemen interaktif */
+  --cobalt-strong: #2F4AB8;
+  --cobalt-tint: #E8EDFF;
+
+  /* ---------- 2. Netral --------------------------------------------- */
+  --paper: #FBF7F0;           /* BACKGROUND — krem hangat              */
+  --paper-2: #F3EDE2;
+  --surface: #FFFFFF;         /* SURFACE — kartu, panel                */
+  --line: #E8E1D4;
+  --line-strong: #CFC4B0;
+
+  /* ---------- 3. Status --------------------------------------------- */
+  --success: #1F9D55;  --success-text: #157A41;  --success-tint: #E3F6EA;
+  --warning: #E8A317;  --warning-text: #8A5A00;  --warning-tint: #FFF3D9;
+  --danger:  #E5484D;  --danger-text:  #C1272D;  --danger-tint:  #FDE8E8;
+
+  /* ---------- 4. Warna jalur modul (stasiun) -------------------------
+     base  = isian & garis | text = versi gelap untuk teks (AA)
+     tint  = latar lembut kartu                                         */
+  --m-id: #3B5BDB;  --m-id-text: #2F4AB8;  --m-id-tint: #E8EDFF;   /* Digital Identity */
+  --m-cv: #FF7A1A;  --m-cv-text: #A84A08;  --m-cv-tint: #FFEEDF;   /* Core Arsenal     */
+  --m-li: #12A4A4;  --m-li-text: #0B6B6B;  --m-li-tint: #DDF4F4;   /* Recon & Network  */
+  --m-tx: #D6336C;  --m-tx-text: #A81E52;  --m-tx-tint: #FCE4EC;   /* Execution        */
+  --m-tr: #8FB82E;  --m-tr-text: #4E6A0C;  --m-tr-tint: #EEF6DC;   /* Tracking         */
+
+  /* ---------- 5. Peran semantik (dipakai komponen) ------------------ */
+  --color-primary: var(--signal);
+  --color-on-primary: var(--ink);
+  --color-secondary: var(--ink);
+  --color-on-secondary: #FFFFFF;
+  --color-accent: var(--cobalt);
+  --color-on-accent: #FFFFFF;
+  --color-bg: var(--paper);
+  --color-surface: var(--surface);
+  --color-text: var(--ink);
+  --color-text-soft: var(--ink-soft);
+  --color-link: var(--cobalt-strong);
+
+  /* ---------- 6. Tipografi ------------------------------------------ */
+  --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  --font-body: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Skala fluid: min (HP) → max (desktop) */
+  --fs-display: clamp(2.6rem, 1.5rem + 4.6vw, 5.25rem);
+  --fs-h1: clamp(2.1rem, 1.6rem + 2.2vw, 3.4rem);
+  --fs-h2: clamp(1.65rem, 1.4rem + 1vw, 2.25rem);
+  --fs-h3: clamp(1.2rem, 1.12rem + .4vw, 1.45rem);
+  --fs-lg: clamp(1.0625rem, 1rem + .3vw, 1.25rem);
+  --fs-body: clamp(1rem, .97rem + .15vw, 1.0625rem);
+  --fs-sm: .875rem;
+  --fs-xs: .75rem;
+
+  --lh-tight: 1.08;
+  --lh-snug: 1.3;
+  --lh-body: 1.6;
+
+  /* ---------- 7. Spasi (basis 4px) ----------------------------------- */
+  --s-1: 4px;   --s-2: 8px;   --s-3: 12px;  --s-4: 16px;  --s-5: 24px;
+  --s-6: 32px;  --s-7: 48px;  --s-8: 64px;  --s-9: 96px;
+
+  /* ---------- 8. Radius ---------------------------------------------- */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-xl: 32px;
+  --r-pill: 999px;
+
+  /* ---------- 9. Bayangan --------------------------------------------
+     soft = kartu & panel | sticker = tombol utama & badge (playful)    */
+  --sh-1: 0 1px 2px rgb(30 27 46 / .06);
+  --sh-2: 0 1px 2px rgb(30 27 46 / .05), 0 10px 28px -10px rgb(30 27 46 / .16);
+  --sh-3: 0 2px 6px rgb(30 27 46 / .06), 0 24px 48px -16px rgb(30 27 46 / .26);
+  --sh-sticker: 3px 3px 0 var(--ink);
+  --sh-sticker-hover: 5px 5px 0 var(--ink);
+  --sh-sticker-lg: 6px 6px 0 var(--ink);
+
+  --bw: 2px;                       /* tebal border "tinta" */
+
+  /* ---------- 10. Gerak ---------------------------------------------- */
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --dur-1: 120ms;    /* tekan tombol            */
+  --dur-2: 200ms;    /* hover, warna            */
+  --dur-3: 320ms;    /* panel kecil             */
+  --dur-4: 520ms;    /* elemen masuk            */
+
+  /* ---------- 11. Layout --------------------------------------------- */
+  --container: 1200px;
+  --container-narrow: 760px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --topbar-h: 64px;
+  --bottombar-h: 72px;
+
+  /* ---------- 12. Lapisan (z-index) ---------------------------------- */
+  --z-bg: -1;
+  --z-sticky: 30;
+  --z-nav: 50;
+  --z-overlay: 80;
+  --z-modal: 90;
+  --z-toast: 100;
+  --z-curtain: 120;
+}
+
+@media (min-width: 1024px) {
+  :root { --topbar-h: 76px; }
+}
+
+/* ---------- Scope warna modul ----------------------------------------
+   Pasang data-module="id|cv|li|tx|tr" di elemen mana pun; semua komponen
+   di dalamnya otomatis memakai warna jalur tersebut lewat --mod*.        */
+[data-module] { --mod: var(--cobalt); --mod-text: var(--cobalt-strong); --mod-tint: var(--cobalt-tint); }
+[data-module="id"] { --mod: var(--m-id); --mod-text: var(--m-id-text); --mod-tint: var(--m-id-tint); }
+[data-module="cv"] { --mod: var(--m-cv); --mod-text: var(--m-cv-text); --mod-tint: var(--m-cv-tint); }
+[data-module="li"] { --mod: var(--m-li); --mod-text: var(--m-li-text); --mod-tint: var(--m-li-tint); }
+[data-module="tx"] { --mod: var(--m-tx); --mod-text: var(--m-tx-text); --mod-tint: var(--m-tx-tint); }
+[data-module="tr"] { --mod: var(--m-tr); --mod-text: var(--m-tr-text); --mod-tint: var(--m-tr-tint); }

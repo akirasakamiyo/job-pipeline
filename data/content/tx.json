@@ -1,0 +1,177 @@
+{
+  "module": "tx",
+  "objectives": [
+    "Menulis subjek email lamaran dengan formula yang jelas",
+    "Menyusun struktur email profesional dari salam sampai lampiran",
+    "Menerapkan formula tiga paragraf: hook, value proposition, call to action",
+    "Memeriksa red flag sebelum menekan tombol Kirim"
+  ],
+  "sections": {
+    "tx-1": {
+      "blocks": [
+        { "type": "objectives" },
+        { "type": "p", "text": "Semua persiapan di modul sebelumnya bermuara di sini: **email lamaran**. Email ini menentukan apakah HRD membuka lampiranmu—atau melewatinya." },
+        { "type": "steps", "items": [
+          { "title": "Subjek", "text": "Membuat email dibuka dan mudah dicari." },
+          { "title": "Isi tiga paragraf", "text": "Hook → value proposition → call to action." },
+          { "title": "Pemeriksaan akhir", "text": "Red flags checklist sebelum Kirim." }
+        ] },
+        { "type": "callout", "tone": "warn", "title": "Aturan nomor satu", "text": "Jika lowongan memberi instruksi (format subjek, alamat tujuan, dokumen yang diminta), ikuti instruksi itu persis. Formula di modul ini dipakai ketika tidak ada instruksi khusus." }
+      ]
+    },
+    "tx-2": {
+      "blocks": [
+        { "type": "p", "text": "Subjek email adalah **judul** lamaranmu di kotak masuk HRD yang berisi banyak email. Buat ringkas, jelas, dan mudah dicari." },
+        { "type": "anatomy", "title": "Formula subjek", "parts": [
+          { "text": "[Kode]", "label": "Kode lowongan", "note": "Bila ada di iklan" },
+          { "text": " – Lamaran", "label": "Jenis email", "note": "Lamaran / Follow-up" },
+          { "text": " Frontend Developer", "label": "Posisi", "note": "Sama dengan iklan" },
+          { "text": " – Rina Putri Andini", "label": "Nama lengkap", "note": "Agar mudah dicari" }
+        ] },
+        { "type": "dodont",
+          "do": ["Lamaran Frontend Developer – Rina Putri Andini", "FE-0425 – Lamaran Frontend Developer – Rina Putri Andini", "Ringkas agar tidak terpotong di layar HP"],
+          "dont": ["Subjek kosong", "\"Lamaran\" saja", "HURUF KAPITAL SEMUA", "\"URGENT!!!\" atau emoji", "\"Mohon dibaca pak/bu\""] },
+        { "type": "verify", "text": "Panjang subjek yang ideal sering disebut di kisaran puluhan karakter agar tidak terpotong di layar ponsel. Batas tampilan berbeda tiap aplikasi email—verifikasi sebelum menyebut angka pasti." }
+      ]
+    },
+    "tx-3": {
+      "blocks": [
+        { "type": "p", "text": "Email lamaran yang profesional memiliki bagian-bagian berikut, dari atas ke bawah:" },
+        { "type": "stack", "title": "Struktur email lamaran", "levels": [
+          { "label": "Kepada / Cc", "note": "Alamat sesuai iklan; cek ejaan" },
+          { "label": "Subjek", "note": "Formula dari bagian sebelumnya" },
+          { "label": "Salam pembuka", "note": "Yth. Bapak/Ibu [Nama] atau Yth. Tim Rekrutmen [Perusahaan]" },
+          { "label": "Isi: 3 paragraf", "note": "Hook · Value proposition · Call to action" },
+          { "label": "Salam penutup", "note": "Hormat saya, / Salam," },
+          { "label": "Tanda tangan", "note": "Dari Modul 1" },
+          { "label": "Lampiran", "note": "CV & dokumen dengan nama rapi" }
+        ] },
+        { "type": "callout", "tone": "tip", "title": "Jangan kirim email kosong", "text": "Email yang hanya berisi lampiran tanpa isi terkesan terburu-buru. Tulis isi singkat walau CV sudah terlampir." }
+      ]
+    },
+    "tx-4": {
+      "blocks": [
+        { "type": "p", "text": "Isi email cukup **tiga paragraf pendek**. Setiap paragraf punya satu tugas." },
+        { "type": "steps", "items": [
+          { "title": "Paragraf 1 — The Hook", "text": "Siapa kamu, posisi yang dilamar, dan dari mana kamu tahu lowongannya—dengan pembuka yang spesifik." },
+          { "title": "Paragraf 2 — The Value Proposition", "text": "Dua atau tiga bukti paling relevan bahwa kamu cocok untuk posisi itu." },
+          { "title": "Paragraf 3 — The Call to Action", "text": "Lampiran, kesediaan untuk wawancara, dan ucapan terima kasih." }
+        ] },
+        { "type": "callout", "tone": "key", "title": "Bukan salinan CV", "text": "Email adalah pengantar yang memancing rasa ingin tahu. Detail lengkap ada di CV." },
+        { "type": "recall", "q": "Paragraf mana yang berisi bukti bahwa kamu cocok untuk posisi tersebut?", "options": ["The Hook", "The Value Proposition", "The Call to Action"], "answer": 1, "explain": "Value proposition menghubungkan kebutuhan posisi dengan bukti kemampuanmu." }
+      ]
+    },
+    "tx-5": {
+      "blocks": [
+        { "type": "p", "text": "**The hook** adalah kalimat pembuka yang membuat HRD ingin membaca lanjut. Kuncinya: **spesifik**." },
+        { "type": "compare", "items": [
+          { "label": "Generik", "tone": "bad", "lines": ["\"Dengan hormat, bersama email ini saya bermaksud melamar pekerjaan di perusahaan yang Bapak/Ibu pimpin.\""] },
+          { "label": "Spesifik", "tone": "good", "lines": ["\"Saya Rina Putri Andini, lulusan Teknik Informatika, ingin melamar posisi Frontend Developer yang diiklankan di LinkedIn. Peluncuran fitur pembayaran di aplikasi [Perusahaan] bulan ini membuat saya ingin ikut membangun pengalaman pengguna yang lebih mulus.\""] }
+        ] },
+        { "type": "list", "items": ["Sebut **posisi** dan **sumber** lowongan", "Gunakan **satu catatan riset** dari Modul 3", "Jika ada **referral**, sebut namanya dengan izin orang tersebut"] }
+      ]
+    },
+    "tx-6": {
+      "blocks": [
+        { "type": "p", "text": "**Value proposition** menjawab: \"Mengapa kamu?\" Hubungkan 2–3 kebutuhan di iklan dengan bukti dari pengalamanmu." },
+        { "type": "table", "head": ["Kebutuhan di iklan", "Bukti dari pengalamanmu"], "rows": [
+          ["Menguasai HTML, CSS, JavaScript", "Membangun formulir pendaftaran acara kampus yang dipakai panitia"],
+          ["Memahami aksesibilitas", "Menerapkan label & navigasi keyboard di proyek portofolio"],
+          ["Bisa bekerja dalam tim", "Berkolaborasi dengan divisi desain dalam 3 proyek kampus"]
+        ] },
+        { "type": "email", "variant": "paragraph", "body": ["Selama kuliah, saya membangun formulir pendaftaran acara kampus dengan HTML, CSS, dan JavaScript yang dipakai panitia untuk mendata peserta. Di proyek portofolio, saya menerapkan label formulir dan navigasi keyboard agar halaman lebih aksesibel—sejalan dengan kebutuhan tim [Perusahaan] yang disebut dalam iklan."] },
+        { "type": "callout", "tone": "info", "title": "Data contoh", "text": "Pengalaman di atas fiktif. Gunakan bukti nyata dari CV-mu." }
+      ]
+    },
+    "tx-7": {
+      "blocks": [
+        { "type": "p", "text": "**Call to action** menutup email dengan langkah berikutnya yang jelas dan sopan." },
+        { "type": "list", "items": ["Sebut **lampiran** (CV, portofolio) dan tautannya", "Nyatakan **kesediaan** untuk wawancara", "Ucapkan **terima kasih** atas waktu pembaca"] },
+        { "type": "compare", "items": [
+          { "label": "Memaksa / ragu", "tone": "bad", "lines": ["\"Saya sangat berharap diterima karena sangat membutuhkan pekerjaan ini.\"", "\"Mohon maaf kalau mengganggu…\""] },
+          { "label": "Jelas & percaya diri", "tone": "good", "lines": ["\"CV dan portofolio saya lampirkan untuk pertimbangan Bapak/Ibu. Saya dengan senang hati dapat mengikuti wawancara sesuai waktu yang tersedia. Terima kasih atas waktu dan perhatiannya.\""] }
+        ] }
+      ]
+    },
+    "tx-8": {
+      "blocks": [
+        { "type": "p", "text": "Sebelum menekan **Kirim**, periksa setiap red flag ini. Centang yang sudah aman—statusnya tersimpan." },
+        { "type": "checklist", "id": "redflags", "items": [
+          { "id": "tx-c1", "text": "Nama perusahaan & nama penerima ditulis dengan benar", "hint": "Salah nama perusahaan adalah kesalahan yang sangat terlihat." },
+          { "id": "tx-c2", "text": "Subjek terisi dan sesuai formula/instruksi" },
+          { "id": "tx-c3", "text": "Lampiran benar-benar terlampir & nama filenya rapi" },
+          { "id": "tx-c4", "text": "Tautan portofolio bisa dibuka (dites di incognito)" },
+          { "id": "tx-c5", "text": "Tidak ada salah ketik di paragraf pertama" },
+          { "id": "tx-c6", "text": "Tidak memakai HURUF KAPITAL SEMUA, emoji, atau bahasa terlalu santai" },
+          { "id": "tx-c7", "text": "Tidak mengirim ke banyak perusahaan sekaligus dalam satu email" },
+          { "id": "tx-c8", "text": "Tanda tangan email muncul di akhir" }
+        ] },
+        { "type": "callout", "tone": "tip", "title": "Kirim tes ke diri sendiri", "text": "Kirim email ke alamatmu sendiri dulu untuk mengecek tampilan, lampiran, dan tautan." }
+      ]
+    },
+    "tx-9": {
+      "blocks": [
+        { "type": "p", "text": "Seluruh bagian email lamaran dalam satu gambar:" },
+        { "type": "anatomy", "title": "Anatomi email lamaran", "parts": [
+          { "text": "Subjek", "label": "Judul", "note": "Posisi + nama" },
+          { "text": "Salam", "label": "Pembuka", "note": "Yth. + nama/tim" },
+          { "text": "Hook", "label": "Paragraf 1", "note": "Siapa & posisi apa" },
+          { "text": "Value", "label": "Paragraf 2", "note": "Bukti relevan" },
+          { "text": "CTA", "label": "Paragraf 3", "note": "Lampiran & ketersediaan" },
+          { "text": "Tanda tangan", "label": "Penutup", "note": "Kontak lengkap" }
+        ] },
+        { "type": "flow", "title": "Dari draf sampai terkirim", "steps": [
+          { "label": "Draf", "note": "Tiga paragraf" },
+          { "label": "Lampirkan", "note": "PDF rapi" },
+          { "label": "Cek red flag", "note": "Checklist" },
+          { "label": "Tes kirim", "note": "Ke diri sendiri" },
+          { "label": "Kirim", "note": "Catat di tracker" }
+        ] }
+      ]
+    },
+    "tx-10": {
+      "blocks": [
+        { "type": "p", "text": "Contoh email lamaran lengkap (data fiktif). Perhatikan bagaimana setiap paragraf menjalankan satu tugas." },
+        { "type": "email", "variant": "email", "from": "Rina Putri Andini <rina.andini@gmail.com>", "to": "rekrutmen@perusahaan.example", "subject": "Lamaran Frontend Developer – Rina Putri Andini", "greeting": "Yth. Tim Rekrutmen [Perusahaan],", "body": [
+          "Saya Rina Putri Andini, lulusan Teknik Informatika, ingin melamar posisi Frontend Developer yang diiklankan di LinkedIn. Peluncuran fitur pembayaran di aplikasi [Perusahaan] membuat saya ingin ikut membangun pengalaman pengguna yang lebih mulus.",
+          "Selama kuliah, saya membangun formulir pendaftaran acara kampus dengan HTML, CSS, dan JavaScript yang dipakai panitia untuk mendata peserta. Di proyek portofolio, saya menerapkan label formulir dan navigasi keyboard agar halaman lebih aksesibel—sejalan dengan kebutuhan yang disebut dalam iklan.",
+          "CV dan portofolio saya lampirkan untuk pertimbangan Bapak/Ibu. Saya dengan senang hati dapat mengikuti wawancara sesuai waktu yang tersedia. Terima kasih atas waktu dan perhatiannya."
+        ], "closing": "Hormat saya,", "signature": ["Rina Putri Andini", "Frontend Developer | Lulusan Teknik Informatika", "+62 812-0000-0000", "linkedin.com/in/rinaputriandini"], "attachments": ["CV_RinaPutriAndini_FrontendDeveloper.pdf", "Portofolio_RinaPutriAndini.pdf"] }
+      ]
+    },
+    "tx-11": {
+      "blocks": [
+        { "type": "p", "text": "**Latihan 1** — buat subjek email lamaranmu. Pemeriksaan otomatis menandai masalah umum." },
+        { "type": "builder", "id": "tx-subject", "kind": "subject", "fields": [
+          { "id": "code", "label": "Kode lowongan (opsional)", "placeholder": "cth. FE-0425" },
+          { "id": "role", "label": "Posisi", "placeholder": "cth. Frontend Developer" },
+          { "id": "name", "label": "Nama lengkap", "placeholder": "cth. Rina Putri Andini", "default": "@name" }
+        ] },
+        { "type": "p", "text": "**Latihan 2** — pilah kalimat pembuka (hook) berikut." },
+        { "type": "classify", "id": "tx-hooks", "labels": { "good": "Spesifik", "bad": "Generik" }, "items": [
+          { "text": "\"Dengan hormat, saya bermaksud melamar pekerjaan di perusahaan Bapak/Ibu.\"", "answer": "bad", "why": "Tidak menyebut posisi, sumber lowongan, atau alasan spesifik." },
+          { "text": "\"Saya Rina, lulusan TI, ingin melamar posisi Frontend Developer yang diiklankan di LinkedIn.\"", "answer": "good", "why": "Menyebut siapa, posisi, dan sumber lowongan." },
+          { "text": "\"Kak Dimas, Frontend Engineer di tim Anda, menyarankan saya melamar posisi Frontend Developer ini.\"", "answer": "good", "why": "Menyebut referral (dengan izin) dan posisi yang jelas." },
+          { "text": "\"Saya sangat butuh pekerjaan, mohon dipertimbangkan.\"", "answer": "bad", "why": "Berfokus pada kebutuhanmu, bukan nilai yang kamu tawarkan." }
+        ] }
+      ]
+    }
+  },
+  "quiz": [
+    { "q": "Subjek mana yang paling sesuai formula?", "options": ["Lamaran", "URGENT!!! LAMARAN KERJA", "Lamaran Frontend Developer – Rina Putri Andini", "Mohon dibaca pak/bu"], "answer": 2, "explain": "Menyebut jenis email, posisi, dan nama lengkap secara ringkas." },
+    { "q": "Apa tugas paragraf pertama (the hook)?", "options": ["Melampirkan CV", "Memperkenalkan diri, posisi, dan sumber lowongan secara spesifik", "Menjelaskan seluruh pengalaman kerja", "Menyebut gaji yang diharapkan"], "answer": 1, "explain": "Hook membuka email dengan konteks yang jelas dan spesifik." },
+    { "q": "Value proposition yang baik…", "options": ["Menyalin seluruh isi CV", "Menghubungkan kebutuhan di iklan dengan bukti pengalaman", "Berisi daftar sifat positif", "Menjelaskan alasan butuh pekerjaan"], "answer": 1, "explain": "Tunjukkan kecocokan lewat bukti yang relevan." },
+    { "q": "Mana yang termasuk red flag?", "options": ["Tanda tangan email di akhir", "Nama perusahaan salah ketik", "Lampiran dengan nama rapi", "Subjek sesuai formula"], "answer": 1, "explain": "Salah nama perusahaan sangat terlihat dan memberi kesan tidak teliti." },
+    { "q": "Jika iklan meminta format subjek tertentu, kamu sebaiknya…", "options": ["Tetap memakai formula modul ini", "Mengikuti format dari iklan", "Menggabungkan keduanya", "Mengosongkan subjek"], "answer": 1, "explain": "Instruksi perusahaan selalu didahulukan." }
+  ],
+  "summary": {
+    "takeaways": [
+      "Ikuti instruksi lowongan; formula dipakai bila tidak ada instruksi.",
+      "Subjek: [Kode] – Lamaran [Posisi] – [Nama Lengkap], ringkas & tanpa huruf kapital semua.",
+      "Isi tiga paragraf: hook spesifik → value proposition berbukti → call to action yang jelas.",
+      "Periksa red flag dan kirim tes ke diri sendiri sebelum Kirim."
+    ],
+    "next": "Berikutnya kamu akan mengelola lamaran yang sudah terkirim dan menulis follow-up."
+  },
+  "references": ["hbr", "glints", "jobstreet", "mayer-2020"]
+}

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Ilustrasi: dokumen CV dengan stempel "siap kirim" dan pensil -->
+  <circle cx="200" cy="152" r="120" fill="#FFEEDF"/>
+  <!-- kertas belakang -->
+  <rect x="150" y="44" width="150" height="196" rx="12" fill="#FFFFFF" stroke="#1E1B2E" stroke-width="3" transform="rotate(8 225 142)"/>
+  <!-- CV utama: bayangan + kertas -->
+  <rect x="122" y="42" width="150" height="200" rx="12" fill="#1E1B2E" transform="translate(6 6)"/>
+  <rect x="122" y="42" width="150" height="200" rx="12" fill="#FFFFFF" stroke="#1E1B2E" stroke-width="3"/>
+  <circle cx="156" cy="80" r="18" fill="#FF7A1A" stroke="#1E1B2E" stroke-width="3"/>
+  <circle cx="156" cy="75" r="6" fill="#FFFFFF"/>
+  <path d="M145 92a12 12 0 0 1 22 0" fill="#FFFFFF"/>
+  <rect x="184" y="68" width="68" height="8" rx="4" fill="#1E1B2E"/>
+  <rect x="184" y="84" width="46" height="5" rx="2.5" fill="#FF7A1A"/>
+  <path d="M138 114h118" stroke="#E8E1D4" stroke-width="3"/>
+  <rect x="138" y="126" width="40" height="6" rx="3" fill="#1E1B2E"/>
+  <rect x="138" y="140" width="110" height="5" rx="2.5" fill="#1E1B2E" opacity=".3"/>
+  <rect x="138" y="151" width="96" height="5" rx="2.5" fill="#1E1B2E" opacity=".3"/>
+  <rect x="138" y="170" width="52" height="6" rx="3" fill="#1E1B2E"/>
+  <rect x="138" y="184" width="30" height="12" rx="6" fill="#DDF4F4" stroke="#12A4A4" stroke-width="2"/>
+  <rect x="174" y="184" width="38" height="12" rx="6" fill="#E8EDFF" stroke="#3B5BDB" stroke-width="2"/>
+  <rect x="218" y="184" width="28" height="12" rx="6" fill="#FCE4EC" stroke="#D6336C" stroke-width="2"/>
+  <rect x="138" y="208" width="104" height="5" rx="2.5" fill="#1E1B2E" opacity=".3"/>
+  <rect x="138" y="219" width="80" height="5" rx="2.5" fill="#1E1B2E" opacity=".3"/>
+  <!-- stempel -->
+  <g transform="rotate(-14 294 196)">
+    <circle cx="294" cy="196" r="34" fill="#FFC83D" stroke="#1E1B2E" stroke-width="3"/>
+    <circle cx="294" cy="196" r="26" stroke="#1E1B2E" stroke-width="2" stroke-dasharray="4 5"/>
+    <path d="m281 196 9 9 17-18" stroke="#1E1B2E" stroke-width="4.5"/>
+  </g>
+  <!-- pensil -->
+  <g transform="rotate(38 82 150)">
+    <rect x="70" y="86" width="24" height="104" rx="4" fill="#3B5BDB" stroke="#1E1B2E" stroke-width="3"/>
+    <path d="M70 190h24l-12 24z" fill="#FFF4D6" stroke="#1E1B2E" stroke-width="3"/>
+    <path d="M78 206h8l-4 8z" fill="#1E1B2E"/>
+    <rect x="70" y="76" width="24" height="14" rx="4" fill="#D6336C" stroke="#1E1B2E" stroke-width="3"/>
+  </g>
+</svg>

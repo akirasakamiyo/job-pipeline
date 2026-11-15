@@ -1,0 +1,249 @@
+/* =====================================================================
+   pages/dashboard.css — Tata letak Dashboard
+   Komponen (card, ring, bar, route, badge, module-card, tool-tile, …)
+   berasal dari components.css. File ini hanya menyusun layout.
+   Breakpoint: HP < 768 · tablet 768–1023 · desktop ≥ 1024
+   ===================================================================== */
+
+.dash-section { padding-top: clamp(40px, 6vw, 72px); }
+
+/* =====================================================================
+   HERO
+   ===================================================================== */
+.dash-hero {
+  display: grid;
+  gap: var(--s-6);
+  align-items: center;
+  padding-top: clamp(20px, 4vw, 48px);
+}
+.dash-hero__copy { display: flex; flex-direction: column; gap: var(--s-5); min-width: 0; }
+
+.dash-greet { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); }
+.dash-greet__text { font-weight: 700; font-size: var(--fs-lg); }
+.dash-greet__text strong { font-weight: 800; }
+
+.dash-hero__title { font-size: clamp(2.4rem, 1.4rem + 4.2vw, 4.6rem); }
+.dash-hero__cta { display: flex; flex-direction: column; gap: var(--s-3); }
+.dash-hero__cta .btn { width: 100%; }
+
+/* Ringkasan progres di hero */
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-2);
+  margin: 0;
+}
+.hero-stats div {
+  padding: var(--s-3);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.hero-stats dt { font-size: var(--fs-xs); font-weight: 700; color: var(--ink-soft); }
+.hero-stats dd { margin-top: 6px; font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem); }
+.hero-stats dd small { font-size: .55em; color: var(--ink-soft); font-family: var(--font-body); font-weight: 700; }
+
+/* Ilustrasi + kartu "lanjutkan" */
+.dash-hero__art { position: relative; width: 100%; max-width: 520px; margin-inline: auto; }
+.dash-hero__art img { width: 100%; }
+
+.continue-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin: -8px auto 0;
+  width: min(100%, 360px);
+  padding: var(--s-3) var(--s-4) var(--s-3) var(--s-3);
+  background: var(--surface);
+  border: var(--bw) solid var(--ink);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-sticker);
+  color: var(--ink);
+  text-decoration: none;
+  transition: box-shadow var(--dur-2), border-color var(--dur-2);
+}
+.continue-card:hover { color: var(--ink); box-shadow: var(--sh-sticker-hover); }
+.continue-card__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.continue-card__label { font: 700 10px/1.2 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.continue-card__title { font-weight: 800; font-size: var(--fs-sm); line-height: 1.3; }
+.continue-card__meta { font-size: var(--fs-xs); color: var(--ink-soft); }
+.continue-card > .icon { flex: none; color: var(--ink-soft); }
+
+@media (min-width: 600px) {
+  .dash-hero__cta { flex-direction: row; flex-wrap: wrap; }
+  .dash-hero__cta .btn { width: auto; }
+}
+/* Tablet: dua kolom; kartu "lanjutkan" tetap di bawah ilustrasi */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .dash-hero { grid-template-columns: 1.15fr .85fr; gap: var(--s-5); }
+  .dash-hero__title { font-size: clamp(2.4rem, 1rem + 3.6vw, 3.4rem); }
+}
+@media (min-width: 1024px) {
+  .dash-hero { grid-template-columns: 1.08fr .92fr; gap: var(--s-7); }
+  .continue-card { position: absolute; left: -6%; bottom: -4%; margin: 0; width: min(88%, 340px); }
+}
+
+/* =====================================================================
+   PROGRES + ROADMAP
+   ===================================================================== */
+.dash-progress { display: grid; gap: var(--s-4); }
+@media (min-width: 1024px) { .dash-progress { grid-template-columns: 1.25fr 1fr; align-items: start; } }
+
+.progress-panel { display: flex; flex-direction: column; gap: var(--s-5); }
+.progress-panel__head { display: flex; flex-direction: column; gap: var(--s-2); }
+.progress-panel__main { display: grid; gap: var(--s-5); justify-items: center; }
+.progress-panel__counts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-2);
+  width: 100%;
+}
+@media (min-width: 600px) {
+  .progress-panel__main { grid-template-columns: auto 1fr; align-items: center; justify-items: stretch; }
+}
+.progress-panel__barhead { display: flex; justify-content: space-between; margin-bottom: var(--s-2); color: var(--ink-soft); font-weight: 600; }
+.progress-panel__barhead .mono { color: var(--ink); font-weight: 700; }
+
+/* Progres per modul */
+.module-progress { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.module-progress__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--s-2) var(--s-3);
+  padding: 10px var(--s-2);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  text-decoration: none;
+  transition: background-color var(--dur-2);
+}
+.module-progress__row:hover { background: var(--paper-2); color: var(--ink); }
+.module-progress__title { font-size: var(--fs-sm); font-weight: 650; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.module-progress__row .bar { grid-column: 2 / 3; height: 6px; }
+.module-progress__pct { grid-row: 1 / 3; grid-column: 3; font: 700 var(--fs-sm)/1 var(--font-mono); min-width: 4ch; text-align: right; }
+.module-progress__row .code { grid-row: 1 / 3; }
+
+/* Roadmap */
+.roadmap { display: flex; flex-direction: column; gap: var(--s-5); }
+.roadmap__route { margin-top: var(--s-2); }
+.roadmap__steps { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; counter-reset: step; }
+.roadmap__step {
+  display: grid;
+  grid-template-columns: 30px 1fr auto;
+  align-items: center;
+  gap: var(--s-3);
+  padding: 10px var(--s-2);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  text-decoration: none;
+}
+.roadmap__step:hover { background: var(--paper-2); color: var(--ink); }
+.roadmap__num {
+  display: grid; place-items: center;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--line-strong);
+  font: 700 12px/1 var(--font-mono);
+  color: var(--ink-soft);
+  background: var(--surface);
+}
+.roadmap__step[data-status="done"] .roadmap__num { background: var(--mod); border-color: var(--ink); color: #fff; }
+.roadmap__step[data-status="progress"] .roadmap__num,
+.roadmap__step.is-current .roadmap__num { border-color: var(--mod); color: var(--mod-text); box-shadow: 0 0 0 4px var(--mod-tint); }
+.roadmap__body { display: flex; flex-direction: column; min-width: 0; }
+.roadmap__title { font-weight: 700; font-size: var(--fs-sm); }
+.roadmap__meta { font-size: var(--fs-xs); color: var(--ink-soft); }
+
+/* =====================================================================
+   KARTU MODUL
+   HP: carousel geser (scroll-snap) · tablet: 2 kolom · desktop: 3 kolom
+   ===================================================================== */
+.module-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(84%, 320px);
+  gap: var(--s-4);
+  margin-inline: calc(-1 * var(--gutter));
+  padding: var(--s-2) var(--gutter) var(--s-5);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.module-rail::-webkit-scrollbar { display: none; }
+.module-rail > * { scroll-snap-align: start; }
+.module-rail:focus-visible { outline-offset: -3px; }
+
+@media (min-width: 768px) {
+  .module-rail {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-inline: 0;
+    padding: 0;
+    overflow: visible;
+  }
+}
+@media (min-width: 1100px) {
+  .module-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* =====================================================================
+   GRID BAWAH: alat · aktivitas · pencapaian · resources
+   ===================================================================== */
+.dash-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
+/* min-width 0: baris badge yang bisa digeser tidak boleh melebarkan kolom grid */
+.dash-grid > *, .dash-progress > *, .dash-hero > * { min-width: 0; }
+@media (min-width: 768px) and (max-width: 1023px) {
+  .dash-grid { grid-template-columns: 1fr 1fr; }
+  .dash-tools, .dash-achievements { grid-column: 1 / -1; }
+}
+@media (min-width: 1024px) {
+  .dash-grid { grid-template-columns: 1.35fr 1fr; align-items: start; }
+}
+
+.tools-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+@media (min-width: 768px) and (max-width: 1023px) { .tools-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 399px) { .tool-tile__desc { display: none; } }
+
+.xp-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 36px; padding: 0 14px;
+  border-radius: var(--r-pill);
+  background: var(--signal);
+  border: var(--bw) solid var(--ink);
+  font-weight: 800; font-size: var(--fs-sm);
+}
+.xp-pill .icon { width: 18px; height: 18px; }
+
+/* Badge: baris geser di HP, grid di layar lebih besar */
+.dash-badges {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 104px;
+  gap: var(--s-4);
+  margin: var(--s-4) calc(-1 * var(--s-5)) 0;
+  padding: var(--s-2) var(--s-5) var(--s-3);
+  overflow-x: auto;
+  scrollbar-width: none;
+  list-style: none;
+}
+.dash-badges::-webkit-scrollbar { display: none; }
+.dash-badges .badge__seal { width: 72px; height: 72px; }
+.dash-badges .badge__seal .icon { width: 28px; height: 28px; }
+@media (min-width: 600px) {
+  .dash-badges {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+}
+
+/* Performa (Tahap 6): ruang awal untuk ringkasan hero yang dirender JS — cegah CLS */
+.hero-stats:empty { min-height: 78px; }
+.continue-card:empty { min-height: 84px; }
+.progress-panel__counts:empty { min-height: 140px; }
+.module-rail:empty { min-height: 560px; }

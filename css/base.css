@@ -1,0 +1,155 @@
+/* =====================================================================
+   base.css — Reset, tipografi, aksesibilitas, utilitas layout
+   Bergantung pada: tokens.css
+   ===================================================================== */
+
+/* ---------- Reset modern ringan ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Anchor (#id) tidak tertutup topbar yang sticky */
+  scroll-padding-top: calc(var(--topbar-h) + 72px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.reduce-motion) { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--color-bg);
+  /* Tekstur "kertas bertitik" — sangat halus agar tidak mengganggu bacaan */
+  background-image: radial-gradient(circle at 1px 1px, rgb(30 27 46 / .065) 1px, transparent 0);
+  background-size: 22px 22px;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img, svg, video, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+
+input, button, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, h4, h5, p, figure, blockquote, dl, dd { margin: 0; }
+ul[role="list"], ol[role="list"] { list-style: none; margin: 0; padding: 0; }
+fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+legend { padding: 0; }
+
+a { color: var(--color-link); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a:hover { color: var(--ink); }
+
+/* ---------- Fokus: selalu terlihat untuk pengguna keyboard ---------- */
+:focus:not(:focus-visible) { outline: none; }
+:focus-visible {
+  outline: 3px solid var(--cobalt);
+  outline-offset: 3px;
+}
+
+::selection { background: var(--signal); color: var(--ink); }
+
+/* ---------- Tipografi ---------- */
+.display, h1, h2, h3, .h1, .h2, .h3 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 100, "WONK" 0;
+  font-weight: 650;
+  line-height: var(--lh-tight);
+  letter-spacing: -.02em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.display {
+  font-size: var(--fs-display);
+  font-weight: 700;
+  letter-spacing: -.035em;
+  /* WONK memberi karakter "editorial" yang khas pada judul besar */
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+}
+h1, .h1 { font-size: var(--fs-h1); }
+h2, .h2 { font-size: var(--fs-h2); }
+h3, .h3 { font-size: var(--fs-h3); line-height: var(--lh-snug); letter-spacing: -.01em; }
+h4, .h4 { font: 700 var(--fs-body)/var(--lh-snug) var(--font-body); }
+
+p { text-wrap: pretty; }
+
+.lead { font-size: var(--fs-lg); color: var(--ink-2); max-width: 60ch; }
+.prose { max-width: 68ch; }
+.text-soft { color: var(--ink-soft); }
+.text-sm { font-size: var(--fs-sm); }
+.text-xs { font-size: var(--fs-xs); }
+
+/* Label & metadata: monospace kapital yang rapi */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* Angka progres: tabular agar tidak "goyang" saat dianimasikan */
+.num {
+  font-family: var(--font-display);
+  font-variant-numeric: lining-nums tabular-nums;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1;
+}
+.num--xl { font-size: clamp(2.75rem, 2rem + 3vw, 4.25rem); }
+.num--lg { font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem); }
+.mono { font-family: var(--font-mono); }
+
+/* Stabilo editorial untuk kata kunci di judul */
+.highlight {
+  background: linear-gradient(transparent 60%, var(--signal) 60% 92%, transparent 92%);
+  padding-inline: .08em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.highlight--cobalt { background-image: linear-gradient(transparent 60%, var(--cobalt-tint) 60% 92%, transparent 92%); }
+
+/* ---------- Aksesibilitas ---------- */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: fixed;
+  left: 16px; top: -120px;
+  z-index: 200;
+  padding: 12px 18px;
+  background: var(--ink);
+  color: #fff;
+  border-radius: var(--r-md);
+  font-weight: 700;
+  text-decoration: none;
+}
+.skip-link:focus { top: 16px; color: #fff; }
+
+/* ---------- Utilitas layout ---------- */
+.container { width: min(100% - 2 * var(--gutter), var(--container)); margin-inline: auto; }
+.container--narrow { width: min(100% - 2 * var(--gutter), var(--container-narrow)); margin-inline: auto; }
+
+.stack { display: flex; flex-direction: column; gap: var(--stack-gap, var(--s-4)); }
+.cluster { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cluster-gap, var(--s-3)); }
+.grid {
+  display: grid;
+  gap: var(--grid-gap, var(--s-5));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--grid-min, 260px)), 1fr));
+}
+.section { padding-block: clamp(48px, 7vw, 88px); }
+
+[hidden] { display: none !important; }

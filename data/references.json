@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "note": "Referensi dari daftar yang diberikan pemilik proyek. Detail bibliografi & URL belum bisa diverifikasi dari lingkungan pengembangan (akses jaringan diblokir). Field 'verified' = false → tampil label 'Perlu verifikasi'. Isi 'url' hanya dengan beranda resmi sumber; ganti dengan tautan artikel spesifik setelah dicek.",
+  "references": [
+    {
+      "id": "ladders-2018",
+      "citation": "Ladders, Inc. (2018). Eye-tracking study tentang cara rekruter memindai CV.",
+      "about": "Dipakai di Modul 2: cara rekruter memindai CV.",
+      "url": "https://www.theladders.com",
+      "urlLabel": "theladders.com (beranda)",
+      "modules": ["cv"],
+      "verified": false
+    },
+    {
+      "id": "hbr",
+      "citation": "Harvard Business Review — artikel tentang lamaran kerja, networking, dan komunikasi profesional.",
+      "about": "Dipakai di Modul 3 & 4: networking dan komunikasi profesional. Judul artikel spesifik perlu ditambahkan.",
+      "url": "https://hbr.org",
+      "urlLabel": "hbr.org (beranda)",
+      "modules": ["li", "tx"],
+      "verified": false
+    },
+    {
+      "id": "linkedin-talent",
+      "citation": "LinkedIn Talent Solutions — materi tentang profil, rekrutmen, dan perilaku rekruter.",
+      "about": "Dipakai di Modul 3: optimasi profil LinkedIn.",
+      "url": "https://business.linkedin.com/talent-solutions",
+      "urlLabel": "business.linkedin.com/talent-solutions",
+      "modules": ["li"],
+      "verified": false
+    },
+    {
+      "id": "google-learning-center",
+      "citation": "Google Workspace Learning Center — panduan Gmail & Google Drive.",
+      "about": "Dipakai di Modul 1 & 5: Gmail, tanda tangan, Drive, izin berbagi, dan Google Sheets.",
+      "url": "https://support.google.com/a/users",
+      "urlLabel": "support.google.com/a/users",
+      "modules": ["id", "tr"],
+      "verified": false
+    },
+    {
+      "id": "glints",
+      "citation": "Glints Indonesia — Career Blog.",
+      "about": "Konteks lamaran kerja di Indonesia (CV, email lamaran, follow-up).",
+      "url": "https://glints.com/id",
+      "urlLabel": "glints.com/id (beranda)",
+      "modules": ["cv", "tx", "tr"],
+      "verified": false
+    },
+    {
+      "id": "jobstreet",
+      "citation": "JobStreet Indonesia — Career Advice.",
+      "about": "Konteks lamaran kerja di Indonesia (CV, email lamaran, follow-up).",
+      "url": "https://id.jobstreet.com",
+      "urlLabel": "id.jobstreet.com (beranda)",
+      "modules": ["cv", "tx", "tr"],
+      "verified": false
+    },
+    {
+      "id": "mayer-2020",
+      "citation": "Mayer, R. E. (2020). Multimedia Learning (edisi ke-3). Cambridge University Press.",
+      "about": "Dasar desain pembelajaran platform ini (segmenting, signaling, multimedia).",
+      "url": null,
+      "urlLabel": null,
+      "modules": ["id", "cv", "li", "tx", "tr"],
+      "verified": false
+    }
+  ]
+}
