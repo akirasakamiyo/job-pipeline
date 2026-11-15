@@ -4,7 +4,8 @@
 
 | Pengujian | Hasil |
 |---|---|
-| Suite fungsional (regresi 2.0 + sidebar + dashboard V3) | lihat ringkasan di bawah |
+| Suite fungsional (regresi 2.0 + 30 uji sidebar/drawer + 22 uji dashboard V3) | **187 / 187 lulus**, tanpa error konsol/CSP/HTTP |
+| Lighthouse (mode HP, lokal) | Accessibility, Best Practices, SEO **100** di 5 halaman; Performance 72–83; CLS **0** |
 | Audit layout 17 halaman/bagian × 6 lebar (1440, 1280, 1024, 768, 390, 360) | **0 masalah**: tanpa scroll horizontal, teks terpotong, target sentuh < 24px, kartu bertabrakan, menu hilang, atau konten tertutup sidebar |
 | axe-core WCAG 2.1 AA, 51 kombinasi (17 halaman × 1440/1024/390) | **0 pelanggaran** |
 
@@ -42,7 +43,7 @@
 | Checklist CV & Portfolio Review meluap 14px di HP 360px (nama file panjang tanpa spasi) | Teks checklist boleh dipatahkan |
 | Tracker di 768px: tombol "Tambah lamaran" terpotong, dropdown terlalu sempit | Tata letak satu baris mulai 900px |
 | Tabel anatomi email: nomor "10" terpecah di 1280px; label "Kepada" bertanda nomor terlipat | Lebar minimum kolom & ruang label |
-| Nama aksesibel logo footer berbeda dari teks terlihat (WCAG 2.5.3) | `aria-label` diganti teks pembaca layar tambahan |
+| Nama aksesibel logo footer | Nama aksesibel logo footer berbeda dari teks terlihat (WCAG 2.5.3) | `aria-label` diganti teks pembaca layar tambahan | kartu ringkasan Tracker berbeda dari teks terlihat (WCAG 2.5.3) | `aria-label` diganti teks pembaca layar tambahan |
 | Kartu badge di kolom sempit sangat tinggi | Grid bawah: alat & badge selebar penuh, aktivitas & resources berdampingan |
 
 ### Catatan
