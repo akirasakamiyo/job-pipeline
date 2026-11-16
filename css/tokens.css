@@ -56,6 +56,8 @@
   --color-text: var(--ink);
   --color-text-soft: var(--ink-soft);
   --color-link: var(--cobalt-strong);
+  --inverse: #1E1B2E;         /* latar gelap pembawa teks putih (tetap gelap di mode gelap) */
+  --on-signal: #1E1B2E;       /* teks di atas kuning sinyal — konstan di semua tema */
 
   /* ---------- 6. Tipografi ------------------------------------------ */
   --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
@@ -137,3 +139,49 @@
 [data-module="li"] { --mod: var(--m-li); --mod-text: var(--m-li-text); --mod-tint: var(--m-li-tint); }
 [data-module="tx"] { --mod: var(--m-tx); --mod-text: var(--m-tx-text); --mod-tint: var(--m-tx-tint); }
 [data-module="tr"] { --mod: var(--m-tr); --mod-text: var(--m-tr-text); --mod-tint: var(--m-tr-tint); }
+
+/* =====================================================================
+   MODE GELAP — html[data-theme="dark"] dipasang skrip boot di <head>
+   (preferensi ujap:prefs.theme: "light" | "dark" | "system").
+   Hanya token yang ditimpa; komponen tidak berubah.
+   ===================================================================== */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --signal-tint: #3A3118;
+  --ink: #F2EEE6;  --ink-2: #DAD5E6;  --ink-soft: #B9B3CA;  --ink-mute: #A49EB8;
+  --cobalt: #8EA4F5;  --cobalt-strong: #A9BAFF;  --cobalt-tint: #232A4D;
+  --paper: #14121F;  --paper-2: #1F1C2E;  --surface: #1C1A2B;
+  --line: #2E2A42;  --line-strong: #4A4463;
+  --success-text: #5FD08E;  --success-tint: #16301F;
+  --warning-text: #F2C25C;  --warning-tint: #33280F;
+  --danger-text: #FF8A8E;   --danger-tint: #3A1A1D;
+  --m-id-text: #A9BAFF;  --m-id-tint: #232A4D;
+  --m-cv-text: #FFA968;  --m-cv-tint: #3A2414;
+  --m-li-text: #5FD3D3;  --m-li-tint: #12302F;
+  --m-tx-text: #FF8AB0;  --m-tx-tint: #3A1726;
+  --m-tr-text: #B8DB6A;  --m-tr-tint: #23300F;
+  --inverse: #3A3556;
+  --color-on-secondary: #FFFFFF;
+  --sh-1: 0 1px 2px rgb(0 0 0 / .4);
+  --sh-2: 0 1px 2px rgb(0 0 0 / .35), 0 10px 28px -10px rgb(0 0 0 / .6);
+  --sh-3: 0 2px 6px rgb(0 0 0 / .4), 0 24px 48px -16px rgb(0 0 0 / .7);
+  --sh-sticker: 3px 3px 0 #000;
+  --sh-sticker-hover: 5px 5px 0 #000;
+  --sh-sticker-lg: 6px 6px 0 #000;
+}
+
+/* Ukuran huruf (ujap:prefs.font) — semua ukuran berbasis rem ikut membesar */
+html[data-font="large"] { font-size: 112.5%; }
+html[data-font="xlarge"] { font-size: 125%; }
+
+/* Elemen berlatar kuning sinyal: teks & garis tetap tinta gelap di mode gelap */
+html[data-theme="dark"] :is(.btn--primary, .route__train, .completion__stamp, .xp-pill, .presend-done__stamp, .match__card[aria-pressed="true"], .mail__tag, .appnav__link[aria-current="page"]) { color: var(--on-signal); --ink: #1E1B2E; --ink-2: #3A3650; --ink-soft: #3A3650; }
+html[data-theme="dark"] ::selection { color: var(--on-signal); }
+html[data-theme="dark"] .highlight { background-image: linear-gradient(transparent 60%, color-mix(in srgb, var(--signal) 38%, transparent) 60% 92%, transparent 92%); }
+
+/* Pratinjau palet di styleguide selalu memakai nilai merek (terang) */
+html[data-theme="dark"] .swatches { --signal-tint: #FFF4D6; --ink: #1E1B2E; --ink-2: #3A3650; --ink-soft: #5B5770; --ink-mute: #6F6B80; --cobalt: #3B5BDB; --cobalt-strong: #2F4AB8; --cobalt-tint: #E8EDFF; --paper: #FBF7F0; --paper-2: #F3EDE2; --surface: #FFFFFF; --line: #E8E1D4; --line-strong: #CFC4B0; --success-text: #157A41; --success-tint: #E3F6EA; --warning-text: #8A5A00; --warning-tint: #FFF3D9; --danger-text: #C1272D; --danger-tint: #FDE8E8; --m-id-text: #2F4AB8; --m-id-tint: #E8EDFF; --m-cv-text: #A84A08; --m-cv-tint: #FFEEDF; --m-li-text: #0B6B6B; --m-li-tint: #DDF4F4; --m-tx-text: #A81E52; --m-tx-tint: #FCE4EC; --m-tr-text: #4E6A0C; --m-tr-tint: #EEF6DC; --inverse: #1E1B2E; --color-on-secondary: #FFFFFF; }
+/* Kode stasiun: teks gelap di atas warna modul versi terang (mode gelap) */
+html[data-theme="dark"] .code { color: #14121F; }
+html[data-theme="dark"] .swatches .code { color: #fff; }
+html[data-theme="dark"] .btn--danger { --btn-fg: #14121F; --btn-bd: #14121F; }

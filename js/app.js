@@ -18,6 +18,7 @@ import * as loader from './core/loader.js';
 import * as state from './core/state.js';
 import * as storage from './core/storage.js';
 import * as motion from './core/motion.js';
+import { initAppearance } from './core/prefs.js';
 
 /* Peta halaman → modul. Tambahkan entri baru tiap tahap. */
 const PAGES = {
@@ -30,6 +31,7 @@ const PAGES = {
   resources: () => import('./pages/resources-page.js'),   // Tahap 7 (sebelumnya placeholder)
   progress: () => import('./pages/progress-page.js'),     // Tahap 7 (sebelumnya placeholder)
   evaluation: () => import('./pages/evaluation.js'),      // 2.0: Evaluasi Akhir
+  certificate: () => import('./pages/certificate.js'),    // final: sertifikat penyelesaian
 };
 
 /* ---------- Notifikasi achievement ----------
@@ -52,6 +54,7 @@ function reportCorruption() {
 }
 
 async function boot() {
+  initAppearance();          // tema & ukuran huruf (final)
   loader.start();
   initNavigation();
   initTooltips();

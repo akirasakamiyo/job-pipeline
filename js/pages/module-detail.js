@@ -15,6 +15,7 @@ import { $, $$, h, icon } from '../core/dom.js';
 import { initRings, setProgress, toast } from '../core/ui.js';
 import { loadJSON } from '../core/data.js';
 import * as state from '../core/state.js';
+import * as feedback from '../core/feedback-store.js';
 import * as motion from '../core/motion.js';
 import { renderBlocks, rich } from '../features/lesson-renderer.js';
 import { createQuiz } from '../features/quiz.js';
@@ -124,9 +125,13 @@ function renderShell(host) {
 
 /* ---------- Routing antarbagian ---------- */
 
+let wantFeedback = false;
+
 function resolveHash() {
   const hash = decodeURIComponent(window.location.hash.slice(1));
   if (sections.some((s) => s.id === hash)) return hash;
+  // Final UX: #feedback = bagian Ringkasan, lalu gulir ke form feedback
+  if (hash === 'feedback') { wantFeedback = true; return 'selesai'; }
   // Tanpa hash: lanjut dari bagian pertama yang belum selesai
   const next = mod.nextLesson?.id || (mod.quizPassed ? 'selesai' : 'kuis');
   return mod.status === 'done' ? sections[0].id : next;
@@ -297,6 +302,15 @@ function renderSummary(body) {
   body.append(completeBox);
   renderCompleteBox(completeBox, summary, check, nextModule);
 
+  // Final UX: feedback opsional, hanya setelah modul selesai
+  const fbBox = h('section', { class: 'fb-box', id: 'feedback', 'aria-labelledby': 'fb-title' });
+  body.append(fbBox);
+  renderFeedbackBox(fbBox);
+  if (wantFeedback && !fbBox.hidden) {
+    wantFeedback = false;
+    requestAnimationFrame(() => { fbBox.scrollIntoView({ block: 'start', behavior: motion.isReduced() ? 'auto' : 'smooth' }); $('#fb-title', fbBox)?.focus({ preventScroll: true }); });
+  }
+
   // REFERENCES
   body.append(h('section', { class: 'learn-refs', 'aria-labelledby': 'refs-title' },
     h('h3', { class: 'learn-h', id: 'refs-title' }, 'Resources & references'),
@@ -340,6 +354,8 @@ function renderCompleteBox(box, summary, check, nextModule) {
     motion.confetti($('.completion__stamp', box), 40);
     toast(`Modul ${mod.title} selesai!`, { type: 'success', title: `+${state.XP.module} XP` });
     refreshProgress();
+    const fbBox = $('#feedback');
+    if (fbBox) renderFeedbackBox(fbBox);
   });
 
   box.replaceChildren(
@@ -354,6 +370,67 @@ function renderCompleteBox(box, summary, check, nextModule) {
       lessonsLeft.length > 4 ? ', …' : '') : null,
     !check.quizPassed ? h('a', { class: 'btn btn--secondary btn--sm', href: '#kuis' }, 'Kerjakan kuis') : null,
     btn);
+}
+
+/* ---------- Feedback modul (Final UX) ----------
+   Opsional, tersimpan lokal (feedback-store.js). Bisa diubah & dihapus di
+   sini atau di halaman Progress & Achievements.                        */
+function renderFeedbackBox(box) {
+  const done = currentModule().status === 'done';
+  box.hidden = !done;
+  if (!done) { box.replaceChildren(); return; }
+  const saved = feedback.get(mod.id);
+  const status = h('p', { class: 'fb-box__status text-sm', role: 'status' });
+  const counter = h('span', { class: 'field__hint', id: 'fb-improve-count' });
+  const textarea = h('textarea', { class: 'input fb-box__text', id: 'fb-improve', name: 'improve', rows: '3', maxlength: String(feedback.IMPROVE_MAX), 'aria-describedby': 'fb-improve-count' });
+  textarea.value = saved?.improve || '';
+  const count = () => { counter.textContent = `${textarea.value.length}/${feedback.IMPROVE_MAX} karakter`; };
+  textarea.addEventListener('input', count);
+  count();
+
+  const form = h('form', { class: 'fb-box__form', novalidate: true },
+    ...feedback.QUESTIONS.map((q) => h('fieldset', { class: 'fb-q' },
+      h('legend', { class: 'fb-q__text' }, q.text),
+      h('div', { class: 'segmented' }, Object.entries(feedback.ANSWERS).map(([value, label]) =>
+        h('label', {}, h('input', { type: 'radio', name: q.id, value, checked: saved?.[q.id] === value || null }), h('span', {}, label)))))),
+    h('div', { class: 'field' },
+      h('label', { class: 'field__label', for: 'fb-improve' }, 'Bagian apa yang perlu diperbaiki? (opsional)'),
+      textarea, counter),
+    h('div', { class: 'cluster' },
+      h('button', { type: 'submit', class: 'btn btn--secondary' }, icon('check', 'icon--lead'), saved ? 'Simpan perubahan' : 'Kirim feedback'),
+      saved ? h('button', { type: 'button', class: 'btn btn--ghost', 'data-fb-remove': true }, icon('trash', 'icon--lead'), 'Hapus feedback') : ''),
+    status);
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const entry = {
+      ...Object.fromEntries(feedback.QUESTIONS.map((q) => [q.id, data.get(q.id) || ''])),
+      improve: String(data.get('improve') || '').trim(),
+    };
+    // Form kosong tidak disimpan (hapus feedback memakai tombol "Hapus feedback")
+    if (!feedback.QUESTIONS.some((q) => entry[q.id]) && !entry.improve) {
+      status.classList.add('is-error');
+      status.textContent = 'Isi minimal satu jawaban atau catatan sebelum menyimpan.';
+      return;
+    }
+    feedback.save(mod.id, entry);
+    renderFeedbackBox(box);
+    $('.fb-box__status', box).textContent = 'Feedback tersimpan di perangkat ini. Terima kasih!';
+    $('#fb-title', box)?.focus();
+  });
+  form.addEventListener('click', (event) => {
+    if (!event.target.closest('[data-fb-remove]')) return;
+    feedback.remove(mod.id);
+    renderFeedbackBox(box);
+    $('.fb-box__status', box).textContent = 'Feedback dihapus.';
+    $('#fb-title', box)?.focus();
+  });
+
+  box.replaceChildren(
+    h('h3', { class: 'learn-h', id: 'fb-title', tabindex: '-1' }, 'Feedback untuk modul ini'),
+    h('p', { class: 'text-sm text-soft' }, 'Opsional. Jawabanmu hanya tersimpan di perangkat ini (tidak dikirim ke server) dan bisa diubah atau dihapus kapan saja, juga dari halaman Progress & Achievements.'),
+    form);
 }
 
 /* ---------- Progres (header, sidebar) ---------- */

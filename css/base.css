@@ -131,7 +131,7 @@ p { text-wrap: pretty; }
   left: 16px; top: -120px;
   z-index: 200;
   padding: 12px 18px;
-  background: var(--ink);
+  background: var(--inverse);
   color: #fff;
   border-radius: var(--r-md);
   font-weight: 700;

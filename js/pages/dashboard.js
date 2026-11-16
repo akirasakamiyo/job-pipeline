@@ -13,14 +13,19 @@ import { toast, openModal, closeModal, setProgress, initRings } from '../core/ui
 import { loadJSON } from '../core/data.js';
 import * as state from '../core/state.js';
 import * as motion from '../core/motion.js';
+import * as storage from '../core/storage.js';
 import { moduleCard } from '../features/module-card.js';
 
 let firstRender = true;
+// Hash saat halaman dibuka (dibaca sebelum dialog profil menghapus #profil dari URL)
+const START_HASH = window.location.hash;
 
 export async function init() {
   render(state.getSummary());
   initRailControls();
   initProfileDialog();
+  initGuide();
+  initGoal();
   await renderResources();
 
   // Sinkron otomatis bila progres/tracker berubah (mis. dari tab lain)
@@ -30,6 +35,7 @@ export async function init() {
 function render(summary) {
   renderHero(summary);
   renderProgress(summary);
+  renderGoal(summary);
   renderRoadmap(summary);
   renderModules(summary);
   renderTools(summary);
@@ -72,23 +78,21 @@ function renderHero(s) {
   greet.replaceChildren(`${greetingWord()}${name ? ', ' : '!'}`, name ? h('strong', {}, name) : '', name ? '!' : '');
   $('[data-profile-label]').textContent = name ? 'Ubah profil' : 'Kenalan dulu';
 
-  const lead = $('[data-hero-lead]');
+  // Final UX: hero = SATU aksi berikutnya hasil state.getRecommendation()
+  // (lanjut materi / ulang kuis / tandai selesai / evaluasi / sertifikat).
+  const rec = state.getRecommendation(s);
+  const recEl = $('[data-hero-rec]');
+  recEl.dataset.kind = rec.kind;
+  recEl.replaceChildren(
+    h('span', { class: 'hero-rec__icon' }, icon(rec.icon)),
+    h('span', { class: 'hero-rec__body' },
+      h('span', { class: 'hero-rec__label' }, `Rekomendasi untukmu · ${rec.label}`),
+      h('span', { class: 'hero-rec__title' }, rec.title)));
+  $('[data-hero-lead]').textContent = rec.text;
   const cta = $('[data-continue]');
-  const ctaLabel = $('[data-continue-label]');
-
-  if (s.allDone) {
-    lead.textContent = 'Kelima stasiun sudah kamu lewati. Saatnya mempraktikkan semuanya dan memantau lamaranmu.';
-    ctaLabel.textContent = 'Lihat pencapaian';
-    cta.href = 'progress.html';
-  } else if (s.isNew) {
-    lead.textContent = 'Lima modul singkat yang memandumu dari membuat Gmail profesional sampai follow-up lamaran. Mulai dari stasiun pertama.';
-    ctaLabel.textContent = 'Mulai belajar';
-    cta.href = s.next.href;
-  } else {
-    lead.textContent = `Kamu sudah menempuh ${s.overallPct}% perjalanan. Lanjutkan dari stasiun ${s.current.code}: ${s.current.title}.`;
-    ctaLabel.textContent = 'Lanjutkan belajar';
-    cta.href = s.next.href;
-  }
+  cta.href = rec.href;
+  cta.dataset.kind = rec.kind;
+  $('[data-continue-label]').textContent = rec.cta;
 
   // V3: ringkasan isi platform — semua angka dihitung dari data (katalog & daftar alat).
   // Progres pribadi ada di panel Progres Belajar agar tidak diulang di hero.
@@ -101,35 +105,47 @@ function renderHero(s) {
     h('span', { class: 'hero-fact__icon' }, icon(f.icon)),
     h('span', {}, h('strong', { class: 'num' }, String(f.value)), ' ', f.label))));
 
-  // Kartu "berikutnya" di samping ilustrasi
+  renderStatusCard(s, rec);
+}
+
+/**
+ * Kartu di samping ilustrasi. Final UX: tujuannya SELALU berbeda dari tombol
+ * utama hero — kartu ini menunjukkan status (modul aktif / peta modul / rekap),
+ * sedangkan tombol hero membawa ke aksi berikutnya.
+ */
+function renderStatusCard(s, rec) {
   const card = $('[data-continue-card]');
+  const stamp = (name) => h('span', { class: 'completion__stamp', style: { width: '48px', height: '48px', rotate: '0deg' } }, icon(name));
+  const body = (label, title, meta) => h('span', { class: 'continue-card__body' },
+    h('span', { class: 'continue-card__label' }, label),
+    h('span', { class: 'continue-card__title' }, title),
+    meta ? h('span', { class: 'continue-card__meta' }, meta) : '');
+
   if (s.allDone) {
     card.href = 'progress.html';
     card.removeAttribute('data-module');
-    card.replaceChildren(
-      h('span', { class: 'completion__stamp', style: { width: '48px', height: '48px', rotate: '0deg' } }, icon('trophy')),
-      h('span', { class: 'continue-card__body' },
-        h('span', { class: 'continue-card__label' }, 'Semua modul selesai'),
-        h('span', { class: 'continue-card__title' }, 'Lihat rekap pencapaianmu')),
+    const passed = s.evaluation.passed;
+    card.replaceChildren(stamp('trophy'),
+      body('Semua modul selesai', 'Lihat Progress & Achievements', passed ? `Evaluasi lulus · skor ${s.evaluation.best}` : `${s.badgesEarned ?? s.badges.filter((b) => b.earned).length} badge · ${s.xp} XP`),
       icon('arrow-right'));
     return;
   }
-  const mod = s.next.module;
-  card.href = s.next.href;
+  if (s.isNew) {
+    card.href = 'modules.html';
+    card.removeAttribute('data-module');
+    card.replaceChildren(stamp('route'),
+      body('Sebelum mulai', `Kenali ${s.modules.length} modul pipeline`, `${s.lessonsTotal} bagian · ${s.activitiesTotal} latihan interaktif`),
+      icon('arrow-right'));
+    return;
+  }
+  const mod = s.current;
+  card.href = mod.href;                                   // halaman ringkasan modul (tanpa #bagian)
   card.dataset.module = mod.id;
-  const what = s.next.type === 'lesson' ? s.next.lesson.title
-    : s.next.type === 'quiz' ? `Kuis ${mod.title}` : `Tandai ${mod.title} selesai`;
-  // Tahap 7 (aksesibilitas, WCAG 2.5.3 "Label in Name"): nama tautan diambil dari
-  // teks yang terlihat — tidak lagi memakai aria-label yang berbeda dari teksnya.
-  // Ring hanya penanda visual di kartu ini (persentase ada di halaman modul).
+  // Tahap 7 (WCAG 2.5.3): nama tautan = teks yang terlihat. Ring hanya penanda visual.
   const ring = h('div', { class: 'ring', style: { '--size': '52px', '--stroke': '5px' }, 'data-ring': true, 'data-value': mod.pct, 'aria-hidden': 'true' });
-  card.replaceChildren(
-    ring,
-    h('span', { class: 'continue-card__body' },
-      h('span', { class: 'continue-card__label' }, `${s.isNew ? 'Mulai di' : 'Berikutnya'} · ${mod.code}`),
-      h('span', { class: 'continue-card__title' }, what),
-      h('span', { class: 'continue-card__meta' }, s.next.type === 'lesson' ? `±${s.next.lesson.minutes} menit · Modul ${String(mod.number).padStart(2, '0')}`
-        : s.next.type === 'quiz' ? `Nilai lulus ${state.getPassScore()}` : 'Semua bagian & kuis sudah beres')),
+  card.replaceChildren(ring,
+    body(`Modul aktif · ${mod.code}`, mod.title,
+      `${mod.pct}% · ${mod.lessonsDone}/${mod.lessonsTotal} bagian · kuis ${mod.quizPassed ? 'lulus' : mod.quizAttempts ? `terbaik ${mod.quizBest}` : 'belum'}`),
     icon('arrow-right'));
   initRings(card);
 }
@@ -443,4 +459,156 @@ function initProfileDialog() {
     closeModal(dialog);
     toast(`Senang berkenalan, ${name}!`, { type: 'success', title: 'Profil tersimpan' });
   });
+}
+
+/* =====================================================================
+   TARGET BELAJAR HARIAN (Final UX)
+   Opsional. Dihitung dari aktivitas nyata hari ini (state.daily, diisi
+   saat bagian/latihan/kuis benar-benar selesai). Tanpa streak & penalti:
+   hari berikutnya hitungan mulai dari 0 tanpa catatan "gagal".
+   ===================================================================== */
+
+let goalEditing = false;
+
+function initGoal() {
+  $('[data-goal]').addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-goal-action]');
+    if (!btn) return;
+    const action = btn.dataset.goalAction;
+    if (action === 'edit') { goalEditing = true; renderGoal(state.getSummary()); $('#goal-type')?.focus(); return; }
+    if (action === 'clear') {
+      goalEditing = false;
+      state.setGoal(null);
+      toast('Target harian dihapus.', { type: 'info' });
+      $('[data-goal-action="edit"]')?.focus();
+      return;
+    }
+    if (action === 'cancel') { goalEditing = false; renderGoal(state.getSummary()); return; }
+  });
+  $('[data-goal]').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const type = $('#goal-type').value;
+    goalEditing = false;
+    state.setGoal(type, 1);
+    toast(`Target hari ini: ${state.GOAL_TYPES[type].verb.toLowerCase()} 1 ${state.GOAL_TYPES[type].label}.`, { type: 'success', title: 'Target dipasang' });
+    $('[data-goal-action="edit"]')?.focus();
+  });
+}
+
+function renderGoal(s) {
+  const host = $('[data-goal-body]');
+  if (!host) return;
+  const g = s.goal;
+  if (!g || goalEditing) {
+    host.replaceChildren(h('form', { class: 'goal__form' },
+      h('p', { class: 'goal__hint', id: 'goal-hint' }, g ? 'Pilih target baru untuk hari ini.' : 'Opsional: pilih satu target kecil yang realistis. Tidak ada streak atau penalti.'),
+      h('div', { class: 'goal__row' },
+        h('label', { class: 'sr-only', for: 'goal-type' }, 'Jenis target'),
+        h('select', { class: 'select', id: 'goal-type', 'aria-describedby': 'goal-hint' },
+          ...Object.entries(state.GOAL_TYPES).map(([id, t]) => h('option', { value: id, selected: g?.type === id || null }, `${t.verb} 1 ${t.label}`))),
+        h('button', { type: 'submit', class: 'btn btn--secondary btn--sm' }, 'Pasang target'),
+        g ? h('button', { type: 'button', class: 'btn btn--ghost btn--sm', 'data-goal-action': 'cancel' }, 'Batal') : '')));
+    return;
+  }
+  const pct = Math.round((g.done / g.count) * 100);
+  host.replaceChildren(
+    h('p', { class: 'goal__text' }, `${g.verb} ${g.count} ${g.label}`,
+      h('span', { class: `goal__status${g.reached ? ' is-done' : ''}` }, g.reached ? ' · Tercapai!' : ` · ${g.done}/${g.count}`)),
+    h('div', { class: 'bar', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': String(pct), 'aria-label': 'Progres target hari ini', style: { '--value': pct } }, h('span', { class: 'bar__fill' })),
+    h('p', { class: 'goal__hint' }, g.reached ? 'Bagus! Lanjutkan kalau masih ada waktu, atau istirahat dulu.' : 'Terhitung otomatis saat aktivitasnya benar-benar selesai.'),
+    h('div', { class: 'goal__row' },
+      h('button', { type: 'button', class: 'btn btn--ghost btn--sm', 'data-goal-action': 'edit' }, icon('edit'), 'Ganti target'),
+      h('button', { type: 'button', class: 'btn btn--ghost btn--sm', 'data-goal-action': 'clear' }, icon('trash'), 'Hapus target')));
+}
+
+/* =====================================================================
+   PANDUAN PENGGUNA BARU (Final UX)
+   3 langkah: Explore → Practice → Complete. Muncul otomatis sekali untuk
+   pengguna yang belum punya ujap:prefs.onboarding. Selesai/lewati/tutup
+   disimpan sehingga tidak muncul lagi; bisa diulang lewat tombol
+   "Panduan", dashboard.html#panduan, atau halaman Pengaturan.
+   Tidak membuka dialog profil (profil tetap lewat tombolnya sendiri).
+   ===================================================================== */
+
+function guideSteps(s) {
+  return [
+    {
+      title: 'Explore: kenali lima modul',
+      text: `Pipeline dibagi menjadi ${s.modules.length} modul berurutan, dari identitas digital sampai follow-up. Kerjakan berurutan; tiap modul berisi bagian materi singkat dan satu kuis.`,
+      list: s.modules.map((m) => `${m.code} · ${m.title}`),
+      link: { href: 'modules.html', text: 'Lihat semua modul' },
+    },
+    {
+      title: 'Practice: coba alat interaktif',
+      text: `Ada ${s.activitiesTotal} latihan interaktif di dalam materi, plus Email Writing Simulator, Checklist Pre-send, dan Application Tracker. XP diberikan setelah latihan benar-benar selesai.`,
+      list: ['Latihan di dalam materi (studi kasus, urutkan, cari kesalahan)', 'Simulator & alat di halaman Latihan', 'Tracker untuk mencatat lamaran sungguhan'],
+      link: { href: 'practice.html', text: 'Buka halaman Latihan' },
+    },
+    {
+      title: 'Complete: evaluasi akhir & sertifikat',
+      text: `Setelah kelima modul selesai, ikuti Evaluasi Akhir (nilai lulus ${state.EVALUATION_PASS}). Lulus evaluasi membuka sertifikat penyelesaian berformat PDF yang dibuat di perangkatmu.`,
+      list: ['Selesaikan semua bagian + kuis tiap modul', 'Tandai modul selesai', 'Ikuti Evaluasi Akhir, lalu unduh sertifikat'],
+      link: { href: 'progress.html', text: 'Lihat Progress & Achievements' },
+    },
+  ];
+}
+
+function initGuide() {
+  const dialog = $('#guide-dialog');
+  let step = 0;
+  let steps = [];
+
+  const show = () => {
+    const st = steps[step];
+    $('[data-guide-step]', dialog).textContent = `Langkah ${step + 1} dari ${steps.length}`;
+    $('[data-guide-title]', dialog).textContent = st.title;
+    $('[data-guide-panel]', dialog).replaceChildren(
+      h('p', { id: 'guide-text' }, st.text),
+      h('ul', { class: 'guide__list' }, st.list.map((item) => h('li', {}, icon('check'), item))),
+      h('a', { class: 'btn btn--ghost btn--sm guide__link', href: st.link.href, 'data-guide-link': true }, st.link.text, icon('arrow-right')));
+    $$('[data-guide-dots] li', dialog).forEach((li, i) => li.classList.toggle('is-active', i <= step));
+    const prev = $('[data-guide-prev]', dialog);
+    prev.hidden = step === 0;
+    $('[data-guide-next]', dialog).textContent = step === steps.length - 1 ? 'Selesai' : 'Berikutnya';
+  };
+  const save = (status) => storage.update('prefs', (p) => ({ ...p, onboarding: { status, at: new Date().toISOString() } }), {});
+  const open = () => {
+    steps = guideSteps(state.getSummary());
+    step = 0;
+    show();
+    openModal(dialog);
+  };
+  const finish = (status) => {
+    save(status);
+    closeModal(dialog);
+    if (status === 'done') toast('Panduan selesai. Mulai dari tombol rekomendasi di atas.', { type: 'success' });
+  };
+
+  $('[data-guide-next]', dialog).addEventListener('click', () => {
+    if (step < steps.length - 1) { step += 1; show(); $('[data-guide-next]', dialog).focus(); } else finish('done');
+  });
+  $('[data-guide-prev]', dialog).addEventListener('click', () => {
+    if (step > 0) { step -= 1; show(); (step === 0 ? $('[data-guide-next]', dialog) : $('[data-guide-prev]', dialog)).focus(); }
+  });
+  $$('[data-guide-skip]', dialog).forEach((b) => b.addEventListener('click', () => finish('skipped')));
+  // Esc / klik backdrop = lewati (status disimpan agar tidak muncul terus)
+  dialog.addEventListener('cancel', () => { if (!storage.get('prefs', {})?.onboarding) save('skipped'); });
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog && !storage.get('prefs', {})?.onboarding) save('skipped');
+    if (e.target.closest('[data-guide-link]') && !storage.get('prefs', {})?.onboarding) save('skipped');
+  });
+  $('[data-open-guide]').addEventListener('click', open);
+
+  const fromHash = () => {
+    if (window.location.hash !== '#panduan') return false;
+    history.replaceState(null, '', window.location.pathname);
+    setTimeout(open, 300);
+    return true;
+  };
+  window.addEventListener('hashchange', fromHash);
+  if (fromHash()) return;
+  // Otomatis hanya untuk pengguna baru yang belum pernah melihat panduan,
+  // dan tidak saat datang untuk membuka profil (#profil).
+  const seen = Boolean(storage.get('prefs', {})?.onboarding);
+  if (!seen && state.getSummary().isNew && START_HASH !== '#profil') setTimeout(open, 600);
 }

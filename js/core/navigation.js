@@ -37,7 +37,7 @@ export const NAV_GROUPS = [
   ] },
   { id: 'career', label: 'Career Tools', items: [
     { id: 'tracker', label: 'Job Tracker', href: 'tracker.html', icon: 'kanban' },
-    { id: 'achievements', label: 'Achievements', href: 'progress.html', icon: 'trophy' },
+    { id: 'achievements', label: 'Progress & Achievements', href: 'progress.html', icon: 'trophy' },
     { id: 'resources', label: 'Resources & Guides', href: 'resources.html', icon: 'book' },
   ] },
 ];
@@ -49,7 +49,7 @@ export const NAV_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
 export const isSoon = () => false;
 
 /* Halaman → menu yang aktif (halaman turunan menandai induknya) */
-const PAGE_TO_NAV = { module: 'modules', progress: 'achievements' };
+const PAGE_TO_NAV = { module: 'modules', progress: 'achievements', certificate: 'achievements' };
 const currentNav = () => {
   const page = document.body.dataset.page || '';
   return PAGE_TO_NAV[page] || page;

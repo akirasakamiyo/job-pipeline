@@ -33,7 +33,7 @@ button.sum-card[aria-pressed="true"] { border-color: var(--ink); box-shadow: var
 .sum-card__label { display: flex; align-items: center; gap: 6px; font-size: var(--fs-xs); font-weight: 700; color: var(--ink-soft); }
 .sum-card__value { font-size: var(--fs-h2); }
 .sum-card__dot { width: 9px; height: 9px; border-radius: 50%; background: var(--dot); }
-.sum-card--total { background: var(--ink); color: #fff; border-color: var(--ink); grid-column: 1 / -1; }
+.sum-card--total { background: var(--inverse); color: #fff; border-color: var(--inverse); grid-column: 1 / -1; }
 .sum-card--total .sum-card__label, .sum-card--total small { color: rgb(255 255 255 / .75); }
 .sum-card--total small { font-size: var(--fs-xs); font-weight: 600; }
 @media (min-width: 1100px) { .sum-card--total { grid-column: auto; } }

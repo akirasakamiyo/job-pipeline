@@ -16,7 +16,7 @@ profil LinkedIn, email lamaran, serta follow-up dan pelacakan lamaran.
 | Area | Isi |
 |---|---|
 | Navigasi (V3) | Sidebar kiri di semua halaman: grup *Learning* & *Career Tools*, status aktif, profil, progres ringkas. Bisa diciutkan (tersimpan) di desktop, rel ikon + overlay di tablet, drawer + hamburger di HP |
-| Dashboard | Hero ringkas dengan statistik platform dari data, panel progres (selesai/tersisa/modul aktif), roadmap + tujuan berikutnya, carousel modul dengan panah & titik di HP, 7 alat cepat, aktivitas + "terakhir dibuka", 10 badge utama |
+| Dashboard | **Panduan pengguna baru** 3 langkah (Explore → Practice → Complete; bisa dilewati/diulang), **rekomendasi personal** di hero (lanjut materi / ulang kuis / tandai modul selesai / evaluasi / sertifikat) yang tujuannya berbeda dari kartu status di sampingnya, **target harian** opsional (1 bagian materi / 1 latihan / 1 kuis, tanpa streak & penalti), statistik platform dari data, panel progres (selesai/tersisa/modul aktif), roadmap + tujuan berikutnya, carousel modul dengan panah & titik di HP, 7 alat cepat, aktivitas + "terakhir dibuka", 10 badge utama |
 | 5 modul (2.0) | 25 materi dalam 89 bagian; tiap materi punya tujuan & ringkasan. Kuis 8 soal per modul (nilai lulus 70), "Mark as completed" |
 | Aktivitas (2.0) | 13 aktivitas bernilai: studi kasus, drag & drop anatomi email, urutkan, temukan kesalahan, simulasi kata kunci ATS; plus lembar kerja, builder, dan checklist |
 | Latihan | Email Subject Generator (`[Posisi] - [Nama Lengkap] - [Keahlian]`), **Email Writing Simulator** dengan rubrik transparan, checklist pra-kirim, **CV & Portfolio Review**, daftar kuis |
@@ -24,7 +24,10 @@ profil LinkedIn, email lamaran, serta follow-up dan pelacakan lamaran.
 | Tracker | Tambah/ubah/hapus (+ urungkan), cari, saring status, urutkan, **tanggal follow-up + penanda jatuh tempo**, ringkasan |
 | Gamifikasi | XP (bagian 10, kuis 50, modul 100, checklist 20, aktivitas 15, lembar kerja 15, simulator 40, evaluasi 150) — sekali per aktivitas; 10 badge utama + 7 milestone; **skor belajar keseluruhan** dengan rumus terbuka |
 | Resources | 11 sumber, saring per modul/jenis, pencarian, label "Perlu verifikasi", pembeda fakta riset vs saran praktis |
-| Progres | Skor belajar, status aktivitas, rekap per modul, badge & milestone, riwayat, cadangan/pemulihan JSON, reset (dengan konfirmasi + urungkan), preferensi gerak |
+| Progress & Achievements | **Analitik belajar** (skor kuis per modul dengan garis nilai lulus, materi selesai per modul, aktivitas 14 hari, hasil Evaluasi Akhir), skor belajar, status aktivitas, rekap per modul, badge & milestone, riwayat, **feedback modul** (lihat/ubah/hapus) |
+| Pengaturan | Tema terang/gelap/ikuti sistem, ukuran huruf (normal/besar/sangat besar), gerak animasi, ulangi panduan, cadangan/pemulihan JSON, reset (dengan konfirmasi + urungkan) |
+| Feedback | Opsional setelah modul selesai: 3 pertanyaan (Ya/Cukup/Tidak) + bagian yang perlu diperbaiki. Hanya tersimpan lokal (`ujap:feedback`) |
+| Sertifikat | `certificate.html`: terbuka setelah 5 modul selesai + Evaluasi Akhir lulus. PDF dibuat di browser (nama, pelatihan, tanggal, ringkasan hasil, ID lokal). **Bukan sertifikasi resmi** dan tidak bisa diverifikasi pihak lain (lihat Batasan hosting statis) |
 
 ## Struktur folder
 
@@ -33,7 +36,7 @@ ujap/
 ├── index.html            ← pintu masuk (mengalihkan ke dashboard.html)
 ├── 404.html              ← halaman "tidak ditemukan" mandiri untuk GitHub Pages
 ├── dashboard.html  modules.html  module.html  practice.html
-├── tracker.html  resources.html  progress.html  evaluation.html  styleguide.html
+├── tracker.html  resources.html  progress.html  evaluation.html  certificate.html  styleguide.html
 ├── .nojekyll             ← GitHub Pages menyajikan file apa adanya (tanpa Jekyll)
 ├── assets/  (icons/sprite.svg · illustrations/ · deco/ · images/favicon.svg)
 ├── css/     (tokens · base · layout · components · animations · pages/*)
@@ -41,8 +44,8 @@ ujap/
 │             simulator.json · evaluation.json)
 ├── js/
 │   ├── app.js            ← satu titik masuk; memuat modul halaman via <body data-page>
-│   ├── core/             ← storage, state, tracker-store, backup, navigation, motion, ui, …
-│   ├── features/         ← lesson-renderer, quiz, exercises, activities, simulator, module-card, clipboard
+│   ├── core/             ← storage, state, tracker-store, feedback-store, prefs, backup, navigation, motion, ui, …
+│   ├── features/         ← lesson-renderer, quiz, exercises, activities, simulator, module-card, clipboard, pdf-certificate
 │   └── pages/            ← satu file per halaman
 ├── vendor/gsap/          ← GSAP & ScrollTrigger (lokal, tanpa CDN)
 └── docs/                 ← screenshot & laporan QA
@@ -191,6 +194,7 @@ GitHub Pages hanya menyajikan file. Konsekuensinya:
 | Menyimpan data | LocalStorage per browser/perangkat | Backend + database (mis. Supabase/Firebase) + login |
 | Sinkron antarperangkat | Manual lewat file cadangan JSON | Akun pengguna + database |
 | Fitur AI (mis. Gemini) | **Tidak ada.** Semua alat berbasis aturan, tanpa API | Serverless function (Cloudflare Workers, Netlify/Vercel Functions) yang menyimpan API key di server. **Jangan pernah** menaruh API key di file JS/HTML proyek ini, karena semua file di GitHub Pages bisa dibaca publik. |
+| Sertifikat yang bisa diverifikasi | ID lokal (hash tanggal + nama) di PDF buatan browser. Data LocalStorage bisa diubah pemilik perangkat, jadi sertifikat **tidak** membuktikan apa pun ke pihak ketiga | Backend yang menerbitkan & menyimpan sertifikat bertanda tangan digital + halaman verifikasi |
 | Header keamanan HTTP | CSP lewat `<meta>` (GitHub Pages tidak bisa mengatur header) | Hosting dengan header kustom atau Cloudflare di depan |
 
 ## Keamanan
@@ -224,6 +228,9 @@ python3 -c "import re,hashlib,base64;s=open('dashboard.html').read();print(base6
 | Menambah referensi | `data/references.json`, lalu cantumkan `id`-nya di `references` pada file konten modul |
 | Mengubah warna/tipografi | `css/tokens.css` (design token). Pratinjau di `styleguide.html` |
 | Menambah ikon | `assets/icons/sprite.svg` (`<symbol id="i-nama">`), lalu pakai `icon('nama')` |
+| Mengubah langkah panduan / logika rekomendasi | `guideSteps()` di `js/pages/dashboard.js` · `getRecommendation()` di `js/core/state.js` |
+| Mengubah isi/tampilan sertifikat PDF | `js/pages/certificate.js` (data & teks batasan) · `js/features/pdf-certificate.js` (tata letak PDF, hanya karakter Latin/WinAnsi) |
+| Mengubah warna mode gelap | blok `html[data-theme="dark"]` di `css/tokens.css` |
 | Mengubah skema LocalStorage | `js/core/state.js` (`sanitizeState`) dan `js/core/tracker-store.js` (`sanitize`). Selalu buat field baru opsional agar data lama tetap terbaca. |
 | Memperbarui GSAP | Ganti file di `vendor/gsap/`, lalu uji ulang animasi dan mode gerak minimal |
 

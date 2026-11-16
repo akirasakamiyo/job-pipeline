@@ -27,6 +27,10 @@
      worksheets: { [id]: { values, completedAt } },        ← lembar kerja (2.0)
      simulator: { draft, best, last, attempts, passedAt }, ← Email Writing Simulator (2.0)
      evaluation: { best, last, attempts, passedAt } | null ← Evaluasi akhir (2.0)
+     goal: { type: 'lesson'|'activity'|'quiz', count } | null ← target belajar (final)
+     daily: { date: 'YYYY-MM-DD', lesson, activity, quiz }   ← hitungan HARI INI saja,
+                                    dipakai untuk target; tanpa streak & tanpa penalti
+     certificate: { id, name, issuedAt } | null             ← sertifikat lokal (final)
      xp: number,
      achievements: { [badgeId]: ISO },      ← badge yang sudah DIBERIKAN
      lastVisited: { module, lesson } | null,
@@ -48,6 +52,25 @@ const MAX_SUBJECTS = 8;
 
 /** Poin XP per aksi (diberikan sekali per aktivitas) */
 export const XP = { lesson: 10, quiz: 50, module: 100, checklist: 20, activity: 15, worksheet: 15, simulator: 40, evaluation: 150 };
+
+/** Target belajar yang bisa dipilih (final enhancement) */
+export const GOAL_TYPES = {
+  lesson: { label: 'bagian materi', verb: 'Selesaikan' },
+  activity: { label: 'latihan interaktif', verb: 'Kerjakan' },
+  quiz: { label: 'kuis', verb: 'Kerjakan' },
+};
+
+/** Tanggal lokal YYYY-MM-DD (target dihitung per hari kalender perangkat) */
+const today = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+};
+
+/** Menambah hitungan harian; hari baru → mulai dari 0 (bukan hukuman, hanya hari baru) */
+function bumpDaily(state, kind) {
+  if (state.daily.date !== today()) state.daily = { date: today(), lesson: 0, activity: 0, quiz: 0 };
+  state.daily[kind] += 1;
+}
 
 /** Nilai lulus aktivitas bila blok tidak menentukan sendiri */
 export const ACTIVITY_PASS = 70;
@@ -161,6 +184,9 @@ function emptyState() {
     worksheets: {},
     simulator: { draft: {}, best: null, last: null, attempts: 0, passedAt: null },
     evaluation: null,
+    goal: null,
+    daily: { date: null, lesson: 0, activity: 0, quiz: 0 },
+    certificate: null,
     xp: 0,
     achievements: {},
     lastVisited: null,
@@ -257,6 +283,15 @@ function sanitizeState(raw) {
       attempts: Math.round(num(raw.evaluation.attempts, 0)),
       passedAt: isoOrNull(raw.evaluation.passedAt),
     } : null,
+    goal: isObj(raw.goal) && GOAL_TYPES[raw.goal.type]
+      ? { type: raw.goal.type, count: Math.round(num(raw.goal.count, 1, 10)) || 1 }
+      : null,
+    daily: isObj(raw.daily) && isStr(raw.daily.date)
+      ? { date: raw.daily.date, lesson: Math.round(num(raw.daily.lesson, 0)), activity: Math.round(num(raw.daily.activity, 0)), quiz: Math.round(num(raw.daily.quiz, 0)) }
+      : { date: null, lesson: 0, activity: 0, quiz: 0 },
+    certificate: isObj(raw.certificate) && isStr(raw.certificate.id) && isoOrNull(raw.certificate.issuedAt)
+      ? { id: raw.certificate.id.slice(0, 40), name: isStr(raw.certificate.name) ? raw.certificate.name.slice(0, 60) : '', issuedAt: raw.certificate.issuedAt }
+      : null,
     xp: Math.round(num(raw.xp, 0)),
     achievements,
     lastVisited: isObj(raw.lastVisited) && isStr(raw.lastVisited.module)
@@ -334,6 +369,7 @@ export function completeLesson(moduleId, lessonId) {
     if (ms.lessonsDone.includes(lessonId)) return;
     ms.lessonsDone.push(lessonId);
     state.xp += XP.lesson;
+    bumpDaily(state, 'lesson');
     state.lastVisited = { module: moduleId, lesson: lessonId };
     log(state, { type: 'lesson', module: moduleId, lesson: lessonId, text: `Menyelesaikan "${lesson.title}"` });
   });
@@ -354,6 +390,7 @@ export function recordQuiz(moduleId, score) {
       passedAt: prev.passedAt || (value >= passScore ? new Date().toISOString() : null),
     };
     if (firstPass) state.xp += XP.quiz;   // XP kuis hanya sekali, saat pertama lulus
+    bumpDaily(state, 'quiz');
     log(state, { type: value >= passScore ? 'quiz-pass' : 'quiz', module: moduleId, text: `Kuis ${meta.title}: skor ${value}` });
   });
 }
@@ -440,6 +477,7 @@ export function recordActivity(id, score, passScore = ACTIVITY_PASS, label = 'Ak
   const next = save((state) => {
     const prev = state.activities[id] || { best: 0, attempts: 0, passedAt: null };
     firstPass = !prev.passedAt && value >= passScore;
+    bumpDaily(state, 'activity');
     state.activities[id] = {
       best: Math.max(prev.best, value),
       attempts: prev.attempts + 1,
@@ -469,6 +507,7 @@ export function completeWorksheet(id, label = 'Lembar kerja') {
     const prev = state.worksheets[id] || { values: {}, completedAt: null };
     if (prev.completedAt) return;
     state.worksheets[id] = { ...prev, completedAt: new Date().toISOString() };
+    bumpDaily(state, 'activity');
     state.xp += XP.worksheet;
     first = true;
     log(state, { type: 'activity', text: `Menyelesaikan "${label}"` });
@@ -513,6 +552,7 @@ export function recordSimulation(score, passScore = 80) {
   const next = save((state) => {
     const sim = state.simulator;
     firstPass = !sim.passedAt && value >= passScore;
+    bumpDaily(state, 'activity');
     sim.best = Math.max(sim.best ?? 0, value);
     sim.last = value;
     sim.attempts += 1;
@@ -533,6 +573,7 @@ export function recordEvaluation(score) {
   save((state) => {
     const prev = state.evaluation || { best: 0, last: 0, attempts: 0, passedAt: null };
     firstPass = !prev.passedAt && value >= EVALUATION_PASS;
+    bumpDaily(state, 'quiz');
     state.evaluation = {
       best: Math.max(prev.best, value),
       last: value,
@@ -543,6 +584,78 @@ export function recordEvaluation(score) {
     log(state, { type: value >= EVALUATION_PASS ? 'quiz-pass' : 'quiz', text: `Evaluasi Akhir: skor ${value}` });
   });
   return { firstPass };
+}
+
+/* ---------- Target belajar (final enhancement) ---------- */
+
+/** type: kunci GOAL_TYPES atau null (tanpa target); count 1–10 */
+export function setGoal(type, count = 1) {
+  return save((state) => {
+    state.goal = GOAL_TYPES[type] ? { type, count: Math.max(1, Math.min(10, Math.round(count))) } : null;
+  });
+}
+
+/* ---------- Sertifikat penyelesaian (final enhancement) ---------- */
+
+/** Syarat: kelima modul selesai + Evaluasi Akhir lulus */
+export function certificateEligibility(summary = getSummary()) {
+  return {
+    modulesDone: summary.allDone,
+    evaluationPassed: summary.evaluation.passed,
+    hasName: Boolean(summary.user.name),
+    ok: summary.allDone && summary.evaluation.passed,
+  };
+}
+
+/** Hash sederhana (FNV-1a) → bagian ID sertifikat lokal; BUKAN tanda tangan kriptografis */
+function localHash(text) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < text.length; i += 1) { h ^= text.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+  return h.toString(36).toUpperCase().padStart(7, '0');
+}
+
+/**
+ * Menerbitkan sertifikat lokal sekali (ID & tanggal tetap), atau mengembalikan
+ * yang sudah ada. Nama diambil dari profil saat diterbitkan.
+ * → certificate | null bila syarat belum terpenuhi
+ */
+export function issueCertificate() {
+  const summary = getSummary();
+  const elig = certificateEligibility(summary);
+  if (!elig.ok || !elig.hasName) return null;
+  const current = getState().certificate;
+  if (current && current.name === summary.user.name) return current;
+  const issuedAt = current?.issuedAt || new Date().toISOString();
+  const id = `UJAP-${issuedAt.slice(0, 10).replace(/-/g, '')}-${localHash(`${summary.user.name}|${issuedAt}`)}`;
+  const cert = { id, name: summary.user.name, issuedAt };
+  save((state) => { state.certificate = cert; });
+  return cert;
+}
+
+/* ---------- Rekomendasi belajar (final enhancement) ----------
+   Hanya dari state nyata. Urutan prioritas:
+   lulus evaluasi → sertifikat · semua modul selesai → evaluasi ·
+   modul siap ditutup → tandai selesai · kuis gagal → ulas materi ·
+   bagian tersisa → lanjutkan · bagian habis → kuis · baru → mulai      */
+export function getRecommendation(s = getSummary()) {
+  if (s.allDone && s.evaluation.passed) {
+    return { kind: 'certificate', label: 'Tahap akhir', title: 'Semua tuntas — lihat rekap & sertifikatmu', text: `Evaluasi Akhir lulus dengan skor terbaik ${s.evaluation.best}. Unduh sertifikat penyelesaian dan tinjau pencapaianmu.`, href: 'certificate.html', cta: 'Lihat sertifikat', icon: 'trophy' };
+  }
+  if (s.allDone) {
+    return { kind: 'evaluation', label: 'Tahap akhir', title: 'Kelima modul selesai — ikuti Evaluasi Akhir', text: s.evaluation.attempts ? `Skor terbaikmu ${s.evaluation.best}; nilai lulus ${EVALUATION_PASS}. Ulangi evaluasi kapan saja.` : `15 soal skenario lintas modul. Nilai lulus ${EVALUATION_PASS}.`, href: 'evaluation.html', cta: s.evaluation.attempts ? 'Ulangi evaluasi' : 'Mulai evaluasi', icon: 'target' };
+  }
+  const m = s.current;
+  if (m.readyToComplete) {
+    return { kind: 'complete', label: `Modul ${m.code}`, title: `${m.title} siap ditandai selesai`, text: 'Semua bagian sudah selesai dan kuis lulus. Tandai modul selesai untuk mendapat XP dan membuka badge.', href: `${m.href}#selesai`, cta: 'Complete Module', icon: 'check' };
+  }
+  if (m.quizAttempts > 0 && !m.quizPassed) {
+    return { kind: 'review', label: `Modul ${m.code}`, title: `Pelajari ulang ${m.title}, lalu ulangi kuis`, text: `Skor kuis terbaikmu ${m.quizBest}; nilai lulus ${passScore}. Baca ringkasan tiap materi dan pembahasan kuis sebelum mencoba lagi.`, href: `${m.href}#selesai`, cta: 'Ulas materi', icon: 'book' };
+  }
+  if (m.nextLesson) {
+    const started = m.lessonsDone > 0 || !s.isNew;
+    return { kind: s.isNew ? 'start' : 'continue', label: `Modul ${m.code}`, title: s.isNew ? 'Mulai dari stasiun pertama' : `Lanjutkan: ${m.nextLesson.title}`, text: started ? `${m.lessonsDone}/${m.lessonsTotal} bagian ${m.title} selesai · ±${m.nextLesson.minutes} menit untuk bagian berikutnya.` : `${m.title} · ${m.lessonsTotal} bagian · ±${m.minutes} menit.`, href: `${m.href}#${m.nextLesson.id}`, cta: s.isNew ? 'Mulai belajar' : 'Continue', icon: 'arrow-right' };
+  }
+  return { kind: 'quiz', label: `Modul ${m.code}`, title: `Semua bagian ${m.title} selesai — kerjakan kuis`, text: `Kuis modul berisi soal pilihan ganda dengan pembahasan. Nilai lulus ${passScore}.`, href: `${m.href}#kuis`, cta: 'Kerjakan kuis', icon: 'target' };
 }
 
 /* ---------- Reset (Tahap 7, halaman Progres) ---------- */
@@ -681,6 +794,11 @@ export function getSummary(state = getState()) {
     activitiesTotal: SCORED_ACTIVITIES.length,
     worksheetsDone: Object.entries(state.worksheets).filter(([, w]) => w.completedAt).map(([id]) => id),
     simulator: { best: state.simulator.best, attempts: state.simulator.attempts, passed: Boolean(state.simulator.passedAt) },
+    goal: state.goal ? (() => {
+      const done = state.daily.date === today() ? state.daily[state.goal.type] : 0;
+      return { ...state.goal, ...GOAL_TYPES[state.goal.type], done: Math.min(done, state.goal.count), reached: done >= state.goal.count };
+    })() : null,
+    certificate: state.certificate,
     evaluation: { best: state.evaluation?.best ?? null, attempts: state.evaluation?.attempts ?? 0, passed: Boolean(state.evaluation?.passedAt) },
     score,
     tracker: trackerStats,

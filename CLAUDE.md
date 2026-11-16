@@ -6,8 +6,10 @@ LMS statis untuk GitHub Pages: HTML5, CSS3, vanilla JS (ES modules), GSAP 3.12.5
 - `js/app.js` adalah satu-satunya entry point. Ia memuat modul halaman dari `<body data-page>`.
 - Inti: `js/core/`
   - `storage.js`: semua key memakai awalan `ujap:`; data rusak dikarantina ke `ujap:<key>:rusak-<ts>`.
-  - `state.js`: progres, XP, badge, dan `sanitizeState`.
-  - `tracker-store.js`, `backup.js`.
+  - `state.js`: progres, XP, badge, dan `sanitizeState`. Juga `goal`/`daily` (target harian tanpa streak), `certificate` (ID lokal), `getRecommendation()`.
+  - `tracker-store.js`, `backup.js` (cadangan berisi `progress`, `tracker`, `prefs`, `feedback`).
+  - `feedback-store.js`: feedback modul di `ujap:feedback` (opsional, lokal).
+  - `prefs.js`: tema (`light`/`dark`/`system`) & ukuran huruf di `ujap:prefs`; dipasang lebih dulu oleh skrip boot (`data-theme`, `data-font`). Status panduan di `ujap:prefs.onboarding`.
   - `navigation.js`: sidebar kiri global (V3), dirender ke placeholder `[data-topbar]` di setiap halaman. Menu diatur di `NAV_GROUPS`. Lebar dan mode diatur CSS (`.appnav` di `layout.css`): ≥1200 penuh/ciut, 768–1199 ikon + overlay, <768 drawer. Preferensi ciut ada di `ujap:prefs.sidebar` dan dipasang oleh skrip boot `<head>` (`data-nav-pref`).
   - `motion.js`, `ui.js`.
 - Materi berbasis data:
@@ -26,7 +28,8 @@ LMS statis untuk GitHub Pages: HTML5, CSS3, vanilla JS (ES modules), GSAP 3.12.5
 - XP dan badge hanya diberikan setelah aktivitas benar-benar selesai. Checklist tidak boleh tercentang otomatis.
 - Kunci jawaban (kuis, cek cepat, aktivitas) tidak boleh ditulis ke DOM sebelum peserta menjawab.
 - Aktivitas bernilai baru: daftarkan id di `SCORED_ACTIVITIES` (state.js) dan `ACTIVITY_INFO` (progress-page.js).
-- Pertahankan design system: token di `css/tokens.css`, pratinjau di `styleguide.html`.
+- Pertahankan design system: token di `css/tokens.css`, pratinjau di `styleguide.html`. Warna baru wajib punya nilai mode gelap (`html[data-theme="dark"]`); teks di atas kuning pakai `--on-signal`, latar gelap bertulisan putih pakai `--inverse`.
+- Sertifikat bukan sertifikasi resmi: jangan menambah klaim verifikasi/akreditasi.
 
 ## Uji
 - Jalankan `python3 -m http.server 8000`.

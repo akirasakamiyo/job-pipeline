@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <!-- Keamanan (Tahap 7): Content Security Policy. Hanya skrip dari situs ini + skrip boot inline (di-hash)
        yang boleh berjalan. Bila skrip boot di <head> diubah, hash sha256 di bawah WAJIB diperbarui (lihat README). -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-I7x/38d65xygMLgPMZezA3HB0zp5kXSxtSdIt9wH4qw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-AKuHoRMhFHvF1hncA0AFuLDk5oX6HcwQ9veNkX3TS/U='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Design System · The Ultimate Job Application Pipeline</title>
@@ -21,6 +21,10 @@
         var prefs = JSON.parse(localStorage.getItem('ujap:prefs') || '{}') || {};
         // V3: sidebar diciutkan dipasang sebelum render agar layout tidak melompat
         if (prefs.sidebar === 'collapsed') h.setAttribute('data-nav-pref', 'collapsed');
+        // Final: tema & ukuran huruf dipasang sebelum render (tanpa kilatan tema)
+        var dark = prefs.theme === 'dark' || (prefs.theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+        h.setAttribute('data-theme', dark ? 'dark' : 'light');
+        if (prefs.font === 'large' || prefs.font === 'xlarge') h.setAttribute('data-font', prefs.font);
         var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches || prefs.motion === 'reduced';
         if (sessionStorage.getItem('ujap:transition') === '1' && !reduced) h.classList.add('is-entering');
       } catch (e) {}

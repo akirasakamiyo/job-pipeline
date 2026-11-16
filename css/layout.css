@@ -108,7 +108,7 @@
   transition: background-color var(--dur-2);
 }
 .appnav__profile:hover, .appnav__progress:hover { background: var(--paper-2); color: var(--ink); }
-.appnav__avatar { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--ink); color: var(--signal); font: 800 15px/1 var(--font-body); }
+.appnav__avatar { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--inverse); color: var(--signal); font: 800 15px/1 var(--font-body); }
 .appnav__profiletext, .appnav__progresstext { display: grid; gap: 2px; min-width: 0; flex: 1; }
 .appnav__username { font-weight: 800; font-size: var(--fs-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .appnav__usersub, .appnav__progresslabel { font-size: var(--fs-xs); color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
@@ -179,7 +179,7 @@
     display: flex; align-items: center; gap: var(--s-2);
     height: var(--topbar-h);
     padding: 0 12px 0 6px;
-    background: rgb(251 247 240 / .92);
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
     -webkit-backdrop-filter: saturate(1.4) blur(14px);
     backdrop-filter: saturate(1.4) blur(14px);
     border-bottom: 1px solid var(--line);
@@ -211,7 +211,7 @@ html.reduce-motion .appnav-backdrop { animation: none; }
   z-index: var(--z-sticky);
   margin-inline: calc(-1 * var(--gutter));
   padding: 10px var(--gutter);
-  background: rgb(251 247 240 / .9);
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
@@ -239,7 +239,7 @@ html.reduce-motion .appnav-backdrop { animation: none; }
 .sidebar__link:hover { color: var(--ink); border-color: var(--line-strong); }
 .sidebar__num { font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); }   /* kontras ≥ 4.5:1 (tanpa opacity) */
 .sidebar__link.is-active .sidebar__num { color: inherit; }
-.sidebar__link.is-active { background: var(--ink); border-color: var(--ink); color: #fff; }
+.sidebar__link.is-active { background: var(--inverse); border-color: var(--inverse); color: #fff; }
 
 @media (min-width: 1024px) {
   .with-sidebar { grid-template-columns: 248px minmax(0, 1fr); gap: var(--s-7); }
@@ -273,7 +273,7 @@ html.reduce-motion .appnav-backdrop { animation: none; }
     left: 0; top: 10px; bottom: 10px;
     width: 3px;
     border-radius: 3px;
-    background: var(--ink);
+    background: var(--inverse);
   }
 }
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <!-- Keamanan (Tahap 7): Content Security Policy. Hanya skrip dari situs ini + skrip boot inline (di-hash)
        yang boleh berjalan. Bila skrip boot di <head> diubah, hash sha256 di bawah WAJIB diperbarui (lihat README). -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-I7x/38d65xygMLgPMZezA3HB0zp5kXSxtSdIt9wH4qw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-AKuHoRMhFHvF1hncA0AFuLDk5oX6HcwQ9veNkX3TS/U='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Dashboard · The Ultimate Job Application Pipeline</title>
@@ -20,6 +20,10 @@
         var prefs = JSON.parse(localStorage.getItem('ujap:prefs') || '{}') || {};
         // V3: sidebar diciutkan dipasang sebelum render agar layout tidak melompat
         if (prefs.sidebar === 'collapsed') h.setAttribute('data-nav-pref', 'collapsed');
+        // Final: tema & ukuran huruf dipasang sebelum render (tanpa kilatan tema)
+        var dark = prefs.theme === 'dark' || (prefs.theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+        h.setAttribute('data-theme', dark ? 'dark' : 'light');
+        if (prefs.font === 'large' || prefs.font === 'xlarge') h.setAttribute('data-font', prefs.font);
         var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches || prefs.motion === 'reduced';
         if (sessionStorage.getItem('ujap:transition') === '1' && !reduced) h.classList.add('is-entering');
       } catch (e) {}
@@ -86,8 +90,13 @@
             <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-user"/></svg>
             <span data-profile-label>Kenalan dulu</span>
           </button>
+          <button type="button" class="btn btn--ghost btn--sm" data-open-guide>
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-info"/></svg>
+            <span>Panduan</span>
+          </button>
         </div>
         <h1 class="display dash-hero__title" id="dash-title" data-intro="up">The Ultimate <span class="highlight">Job Application</span> Pipeline</h1>
+        <p class="hero-rec" data-intro="up" data-hero-rec></p>
         <p class="lead" data-intro="up" data-hero-lead>Lima modul singkat yang memandumu dari membuat Gmail profesional sampai follow-up lamaran.</p>
         <div class="dash-hero__cta" data-intro="up">
           <a class="btn btn--primary btn--lg" href="modules.html" data-continue>
@@ -125,6 +134,11 @@
             </div>
             <div class="bar bar--lg" data-overall-bar role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Penyelesaian seluruh modul"><span class="bar__fill"></span></div>
           </div>
+          <!-- Final UX: target belajar harian (opsional, tanpa streak/penalti) -->
+          <section class="goal" aria-labelledby="goal-title" data-goal>
+            <h3 class="goal__title" id="goal-title">Target hari ini</h3>
+            <div data-goal-body></div>
+          </section>
         </article>
 
         <article class="card roadmap" id="roadmap" data-reveal="up" aria-labelledby="roadmap-title">
@@ -248,6 +262,27 @@
         <button type="submit" class="btn btn--primary">Simpan</button>
       </div>
     </form>
+  </dialog>
+
+  <!-- Final UX: panduan pengguna baru (3 langkah). Status di ujap:prefs.onboarding -->
+  <dialog class="modal guide" id="guide-dialog" aria-labelledby="guide-title" aria-describedby="guide-text">
+    <div class="modal__head">
+      <div>
+        <p class="eyebrow" data-guide-step>Langkah 1 dari 3</p>
+        <h2 class="h3" id="guide-title" data-guide-title>Panduan</h2>
+      </div>
+      <button type="button" class="btn btn--ghost btn--icon" aria-label="Tutup panduan" data-guide-skip><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-x"/></svg></button>
+    </div>
+    <div class="modal__body">
+      <div class="guide__panel" data-guide-panel></div>
+      <ol class="guide__dots" aria-hidden="true" data-guide-dots><li></li><li></li><li></li></ol>
+    </div>
+    <div class="modal__foot guide__foot">
+      <button type="button" class="btn btn--ghost" data-guide-skip>Lewati panduan</button>
+      <span class="guide__spacer"></span>
+      <button type="button" class="btn btn--secondary" data-guide-prev>Sebelumnya</button>
+      <button type="button" class="btn btn--primary" data-guide-next>Berikutnya</button>
+    </div>
   </dialog>
 </body>
 </html>

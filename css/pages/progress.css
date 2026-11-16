@@ -109,3 +109,49 @@
 .prog-badges--small .badge__seal { width: 56px; height: 56px; }
 .prog-badges--small .badge__seal .icon { width: 24px; height: 24px; }
 .prog-badges--small .badge__lock { width: 24px; height: 24px; }
+
+/* =====================================================================
+   FINAL UX — analitik belajar, feedback, pengaturan tampilan
+   ===================================================================== */
+.analytics { display: grid; gap: var(--s-5); }
+@media (min-width: 1000px) { .analytics { grid-template-columns: 1fr 1fr; } }
+.analytics__block { display: grid; gap: var(--s-3); align-content: start; min-width: 0; margin: 0; padding: var(--s-4); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--paper); }
+.analytics__title { margin: 0; font: 700 var(--fs-xs)/1.3 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.analytics__note { margin: 0; font-size: var(--fs-xs); color: var(--ink-soft); }
+.analytics__big { display: flex; align-items: baseline; gap: 4px; margin: 0; }
+.analytics__big .num { color: var(--ink); }
+.analytics__eval .btn { justify-self: start; }
+.analytics__checks { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: var(--fs-sm); }
+.analytics__checks li { display: flex; align-items: center; gap: 8px; color: var(--ink-soft); }
+.analytics__checks li .icon { width: 16px; height: 16px; }
+.analytics__checks li.is-done { color: var(--success-text); font-weight: 700; }
+
+.hbar-chart { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.hbar { display: grid; grid-template-columns: 2.6em minmax(0, 1fr) 4.2em; grid-template-areas: "code label value" "track track track"; align-items: center; column-gap: 8px; row-gap: 4px; }
+.hbar .code { grid-area: code; }
+.hbar__label { grid-area: label; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-sm); font-weight: 600; }
+.hbar__value { grid-area: value; text-align: right; font-size: var(--fs-xs); font-weight: 700; }
+.hbar__track { grid-area: track; position: relative; height: 10px; border-radius: var(--r-pill); background: var(--line); }
+.hbar__fill { position: absolute; inset: 0 auto 0 0; width: calc(var(--value) * 1%); border-radius: inherit; background: var(--mod, var(--cobalt)); }
+.hbar__fill.is-empty { width: 0; }
+.hbar__marker { position: absolute; top: -3px; bottom: -3px; left: calc(var(--marker) * 1%); width: 2px; background: var(--ink); border-radius: 1px; }
+
+.col-chart__bars { display: grid; grid-template-columns: repeat(14, minmax(0, 1fr)); align-items: end; gap: 4px; height: 96px; margin: 0 0 18px; padding: 0; list-style: none; border-bottom: 1px solid var(--line-strong); }
+.col-chart__col { position: relative; display: flex; align-items: flex-end; height: 100%; }
+.col-chart__bar { width: 100%; height: max(3px, calc(var(--h) * 1%)); border-radius: 4px 4px 0 0; background: var(--cobalt); }
+.col-chart__col[style*="--h: 0"] .col-chart__bar { background: var(--line); }
+.col-chart__tick { position: absolute; top: calc(100% + 4px); font-size: 10px; color: var(--ink-soft); white-space: nowrap; }
+.col-chart__col:first-child .col-chart__tick { left: 0; }
+.col-chart__col:last-child .col-chart__tick { right: 0; }
+
+.fb-list { display: grid; gap: var(--s-3); margin: 0; padding: 0; list-style: none; }
+@media (min-width: 900px) { .fb-list { grid-template-columns: 1fr 1fr; } }
+.fb-item { display: grid; gap: var(--s-3); align-content: start; padding: var(--s-4); border: 1px solid var(--line); border-left: 4px solid var(--mod, var(--line-strong)); border-radius: var(--r-md); background: var(--paper); min-width: 0; }
+.fb-item__head { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+.fb-item__title { flex: 1; min-width: 0; margin: 0; font-size: var(--fs-body); font-weight: 800; }
+.fb-item__answers { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin: 0; font-size: var(--fs-sm); }
+.fb-item__answers dt { color: var(--ink-soft); }
+.fb-item__answers dd { margin: 0; font-weight: 700; text-align: right; }
+.fb-item__answers .fb-item__improve { grid-column: 1 / -1; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; }
+#feedback-title:focus { outline: none; }
+.fb-item__answers dd.fb-item__improve { font-weight: 500; }

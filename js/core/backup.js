@@ -23,7 +23,7 @@ import * as tracker from './tracker-store.js';
 
 export const APP_ID = 'ujap';
 export const BACKUP_VERSION = 1;
-const DATA_KEYS = ['progress', 'tracker', 'prefs'];
+const DATA_KEYS = ['progress', 'tracker', 'prefs', 'feedback'];   // final: + feedback
 const MAX_IMPORT_BYTES = 1024 * 1024;     // 1 MB — jauh di atas ukuran data normal
 
 const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -55,6 +55,7 @@ export function buildBackup() {
       progress: state.getState(),
       tracker: { version: 1, items: tracker.getItems() },
       prefs: storage.get('prefs', {}),
+      feedback: storage.get('feedback', null),
     },
   };
 }
@@ -126,7 +127,7 @@ export async function readBackupFile(file) {
  */
 export function applyBackup(backup) {
   const before = snapshot();
-  const { progress, tracker: trackerData, prefs } = backup.data;
+  const { progress, tracker: trackerData, prefs, feedback } = backup.data;
 
   storage.set('progress', isObj(progress) ? progress : {});
   state.normalizeStored();                         // buang field tak dikenal / tipe salah
@@ -134,12 +135,25 @@ export function applyBackup(backup) {
   storage.set('tracker', trackerData ?? { version: 1, items: [] });
   tracker.getItems();                              // entri tidak valid dipindah ke cadangan
 
-  // Preferensi: hanya field yang dikenal
-  storage.set('prefs', {
-    motion: isObj(prefs) && prefs.motion === 'reduced' ? 'reduced' : 'system',
-    sidebar: isObj(prefs) && prefs.sidebar === 'collapsed' ? 'collapsed' : 'expanded',   // V3
-  });
+  // Preferensi: hanya field yang dikenal (lihat sanitizePrefs)
+  storage.set('prefs', sanitizePrefs(prefs));
+
+  // Feedback (opsional; cadangan lama belum memilikinya → biarkan yang ada)
+  if (isObj(feedback) && isObj(feedback.items)) storage.set('feedback', { version: 1, items: feedback.items });
   return before;
+}
+
+/** Preferensi yang dikenal + nilai default (dipakai impor & halaman Pengaturan) */
+export function sanitizePrefs(prefs) {
+  const p = isObj(prefs) ? prefs : {};
+  return {
+    motion: p.motion === 'reduced' ? 'reduced' : 'system',
+    sidebar: p.sidebar === 'collapsed' ? 'collapsed' : 'expanded',            // V3
+    theme: ['light', 'dark'].includes(p.theme) ? p.theme : 'system',          // final
+    font: ['large', 'xlarge'].includes(p.font) ? p.font : 'normal',           // final
+    ...(isObj(p.onboarding) && ['done', 'skipped'].includes(p.onboarding.status)
+      ? { onboarding: { status: p.onboarding.status, at: String(p.onboarding.at || '') } } : {}),
+  };
 }
 
 /* ---------- Reset ---------- */
@@ -154,7 +168,7 @@ export const RESET_SCOPES = {
  * scope: 'progress' | 'tracker' | 'all'
  * - progress: bagian, kuis, modul, XP, badge, alat Latihan, riwayat (nama profil tetap)
  * - tracker : seluruh lamaran di Tracker
- * - all     : keduanya + profil + preferensi
+ * - all     : keduanya + profil + preferensi + feedback
  * Mengembalikan snapshot sebelum reset (untuk Urungkan).
  */
 export function resetData(scope) {
@@ -162,7 +176,7 @@ export function resetData(scope) {
   const before = snapshot();
   if (scope === 'progress' || scope === 'all') state.resetProgress({ keepProfile: scope !== 'all' });
   if (scope === 'tracker' || scope === 'all') storage.set('tracker', { version: 1, items: [] });
-  if (scope === 'all') storage.remove('prefs');
+  if (scope === 'all') { storage.remove('prefs'); storage.remove('feedback'); }
   return before;
 }
 

@@ -1,3 +1,58 @@
+# Laporan QA: Final UX Enhancement
+
+**Tanggal:** 16 November 2026 · **Lingkungan:** Chromium (Playwright) di Linux, server lokal
+
+| Pengujian | Hasil |
+|---|---|
+| Suite fitur baru (onboarding, rekomendasi, target, feedback, analitik, sertifikat, pengaturan, migrasi, keamanan) | **89 / 89 lulus** |
+| Suite regresi V3 (pengguna lama yang sudah melihat panduan; label menu diperbarui) | **187 / 187 lulus** |
+| Audit layout + axe WCAG 2.1 AA, 18 halaman/bagian (termasuk `certificate.html`), tema terang, 1440/1024/390 | **0 masalah layout, 0 pelanggaran** (54 kombinasi) |
+| Audit yang sama, tema gelap | **0 masalah layout, 0 pelanggaran** (54 kombinasi) setelah perbaikan kontras di bawah |
+| axe + overflow untuk keadaan baru (panduan terbuka, target terpasang, semua selesai, form feedback, Progress penuh, sertifikat terbuka) × terang/gelap × 1440/390 | **0 / 28** setelah perbaikan |
+| Lighthouse (mode HP, lokal, diukur saat audit lain berjalan) | Accessibility, Best Practices, SEO **100**; CLS **0**; Performance: Dashboard 68, Progress 69, Sertifikat 83 |
+| PDF sertifikat | Struktur valid (header, xref, `%%EOF`); `pdftotext` membaca nama, ID, ringkasan hasil, dan disclaimer; dirender benar oleh `pdftoppm` |
+
+### Yang diuji khusus
+- **Onboarding:** muncul otomatis hanya untuk pengguna baru. Fitur yang diuji:
+  - Next/Previous, indikator "Langkah x dari 3" dan titik, tombol Selesai.
+  - Selesai/Lewati/Esc menyimpan status, dan panduan tidak muncul lagi.
+  - Bisa diulang lewat tombol "Panduan", `dashboard.html#panduan`, atau Pengaturan.
+  - Tidak menimpa dialog profil (`#profil`), dan tidak muncul untuk pengguna lama yang sudah punya progres.
+- **Rekomendasi:** tujuh keadaan diuji dengan data nyata: mulai, lanjut, kuis, kuis gagal, siap ditutup, evaluasi, sertifikat. Tombol hero dan kartu samping selalu menuju tujuan berbeda.
+- **Target harian:** pasang, ganti, dan hapus target.
+  - Hitungan hanya bertambah dari aktivitas yang benar-benar selesai; membuka bagian tidak dihitung.
+  - Hari baru mulai dari 0 tanpa catatan gagal, tidak ada streak, dan target tidak memberi XP.
+- **Feedback:** form muncul hanya setelah modul selesai, dan form kosong ditolak.
+  - Simpan, ubah, hapus (dengan konfirmasi) di halaman Progress.
+  - Teks ditampilkan sebagai teks biasa, bukan HTML.
+- **Analitik:** skor kuis terbaik, materi selesai, riwayat 14 hari, dan kartu evaluasi sama persis dengan state. Pengguna baru melihat keadaan kosong, bukan angka contoh.
+- **Sertifikat:** tetap terkunci bila evaluasi < 75. Bila syarat penuh tetapi nama kosong, halaman meminta nama dulu.
+  - ID `UJAP-YYYYMMDD-XXXXXXX` tetap sama setelah dimuat ulang.
+  - PDF terunduh dan memuat nama, ID, skor, serta disclaimer. Batasan validasi selalu tampil.
+- **Pengaturan:** tema gelap/terang/sistem dan ukuran huruf bertahan di semua halaman (dipasang sebelum render).
+  - Cadangan memuat `prefs` dan `feedback`; nilai tidak valid dinormalkan saat dipulihkan.
+  - Reset semua menghapus feedback dan preferensi.
+- **Migrasi:** data lama tanpa `goal`/`daily`/`certificate` terbaca dengan default aman. Field baru yang rusak dinormalkan tanpa salinan rusak.
+
+### Bug yang ditemukan & diperbaiki
+| Bug | Perbaikan |
+|---|---|
+| `dashboard.html#profil` untuk pengguna baru membuka panduan di atas dialog profil (hash sudah dihapus sebelum panduan memeriksa) | Hash dibaca saat halaman dimuat |
+| Mengirim form feedback kosong tetap menulis `ujap:feedback` kosong | Validasi sebelum menyimpan |
+| Mode gelap: kode stasiun (ID/CV/…) putih di atas warna modul terang (kontras 1,6–2,2) | Teks gelap di mode gelap |
+| Mode gelap: tombol Reset (merah terang + teks putih) | Teks gelap |
+| Mode gelap: pil XP & elemen kuning lain mewarisi teks terang (kontras 1,33) | Warna teks `--on-signal` (tinta gelap) di semua elemen berlatar kuning |
+| Mode gelap: swatch palet di styleguide ikut berubah sehingga label AA salah | Swatch selalu memakai nilai merek (terang) |
+| Baris hasil di PDF terpotong di tengah kata ("badge / utama") | Dua baris tetap |
+
+### Catatan & batasan
+- Sertifikat dibuat lokal dan **bukan sertifikasi resmi**. GitHub Pages tidak punya server untuk verifikasi, dan data LocalStorage bisa diubah pemilik perangkat.
+- PDF memakai font standar Helvetica: huruf di luar Latin tampil sebagai "?". Halaman memberi peringatan bila nama mengandung huruf tersebut.
+- Riwayat 14 hari dihitung dari maksimal 30 entri aktivitas tersimpan.
+- Belum diuji: Safari/Firefox, perangkat fisik, pembaca layar langsung, pembuka PDF selain Poppler/Chromium.
+
+---
+
 # Laporan QA: Dashboard V3 + Sidebar Global
 
 **Tanggal:** 15 November 2026 · **Lingkungan:** Chromium (Playwright) di Linux, server lokal

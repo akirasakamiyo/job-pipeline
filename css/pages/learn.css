@@ -205,7 +205,7 @@
   .flow__step:not(:last-child)::after {
     content: "→"; position: absolute; right: -14px; top: 50%; translate: 0 -50%; z-index: 1;
     width: 22px; height: 22px; display: grid; place-items: center;
-    border-radius: 50%; background: var(--ink); color: #fff; font-size: 12px;
+    border-radius: 50%; background: var(--inverse); color: #fff; font-size: 12px;
   }
 }
 @media (max-width: 899px) {
@@ -290,7 +290,7 @@
   flex: 1; min-width: 0;
   padding: 12px var(--s-4);
   border-radius: var(--r-md);
-  background: var(--ink);
+  background: var(--inverse);
   color: #fff;
   font: 700 var(--fs-sm)/1.4 var(--font-mono);
   overflow-wrap: anywhere;
@@ -437,3 +437,16 @@
 
 /* V3: area konten lebih sempit karena sidebar global — jaga kolom pendek tetap utuh */
 .learn-table td:first-child, .learn-table th:first-child { min-width: 3ch; }
+
+/* ---------- Final UX: feedback modul ---------- */
+.fb-box { display: grid; gap: var(--s-3); margin-top: var(--s-6); padding: var(--s-5); border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); scroll-margin-top: calc(var(--topbar-h) + 16px); }
+.fb-box[hidden] { display: none; }
+.fb-box #fb-title:focus { outline: none; }
+.fb-box__form { display: grid; gap: var(--s-4); }
+.fb-q { display: grid; gap: var(--s-2); margin: 0; padding: 0; border: 0; min-width: 0; }
+.fb-q__text { padding: 0; font-weight: 700; }
+.fb-q .segmented { justify-self: start; }
+.fb-box__text { min-height: 96px; resize: vertical; }
+.fb-box__status:empty { display: none; }
+.fb-box__status { margin: 0; font-weight: 700; color: var(--success-text); }
+.fb-box__status.is-error { color: var(--danger-text); }
