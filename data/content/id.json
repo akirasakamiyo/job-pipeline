@@ -196,6 +196,11 @@
               "text": "Pilih tanda tangan ini untuk email baru dan balasan, lalu Simpan perubahan di bagian bawah halaman."
             }
           ]
+        },
+        {
+          "type": "signature",
+          "id": "id-signature",
+          "title": "Gmail Signature Practice"
         }
       ]
     },

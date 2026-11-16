@@ -84,7 +84,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "Tracker bisa dibuat di **Google Sheets** atau **Notion**. Platform ini juga menyediakan **Job Tracker** bawaan yang tersimpan di perangkatmu."
+          "text": "Tracker bisa dibuat di **Google Sheets** atau **Notion**, sesuai alat yang paling nyaman kamu pakai."
         },
         {
           "type": "p",
@@ -154,7 +154,7 @@
         {
           "type": "callout",
           "tone": "tip",
-          "title": "Status di Job Tracker platform ini",
+          "title": "Contoh kolom status",
           "text": "Applied · Under Review · Interview · Accepted · Rejected. Follow-up adalah tindakan, bukan status: catat tanggalnya di kolom Catatan."
         },
         {
@@ -442,7 +442,7 @@
           "type": "callout",
           "tone": "tip",
           "title": "Coba langsung",
-          "text": "Gunakan menu Tracker di platform ini untuk mencatat lamaranmu sendiri."
+          "text": "Buat tracker-mu sendiri di Google Sheets atau Notion dengan kolom yang sama, lalu catat lamaranmu."
         }
       ]
     },
@@ -493,7 +493,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "Praktikkan langsung di **Job Tracker** platform ini. Data tersimpan di perangkatmu dan dipakai untuk badge *Application Pipeline Manager*."
+          "text": "Praktikkan langsung dengan tracker milikmu sendiri di **Google Sheets** atau **Notion**. Isi satu baris lamaran mengikuti langkah berikut."
         },
         {
           "type": "steps",
@@ -515,13 +515,6 @@
               "text": "Ubah status saat ada kabar, dan catat hal penting di Notes."
             }
           ]
-        },
-        {
-          "type": "tool",
-          "tool": "tracker",
-          "href": "tracker.html",
-          "title": "Buka Job Tracker",
-          "text": "Tambahkan lamaran dengan tanggal follow-up."
         }
       ]
     },

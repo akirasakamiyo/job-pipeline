@@ -77,7 +77,7 @@
 .appnav .appnav__close { display: none; }   /* tombol × hanya untuk drawer HP (spesifisitas > .btn) */
 
 .appnav__nav { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 4px 12px 12px; scrollbar-width: thin; }
-.appnav__group + .appnav__group { margin-top: var(--s-4); }
+.appnav__group + .appnav__group { margin-top: var(--s-2); }   /* V4: 5 grup → jarak lebih rapat */
 .appnav__grouptitle { padding: 6px 12px 6px; font: 700 10px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
 .appnav__list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
 .appnav__link {
@@ -369,3 +369,15 @@ html.is-entering::after {
    ===================================================================== */
 [data-topbar] { height: var(--topbar-h); }                 /* placeholder header HP sebelum dirender (0 di ≥768px) */
 [data-module-detail]:empty, [data-module-detail]:has(.learn-skeleton) { min-height: 100vh; }
+
+/* =====================================================================
+   V4 — APLIKASI RINGKAS (satu halaman = satu fungsi)
+   Judul halaman lebih pendek, footer satu baris, tanpa ruang kosong besar.
+   ===================================================================== */
+.page-head { display: flex; flex-direction: column; gap: var(--s-2); padding-block: clamp(16px, 2.5vw, 28px) var(--s-4); max-width: 72ch; }
+.page-head .h1 { font-size: clamp(1.75rem, 1.35rem + 1.4vw, 2.5rem); }
+.page-head .lead { font-size: var(--fs-body); color: var(--ink-soft); }
+.page-head .eyebrow { margin: 0; }
+.footer { margin-top: var(--s-6); padding-block: var(--s-4); font-size: var(--fs-sm); }
+.footer .brand__mark { width: 30px; height: 30px; }
+.appnav__grouptitle { padding-block: 4px; }

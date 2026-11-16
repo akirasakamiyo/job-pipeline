@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <!-- Keamanan (Tahap 7): Content Security Policy. Hanya skrip dari situs ini + skrip boot inline (di-hash)
+       yang boleh berjalan. Bila skrip boot di <head> diubah, hash sha256 di bawah WAJIB diperbarui (lihat README). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-AKuHoRMhFHvF1hncA0AFuLDk5oX6HcwQ9veNkX3TS/U='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kuis · The Ultimate Job Application Pipeline</title>
+  <meta name="description" content="Kerjakan kuis modul atau Evaluasi Akhir: soal pilihan ganda acak dengan pembahasan setelah setiap jawaban.">
+  <meta name="theme-color" content="#FBF7F0">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+
+  <!-- Boot kecil (inline): tandai JS aktif & siapkan tirai transisi. Failsafe 2,5 detik. -->
+  <script>
+    (function (d) {
+      var h = d.documentElement; h.classList.add('js');
+      try {
+        var prefs = JSON.parse(localStorage.getItem('ujap:prefs') || '{}') || {};
+        // V3: sidebar diciutkan dipasang sebelum render agar layout tidak melompat
+        if (prefs.sidebar === 'collapsed') h.setAttribute('data-nav-pref', 'collapsed');
+        // Final: tema & ukuran huruf dipasang sebelum render (tanpa kilatan tema)
+        var dark = prefs.theme === 'dark' || (prefs.theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+        h.setAttribute('data-theme', dark ? 'dark' : 'light');
+        if (prefs.font === 'large' || prefs.font === 'xlarge') h.setAttribute('data-font', prefs.font);
+        var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches || prefs.motion === 'reduced';
+        if (sessionStorage.getItem('ujap:transition') === '1' && !reduced) h.classList.add('is-entering');
+      } catch (e) {}
+      setTimeout(function () { h.classList.add('motion-fallback'); h.classList.remove('is-entering'); }, 2500);
+    })(document);
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..800,0..100,0..1&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/pages/learn.css">
+  <link rel="stylesheet" href="css/pages/evaluation.css">
+
+  <script defer src="vendor/gsap/gsap.min.js"></script>
+  <script defer src="vendor/gsap/ScrollTrigger.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+  <!-- Performa: unduh modul JS & data secara paralel (bukan berantai) -->
+  <link rel="modulepreload" href="js/core/navigation.js">
+  <link rel="modulepreload" href="js/core/dom.js">
+  <link rel="modulepreload" href="js/core/motion.js">
+  <link rel="modulepreload" href="js/core/ui.js">
+  <link rel="modulepreload" href="js/core/state.js">
+  <link rel="modulepreload" href="js/core/storage.js">
+  <link rel="modulepreload" href="js/core/data.js">
+  <link rel="modulepreload" href="js/core/loader.js">
+  <link rel="modulepreload" href="js/core/background.js">
+  <link rel="modulepreload" href="js/pages/quiz-page.js">
+  <link rel="modulepreload" href="js/features/quiz.js">
+  <link rel="preload" href="data/modules.json" as="fetch" crossorigin>
+</head>
+
+<body data-page="quiz">
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <div class="bg-deco" aria-hidden="true">
+    <span class="deco deco--sun" data-float="14"></span>
+    <span class="deco deco--ring" data-float="10"></span>
+    <span class="deco deco--dot" data-float="6"></span>
+  </div>
+
+  <div data-topbar></div>
+
+  <noscript>
+    <p class="container" style="padding:16px;margin-top:16px;background:#FFF3D9;border-radius:14px">
+      Aktifkan JavaScript untuk memakai navigasi dan fitur interaktif.
+    </p>
+  </noscript>
+
+  <main id="main" class="container">
+    <div data-quiz-page></div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a class="brand" href="dashboard.html">
+        <img class="brand__mark" src="assets/images/favicon.svg" alt="" width="38" height="38">
+        <span class="brand__text"><span class="brand__kicker">The Ultimate Job Application</span><span class="brand__name">Pipeline</span></span><span class="sr-only"> — ke Dashboard</span>
+      </a>
+      <p>Progres belajar tersimpan di perangkatmu sendiri. Tanpa akun, tanpa server.</p>
+    </div>
+  </footer>
+</body>
+</html>

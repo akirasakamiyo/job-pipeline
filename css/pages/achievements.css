@@ -1,0 +1,65 @@
+/* =====================================================================
+   pages/achievements.css — Achievements & XP (V4)
+   ===================================================================== */
+.ach-top { display: grid; gap: var(--s-4); }
+@media (min-width: 900px) { .ach-top { grid-template-columns: 0.8fr 1.2fr 1fr; align-items: stretch; } }
+.ach-top > .card { display: flex; flex-direction: column; gap: var(--s-3); min-width: 0; padding: var(--s-5); }
+.ach-xp__value { display: flex; align-items: baseline; gap: 6px; margin: 0; }
+.ach-xp__value .num { color: var(--ink); }
+.ach-next__row { display: flex; align-items: center; gap: var(--s-3); }
+.ach-next__row p { margin: 0; }
+.ach-next__title { font-weight: 800; color: var(--ink); }
+.ach-cert__reqs { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: var(--fs-sm); }
+.ach-cert__reqs li { display: flex; align-items: center; gap: 8px; color: var(--ink-soft); }
+.ach-cert__reqs li.is-ok { color: var(--success-text); font-weight: 700; }
+.ach-cert__reqs .icon { width: 16px; height: 16px; }
+.ach-cert .btn { align-self: flex-start; }
+.ach-cert p { margin: 0; }
+
+.ach-section { display: grid; gap: var(--s-3); margin-top: var(--s-4); padding: var(--s-5); }
+.ach-section__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
+.ach-section p { margin: 0; }
+.ach-legend { display: flex; flex-wrap: wrap; gap: var(--s-3); margin: 0; padding: 0; list-style: none; font-size: var(--fs-xs); color: var(--ink-soft); }
+.ach-legend li { display: inline-flex; align-items: center; gap: 6px; }
+.ach-dot { width: 10px; height: 10px; border-radius: 50%; }
+.ach-dot--earned { background: var(--signal); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.ach-dot--progress { background: var(--cobalt); }
+.ach-dot--locked { background: var(--line-strong); }
+
+.ach-badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: var(--s-3); margin: 0; padding: 0; list-style: none; }
+.ach-badge { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: var(--s-4); border: 1.5px solid var(--line); border-radius: var(--r-md); background: var(--paper); }
+.ach-badge p { margin: 0; }
+.ach-badge__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ach-badge__seal { flex: none; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: var(--paper-2); color: var(--ink-soft); }
+.ach-badge__seal .icon { width: 22px; height: 22px; }
+.ach-badge__name { font-weight: 800; line-height: 1.25; color: var(--ink); }
+.ach-badge__desc { font-size: var(--fs-xs); color: var(--ink-soft); }
+.ach-badge.is-earned { border-color: var(--ink); background: var(--surface); box-shadow: var(--sh-sticker); }
+.ach-badge.is-earned .ach-badge__seal { background: var(--signal); color: var(--on-signal); box-shadow: inset 0 0 0 2px var(--on-signal); }
+.ach-badge.is-progress { border-color: color-mix(in srgb, var(--cobalt) 45%, var(--line)); }
+.ach-badge.is-progress .ach-badge__seal { background: var(--cobalt-tint); color: var(--cobalt-strong); }
+.ach-badge.is-locked .ach-badge__name { color: var(--ink-soft); }
+.ach-chip { font-size: 11px; }
+.ach-chip--earned { background: var(--success-tint); color: var(--success-text); }
+.ach-chip--progress { background: var(--cobalt-tint); color: var(--cobalt-strong); }
+.ach-chip--locked { background: var(--paper-2); color: var(--ink-soft); }
+.ach-badge__steps { font-size: var(--fs-xs); }
+.ach-badge__steps summary { min-height: 32px; display: flex; align-items: center; cursor: pointer; font-weight: 700; color: var(--ink-2); }
+.ach-badge__steps ul { display: grid; gap: 4px; margin: 6px 0 0; padding: 0; list-style: none; }
+.ach-badge__steps li { display: flex; gap: 6px; align-items: flex-start; color: var(--ink-soft); }
+.ach-badge__steps li.is-ok { color: var(--success-text); }
+.ach-badge__steps .icon { flex: none; width: 14px; height: 14px; margin-top: 2px; }
+
+.ach-bottom { display: grid; gap: var(--s-4); margin-bottom: var(--s-6); }
+@media (min-width: 900px) { .ach-bottom { grid-template-columns: 1.3fr 1fr; align-items: start; } }
+.ach-bottom .ach-section { margin-top: var(--s-4); }
+.ach-milestones { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.ach-ms { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--r-sm); min-width: 0; }
+.ach-ms__icon { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--paper-2); color: var(--ink-soft); }
+.ach-ms__icon .icon { width: 16px; height: 16px; }
+.ach-ms.is-earned .ach-ms__icon { background: var(--signal); color: var(--on-signal); }
+.ach-ms__text { display: grid; gap: 1px; min-width: 0; font-size: var(--fs-sm); }
+.ach-ms__text small { font-size: var(--fs-xs); color: var(--ink-soft); }
+.ach-rules { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: var(--fs-sm); }
+.ach-rules li { display: flex; justify-content: space-between; gap: var(--s-3); padding: 6px 0; border-bottom: 1px dashed var(--line); }
+.ach-rules strong { color: var(--success-text); }

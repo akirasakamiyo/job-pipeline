@@ -1,293 +1,85 @@
 /* =====================================================================
-   pages/dashboard.css — Tata letak Dashboard
-   Komponen (card, ring, bar, route, badge, module-card, tool-tile, …)
-   berasal dari components.css. File ini hanya menyusun layout.
-   Breakpoint: HP < 768 · tablet 768–1023 · desktop ≥ 1024
+   pages/dashboard.css — Dashboard V4: pusat kendali ringkas
+   ---------------------------------------------------------------------
+   Target: muat satu layar di desktop (1440×900). Baris:
+   hero (sapaan + rekomendasi + progres) → 3 kartu (modul aktif, target,
+   pencapaian) → pintasan 5 modul → akses cepat Practice & Evaluation.
    ===================================================================== */
+.dash { display: grid; gap: var(--s-3); padding-top: var(--s-4); }
+.dash > *, .dash-row > * { min-width: 0; }
 
-.dash-section { padding-top: clamp(40px, 6vw, 72px); }
+/* ---------- Hero ---------- */
+.dash-hero { position: relative; display: grid; gap: var(--s-4); padding: var(--s-4) var(--s-5); overflow: hidden; }
+@media (min-width: 1024px) { .dash-hero { grid-template-columns: minmax(0, 1.6fr) minmax(260px, 1fr); align-items: center; padding: var(--s-4) var(--s-6); } }
+.dash-hero__copy { display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; position: relative; z-index: 1; }
+.dash-greet { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2); }
+.dash-greet .eyebrow { margin: 0; }
+.dash-greet__actions { display: flex; flex-wrap: wrap; gap: 4px; }
+.dash-hero__title { margin: 0; font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.6rem); line-height: 1.1; overflow-wrap: anywhere; }
+.dash-hero__name { color: var(--cobalt-strong); }
+.dash-hero__lead { margin: 0; max-width: 62ch; color: var(--ink-soft); }
+.dash-hero__cta { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.dash-hero__stats { display: flex; align-items: center; gap: var(--s-4); position: relative; z-index: 1; padding: var(--s-4); border-radius: var(--r-md); background: var(--paper); border: 1px solid var(--line); }
+.dash-hero__nums { display: grid; gap: 4px; min-width: 0; }
+.dash-hero__nums p { margin: 0; }
+.dash-hero__pcttitle { font-weight: 800; color: var(--ink); }
+.dash-mini { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); margin: var(--s-2) 0 0; }
+.dash-mini div { min-width: 0; }
+.dash-mini dt { font-size: 11px; line-height: 1.3; color: var(--ink-soft); }
+.dash-mini dd { margin: 0; font-size: var(--fs-lg); font-weight: 800; color: var(--ink); }
+.dash-hero__art { position: absolute; right: 12px; bottom: -6px; width: 150px; height: auto; opacity: .9; pointer-events: none; display: none; }
+@media (min-width: 1400px) { .dash-hero__art { display: block; } .dash-hero { padding-right: 180px; } }
+.hero-rec { margin: 0; }
 
-/* =====================================================================
-   HERO
-   ===================================================================== */
-.dash-hero {
-  display: grid;
-  gap: var(--s-6);
-  align-items: center;
-  padding-top: clamp(20px, 4vw, 48px);
-}
-.dash-hero__copy { display: flex; flex-direction: column; gap: var(--s-5); min-width: 0; }
+/* ---------- Tiga kartu ---------- */
+.dash-row { display: grid; gap: var(--s-3); }
+@media (min-width: 900px) { .dash-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.dash-card { display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-4) var(--s-5); }
+.dash-card .eyebrow { margin: 0; }
+.dash-card__more { align-self: flex-start; margin-top: auto; padding-inline: 0; }
+.dash-card .goal { margin: 0; padding: 0; border: 0; }
+.dash-active__link { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3); border: 1.5px solid var(--line); border-radius: var(--r-md); color: var(--ink); text-decoration: none; transition: border-color var(--dur-2), box-shadow var(--dur-2); }
+.dash-active__link:hover { color: var(--ink); border-color: var(--ink); box-shadow: var(--sh-sticker); }
+.dash-active__link:empty { min-height: 84px; }
+.dash-active__link > .icon { flex: none; color: var(--ink-soft); }
+.dash-active__body { display: grid; gap: 2px; min-width: 0; flex: 1; }
+.dash-active__code { font: 700 10px/1.3 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--mod-text, var(--ink-soft)); }
+.dash-active__title { font-weight: 800; line-height: 1.3; }
+.dash-active__meta { font-size: var(--fs-xs); color: var(--ink-soft); }
+.dash-active__stamp { width: 48px; height: 48px; rotate: 0deg; }
+.dash-ach { display: grid; gap: var(--s-2); }
+.dash-ach__nums { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+.dash-ach__nums p { display: flex; align-items: baseline; gap: 6px; margin: 0; font-size: var(--fs-h3); font-weight: 800; }
+.dash-ach__nums small { font-size: var(--fs-xs); font-weight: 600; color: var(--ink-soft); }
+.dash-ach__next { margin: 0; font-size: var(--fs-sm); color: var(--ink-soft); }
 
-.dash-greet { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); }
-.dash-greet__text { font-weight: 700; font-size: var(--fs-lg); }
-.dash-greet__text strong { font-weight: 800; }
+/* ---------- Pintasan lima modul ---------- */
+.dash-modules { display: grid; gap: var(--s-2); }
+.dash-modules__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); }
+.dash-modules__head .h4 { margin: 0; }
+.link-more { display: inline-flex; align-items: center; gap: 4px; min-height: 32px; font-weight: 700; font-size: var(--fs-sm); }
+.dash-shortcuts { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
+@media (min-width: 1100px) { .dash-shortcuts { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.dash-shortcut { display: grid; gap: 6px; height: 100%; padding: 12px 14px; border: 1.5px solid var(--line); border-top: 4px solid var(--mod); border-radius: var(--r-md); background: var(--surface); color: var(--ink); text-decoration: none; transition: border-color var(--dur-2), translate var(--dur-2); }
+.dash-shortcut:hover { color: var(--ink); border-color: var(--ink); border-top-color: var(--mod); translate: 0 -2px; }
+.dash-shortcut.is-current { box-shadow: var(--sh-sticker); border-color: var(--ink); border-top-color: var(--mod); }
+.dash-shortcut__top { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.dash-shortcut__status { font-size: 11px; font-weight: 700; color: var(--ink-soft); }
+.dash-shortcut__status.is-done { color: var(--success-text); }
+.dash-shortcut__status.is-progress { color: var(--cobalt-strong); }
+.dash-shortcut__title { font-weight: 800; font-size: var(--fs-sm); line-height: 1.3; }
+.dash-shortcut__pct { font-size: var(--fs-xs); color: var(--ink-soft); }
+.dash-shortcuts:empty { min-height: 120px; }
 
-.dash-hero__title { font-size: clamp(2.4rem, 1.4rem + 4.2vw, 4.6rem); }
-.dash-hero__cta { display: flex; flex-direction: column; gap: var(--s-3); }
-.dash-hero__cta .btn { width: 100%; }
-
-/* Ilustrasi + kartu "lanjutkan" */
-.dash-hero__art { position: relative; width: 100%; max-width: 520px; margin-inline: auto; }
-.dash-hero__art img { width: 100%; }
-
-.continue-card {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--s-3);
-  margin: -8px auto 0;
-  width: min(100%, 360px);
-  padding: var(--s-3) var(--s-4) var(--s-3) var(--s-3);
-  background: var(--surface);
-  border: var(--bw) solid var(--ink);
-  border-radius: var(--r-lg);
-  box-shadow: var(--sh-sticker);
-  color: var(--ink);
-  text-decoration: none;
-  transition: box-shadow var(--dur-2), border-color var(--dur-2);
-}
-.continue-card:hover { color: var(--ink); box-shadow: var(--sh-sticker-hover); }
-.continue-card__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
-.continue-card__label { font: 700 10px/1.2 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
-.continue-card__title { font-weight: 800; font-size: var(--fs-sm); line-height: 1.3; }
-.continue-card__meta { font-size: var(--fs-xs); color: var(--ink-soft); }
-.continue-card > .icon { flex: none; color: var(--ink-soft); }
-
-@media (min-width: 600px) {
-  .dash-hero__cta { flex-direction: row; flex-wrap: wrap; }
-  .dash-hero__cta .btn { width: auto; }
-}
-/* Tablet: dua kolom; kartu "lanjutkan" tetap di bawah ilustrasi */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .dash-hero { grid-template-columns: 1.15fr .85fr; gap: var(--s-5); }
-  .dash-hero__title { font-size: clamp(2.4rem, 1rem + 3.6vw, 3.4rem); }
-}
-@media (min-width: 1024px) {
-  .dash-hero { grid-template-columns: 1.08fr .92fr; gap: var(--s-7); }
-  .continue-card { position: absolute; left: -6%; bottom: -4%; margin: 0; width: min(88%, 340px); }
-}
-
-/* =====================================================================
-   PROGRES + ROADMAP
-   ===================================================================== */
-.dash-progress { display: grid; gap: var(--s-4); }
-@media (min-width: 1024px) { .dash-progress { grid-template-columns: 1.25fr 1fr; align-items: start; } }
-
-.progress-panel { display: flex; flex-direction: column; gap: var(--s-5); }
-.progress-panel__head { display: flex; flex-direction: column; gap: var(--s-2); }
-.progress-panel__main { display: grid; gap: var(--s-5); justify-items: center; }
-.progress-panel__counts {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--s-2);
-  width: 100%;
-}
-@media (min-width: 600px) {
-  .progress-panel__main { grid-template-columns: auto 1fr; align-items: center; justify-items: stretch; }
-}
-.progress-panel__barhead { display: flex; justify-content: space-between; margin-bottom: var(--s-2); color: var(--ink-soft); font-weight: 600; }
-.progress-panel__barhead .mono { color: var(--ink); font-weight: 700; }
-
-/* Roadmap */
-.roadmap { display: flex; flex-direction: column; gap: var(--s-5); }
-.roadmap__route { margin-top: var(--s-2); }
-.roadmap__steps { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; counter-reset: step; }
-.roadmap__step {
-  display: grid;
-  grid-template-columns: 30px 1fr auto;
-  align-items: center;
-  gap: var(--s-3);
-  padding: 10px var(--s-2);
-  border-radius: var(--r-sm);
-  color: var(--ink);
-  text-decoration: none;
-}
-.roadmap__step:hover { background: var(--paper-2); color: var(--ink); }
-.roadmap__num {
-  display: grid; place-items: center;
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  border: 2px solid var(--line-strong);
-  font: 700 12px/1 var(--font-mono);
-  color: var(--ink-soft);
-  background: var(--surface);
-}
-.roadmap__step[data-status="done"] .roadmap__num { background: var(--mod); border-color: var(--ink); color: #fff; }
-.roadmap__step[data-status="progress"] .roadmap__num,
-.roadmap__step.is-current .roadmap__num { border-color: var(--mod); color: var(--mod-text); box-shadow: 0 0 0 4px var(--mod-tint); }
-.roadmap__body { display: flex; flex-direction: column; min-width: 0; }
-.roadmap__title { font-weight: 700; font-size: var(--fs-sm); }
-.roadmap__meta { font-size: var(--fs-xs); color: var(--ink-soft); }
-
-/* =====================================================================
-   KARTU MODUL
-   HP: carousel geser (scroll-snap) · tablet: 2 kolom · desktop: 3 kolom
-   ===================================================================== */
-.module-rail {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: min(84%, 320px);
-  gap: var(--s-4);
-  margin-inline: calc(-1 * var(--gutter));
-  padding: var(--s-2) var(--gutter) var(--s-5);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--gutter);
-  scrollbar-width: none;
-  overscroll-behavior-x: contain;
-}
-.module-rail::-webkit-scrollbar { display: none; }
-.module-rail > * { scroll-snap-align: start; }
-.module-rail:focus-visible { outline-offset: -3px; }
-
-@media (min-width: 768px) {
-  .module-rail {
-    grid-auto-flow: row;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-inline: 0;
-    padding: 0;
-    overflow: visible;
-  }
-}
-@media (min-width: 1100px) {
-  .module-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-
-/* =====================================================================
-   GRID BAWAH: alat · aktivitas · pencapaian · resources
-   ===================================================================== */
-.dash-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
-.dash-tools { grid-column: 1 / -1; }   /* V3: tujuh alat dalam satu baris lebar */
-/* min-width 0: baris badge yang bisa digeser tidak boleh melebarkan kolom grid */
-.dash-grid > *, .dash-progress > *, .dash-hero > * { min-width: 0; }
-@media (min-width: 768px) and (max-width: 1023px) {
-  .dash-grid { grid-template-columns: 1fr 1fr; }
-  .dash-tools, .dash-achievements { grid-column: 1 / -1; }
-}
-@media (min-width: 1024px) {
-  .dash-grid { grid-template-columns: 1.35fr 1fr; align-items: start; }
-}
-
-.tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: var(--s-3); }   /* V3: 7 alat, kolom menyesuaikan lebar */
-@media (max-width: 399px) { .tool-tile__desc { display: none; } }
-
-.xp-pill {
-  display: inline-flex; align-items: center; gap: 6px;
-  height: 36px; padding: 0 14px;
-  border-radius: var(--r-pill);
-  background: var(--signal);
-  border: var(--bw) solid var(--ink);
-  font-weight: 800; font-size: var(--fs-sm);
-}
-.xp-pill .icon { width: 18px; height: 18px; }
-
-/* Badge: baris geser di HP, grid di layar lebih besar */
-.dash-badges {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 104px;
-  gap: var(--s-4);
-  margin: var(--s-4) calc(-1 * var(--s-5)) 0;
-  padding: var(--s-2) var(--s-5) var(--s-3);
-  overflow-x: auto;
-  scrollbar-width: none;
-  list-style: none;
-}
-.dash-badges::-webkit-scrollbar { display: none; }
-.dash-badges .badge__seal { width: 72px; height: 72px; }
-.dash-badges .badge__seal .icon { width: 28px; height: 28px; }
-@media (min-width: 600px) {
-  .dash-badges {
-    grid-auto-flow: row;
-    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
-    margin-inline: 0;
-    padding-inline: 0;
-    overflow: visible;
-  }
-}
-
-/* Performa (Tahap 6): ruang awal untuk ringkasan hero yang dirender JS — cegah CLS */
-.hero-facts:empty { min-height: 84px; }
-.continue-card:empty { min-height: 84px; }
-.progress-panel__counts:empty { min-height: 140px; }
-.module-rail:empty { min-height: 560px; }
-
-/* =====================================================================
-   DASHBOARD V3 — hero ringkas, panel progres, roadmap, carousel, aktivitas
-   ===================================================================== */
-.hero-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
-@media (min-width: 1200px) { .hero-facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.hero-fact { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 10px 12px; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--line); font-size: var(--fs-xs); font-weight: 650; color: var(--ink-2); line-height: 1.3; }
-.hero-fact strong { font-size: var(--fs-lg); color: var(--ink); }
-.hero-fact__icon { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--signal-tint); color: var(--ink); }
-.hero-fact__icon .icon { width: 17px; height: 17px; }
-@media (min-width: 1200px) { .hero-fact { flex-direction: column; align-items: flex-start; gap: 6px; } }
-
-/* Panel progres: 3 ringkasan (selesai · tersisa · modul aktif) */
-.progress-panel__counts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.count-pill small { font-size: .55em; color: var(--ink-soft); font-family: var(--font-body); font-weight: 700; margin-left: 2px; }
-.count-pill--active { grid-column: 1 / -1; display: grid; gap: 4px; color: var(--ink); text-decoration: none; border-color: var(--mod, var(--line)); }
-.count-pill--active:hover { color: var(--ink); border-color: var(--ink); }
-.count-pill__active { font-weight: 800; font-size: var(--fs-sm); line-height: 1.3; }
-.count-pill__meta { font-size: var(--fs-xs); color: var(--ink-soft); font-weight: 600; }
-
-/* Roadmap: tujuan berikutnya */
-.roadmap__steps .chip { white-space: nowrap; }
-.roadmap__next {
-  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px var(--s-3);
-  padding: var(--s-3) var(--s-4);
-  border-radius: var(--r-md);
-  background: var(--mod-tint, var(--signal-tint));
-  border: 1.5px solid var(--mod, var(--ink));
-  color: var(--ink); text-decoration: none;
-  transition: translate var(--dur-2) var(--ease-out);
-}
-.roadmap__next:hover { color: var(--ink); translate: 0 -2px; }
-.roadmap__next .icon { grid-row: 1 / 3; grid-column: 2; }
-.roadmap__next-label { font: 700 10px/1.4 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--mod-text, var(--ink-soft)); }
-.roadmap__next-title { font-weight: 800; font-size: var(--fs-sm); }
-#roadmap { scroll-margin-top: calc(var(--topbar-h) + 24px); }
-
-/* Carousel modul: panah & titik posisi hanya saat rail dapat digeser (HP) */
-.rail-controls { display: flex; align-items: center; justify-content: center; gap: var(--s-3); margin-top: var(--s-2); }
-.rail-controls .btn--icon { width: 44px; min-height: 44px; }
-.rail-dots { display: flex; gap: 2px; margin: 0; padding: 0; list-style: none; }
-.rail-dot { display: grid; place-items: center; width: 28px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer; }
-.rail-dot::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--line-strong); transition: width var(--dur-2), background-color var(--dur-2); }
-.rail-dot[aria-current="true"]::before { width: 22px; border-radius: 99px; background: var(--ink); }
-@media (min-width: 768px) { .rail-controls { display: none; } }
-
-/* Aktivitas: pintasan terakhir dibuka */
-.resume-row { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-3); padding: 10px var(--s-3); border-radius: var(--r-md); background: var(--mod-tint, var(--paper-2)); color: var(--ink); text-decoration: none; }
-.resume-row:hover { color: var(--ink); }
-.resume-row > .icon { margin-left: auto; flex: none; }
-.resume-row__body { display: grid; min-width: 0; }
-.resume-row__label { font: 700 10px/1.4 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--mod-text, var(--ink-soft)); }
-.resume-row__title { font-weight: 800; font-size: var(--fs-sm); overflow-wrap: anywhere; }
-
-/* Badge: bar progres menuju 10 badge utama */
-.dash-achievements [data-badge-bar] { margin-block: var(--s-2) var(--s-1); }
-
-/* Resources: deskripsi & status verifikasi */
-.link-row__desc { color: var(--ink-2); font-size: var(--fs-xs); line-height: 1.4; }
-.link-row__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
-
-/* V3: grid bawah seimbang — alat & pencapaian selebar penuh,
-   aktivitas & resources berdampingan (tablet ke atas) */
-@media (min-width: 768px) {
-  .dash-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "tools tools" "activity resources" "achieve achieve"; align-items: stretch; }
-  .dash-tools { grid-area: tools; }
-  .dash-activity { grid-area: activity; }
-  .dash-resources { grid-area: resources; }
-  .dash-achievements { grid-area: achieve; }
-}
-@media (min-width: 600px) {
-  .dash-badges { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
-}
-@media (max-width: 599px) {
-  .tools-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }   /* V3: 7 alat ringkas di HP */
-  .tool-tile__title { font-size: var(--fs-sm); }
-}
+/* ---------- Akses cepat ---------- */
+.dash-quick { display: grid; gap: var(--s-3); }
+@media (min-width: 700px) { .dash-quick { grid-template-columns: 1fr 1fr; } }
+.dash-quick__tile { display: flex; align-items: center; gap: var(--s-3); padding: 12px 16px; border: 1.5px solid var(--line); border-radius: var(--r-md); background: var(--surface); color: var(--ink); text-decoration: none; transition: border-color var(--dur-2), box-shadow var(--dur-2); }
+.dash-quick__tile:hover { color: var(--ink); border-color: var(--ink); box-shadow: var(--sh-sticker); }
+.dash-quick__icon { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--cobalt-tint); color: var(--cobalt-strong); }
+.dash-quick__body { display: grid; gap: 2px; flex: 1; min-width: 0; }
+.dash-quick__body span { font-size: var(--fs-xs); color: var(--ink-soft); }
+.dash-quick__arrow { flex: none; color: var(--ink-soft); }
 
 /* =====================================================================
    FINAL UX — rekomendasi hero, target harian, panduan pengguna baru

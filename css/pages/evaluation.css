@@ -1,14 +1,31 @@
 /* =====================================================================
-   pages/evaluation.css — Evaluasi Akhir (2.0)
+   pages/evaluation.css — Evaluation (direktori) & runner kuis (V4)
    Kartu soal & hasil memakai .quiz-card / .quiz-result dari learn.css.
    ===================================================================== */
-#main { display: flex; flex-direction: column; gap: var(--s-5); padding-bottom: var(--s-7); }
-.page-head { padding-bottom: 0; }
-.eval-grid { display: grid; gap: var(--s-4); }
-@media (min-width: 900px) { .eval-grid { grid-template-columns: 1fr 1fr; align-items: start; } }
-.eval-info { display: grid; gap: var(--s-3); }
-.eval-modules { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
-.eval-modules li { display: flex; align-items: center; gap: var(--s-3); font-size: var(--fs-sm); }
-.eval-modules .chip { margin-left: auto; }
-.eval-modules a { display: inline-flex; align-items: center; min-height: 40px; font-weight: 700; color: var(--ink); }
-.eval-stage { min-height: 280px; }
+.eval-cards { display: grid; gap: var(--s-3); margin: 0 0 var(--s-6); padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+@media (min-width: 1100px) { .eval-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.eval-card { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: var(--s-4) var(--s-5); border-top: 4px solid var(--mod, var(--signal)); }
+.eval-card p, .eval-card h2 { margin: 0; }
+.eval-card__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.eval-card__icon { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--signal); color: var(--on-signal); }
+.eval-card__icon .icon { width: 18px; height: 18px; }
+.eval-card__kicker { font: 700 var(--fs-xs)/1.3 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--mod-text, var(--ink-soft)); }
+.eval-card__title { font-size: var(--fs-lg); font-weight: 800; line-height: 1.25; }
+.eval-card__facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 4px 0 0; }
+.eval-card__facts div { min-width: 0; }
+.eval-card__facts dt { font-size: 11px; color: var(--ink-soft); }
+.eval-card__facts dd { margin: 0; font-weight: 800; font-size: var(--fs-sm); }
+.eval-card__note { font-size: var(--fs-xs); color: var(--ink-soft); }
+.eval-card__cta { align-self: flex-start; margin-top: auto; }
+.eval-card--final { background: color-mix(in srgb, var(--signal) 8%, var(--surface)); }
+
+.quiz-head { display: grid; gap: var(--s-2); padding-block: var(--s-3) var(--s-4); }
+.quiz-head p, .quiz-head .h2 { margin: 0; }
+.quiz-head .eyebrow { display: flex; align-items: center; gap: 6px; }
+.quiz-rules { display: flex; flex-wrap: wrap; gap: 6px var(--s-4); margin: 0; padding: 0; list-style: none; font-size: var(--fs-sm); color: var(--ink-soft); }
+.quiz-rules li { display: inline-flex; align-items: center; gap: 6px; }
+.quiz-rules .icon { width: 16px; height: 16px; color: var(--success-text); }
+.quiz-stage { min-height: 280px; padding: clamp(16px, 2.5vw, 32px); }
+.quiz-after { margin: var(--s-4) 0 var(--s-6); }
+.quiz-after:empty { display: none; }
+.quiz-next .btn { margin-top: var(--s-2); }

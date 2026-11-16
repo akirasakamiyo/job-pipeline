@@ -5,9 +5,6 @@
    ===================================================================== */
 
 #main { display: flex; flex-direction: column; gap: clamp(28px, 4.5vw, 48px); padding-bottom: var(--s-7); }
-.page-head { padding-bottom: 0; }
-.prog-section { scroll-margin-top: calc(var(--topbar-h) + 16px); }
-.prog-section > .section-head { margin-bottom: var(--s-4); }
 
 /* ---------- Ringkasan ---------- */
 .prog-overview { display: grid; gap: var(--s-6); }
@@ -48,55 +45,16 @@
 .prog-module__facts { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: var(--fs-sm); color: var(--ink-soft); }
 .prog-module__cta { margin-top: auto; align-self: flex-start; }
 
-/* ---------- Badge ---------- */
-.prog-badges { display: grid; gap: var(--s-5) var(--s-4); margin: 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(min(100%, 132px), 1fr)); }
-.prog-badges .badge__seal { width: 76px; height: 76px; }
-.prog-badges .badge__seal .icon { width: 30px; height: 30px; }
-.badge__when { color: var(--success-text); font-weight: 700; margin-top: 2px; }
-
-/* ---------- Data & pengaturan ---------- */
-#data > .callout { margin-bottom: var(--s-4); }
-.prog-data { display: grid; gap: var(--s-4); }
-@media (min-width: 900px) { .prog-data { grid-template-columns: 1fr 1fr; align-items: start; } }
-.prog-data__card { display: flex; flex-direction: column; gap: var(--s-3); min-width: 0; }
-.prog-data__card .btn, .prog-data__card .segmented { align-self: flex-start; }
-.prog-data__card .cluster .btn { align-self: auto; }
-.prog-data__card--danger { border-color: var(--danger); }
-@media (max-width: 479px) {
-  .prog-data__card .cluster .btn { flex: 1 1 100%; }
-  .prog-data__card .segmented { align-self: stretch; }
-  .prog-data__card .segmented label { flex: 1; }
-  .prog-data__card .segmented span { justify-content: center; width: 100%; }
-}
-
-.prog-reset { display: grid; gap: var(--s-2); margin: 0; padding: 0; border: 0; min-width: 0; }
-.prog-reset legend { margin-bottom: var(--s-2); padding: 0; }
-.prog-radio {
-  display: flex; align-items: flex-start; gap: var(--s-3);
-  padding: 12px var(--s-3);
-  border: 1.5px solid var(--line);
-  border-radius: var(--r-md);
-  cursor: pointer;
-  transition: border-color var(--dur-2), background-color var(--dur-2);
-}
-.prog-radio:hover { border-color: var(--line-strong); }
-.prog-radio:has(input:checked) { border-color: var(--ink); background: var(--paper); }
-.prog-radio input { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--ink); }
-.prog-radio span { display: grid; gap: 2px; min-width: 0; }
-.prog-radio strong { font-size: var(--fs-sm); }
-.prog-radio small { font-size: var(--fs-xs); color: var(--ink-soft); }
-
 /* Performa: ruang awal untuk konten yang dirender JS — cegah CLS */
-.prog-stats:empty { min-height: 250px; }
+.prog-stats:empty { min-height: 96px; }
 @media (min-width: 768px) { .prog-stats:empty { min-height: 120px; } }
 .prog-modules:empty { min-height: 640px; }
-.prog-badges:empty { min-height: 300px; }
 
 /* ---------- 2.0: skor belajar & aktivitas ---------- */
 .prog-score { display: grid; gap: var(--s-3); }
 .prog-score > .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: var(--s-3); margin-bottom: 0; }
 .prog-score__total { display: flex; align-items: baseline; gap: 4px; }
-.prog-score__sub { margin-top: var(--s-4); }
+
 .score-parts { display: grid; gap: var(--s-3); margin: 0; padding: 0; list-style: none; }
 @media (min-width: 768px) { .score-parts { grid-template-columns: 1fr 1fr; column-gap: var(--s-6); } }
 .score-part { display: grid; gap: 6px; }
@@ -106,9 +64,6 @@
 @media (min-width: 900px) { .act-list { grid-template-columns: 1fr 1fr; column-gap: var(--s-5); } }
 .act-row { display: flex; align-items: center; gap: var(--s-3); padding: 8px var(--s-3); border: 1px solid var(--line); border-radius: var(--r-md); min-width: 0; }
 .act-row__title { flex: 1; min-width: 0; min-height: 24px; font-weight: 700; font-size: var(--fs-sm); color: var(--ink); overflow-wrap: anywhere; }
-.prog-badges--small .badge__seal { width: 56px; height: 56px; }
-.prog-badges--small .badge__seal .icon { width: 24px; height: 24px; }
-.prog-badges--small .badge__lock { width: 24px; height: 24px; }
 
 /* =====================================================================
    FINAL UX — analitik belajar, feedback, pengaturan tampilan
@@ -155,3 +110,13 @@
 .fb-item__answers .fb-item__improve { grid-column: 1 / -1; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; }
 #feedback-title:focus { outline: none; }
 .fb-item__answers dd.fb-item__improve { font-weight: 500; }
+
+/* ---------- V4: Learning Progress ringkas (tab) ---------- */
+.prog-overview { padding: var(--s-5); }
+.prog-perf { display: grid; gap: var(--s-4); }
+@media (min-width: 1000px) { .prog-perf { grid-template-columns: 1fr 1fr; align-items: start; } }
+.prog-perf > .card { display: grid; gap: var(--s-3); padding: var(--s-5); min-width: 0; }
+.prog-perf h2, .prog-perf p { margin: 0; }
+.prog-score__head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-3); }
+.tabs__panel > .text-soft { margin: 0 0 var(--s-3); }
+#panel-feedback > .h4 { margin: 0 0 4px; }

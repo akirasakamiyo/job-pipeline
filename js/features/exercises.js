@@ -5,6 +5,7 @@
    recall    : satu soal cek cepat (active recall), umpan balik instan
    classify  : pilah item ke dua kategori + penjelasan
    builder   : susun nama file / headline / subjek dengan pemeriksaan live
+   signature : Gmail Signature Practice (V4) — susun tanda tangan email + cek
    Semua memakai komponen design system (check, option, feedback, field).
    ===================================================================== */
 
@@ -175,7 +176,10 @@ export function renderClassify(block) {
     score.textContent = answered < block.items.length
       ? `${answered}/${block.items.length} dijawab · ${right} tepat`
       : `Selesai: ${right} dari ${block.items.length} tepat${right === block.items.length ? ' — sempurna!' : '.'}`;
-    if (answered === block.items.length && right === block.items.length) motion.confetti(score, 20);
+    if (answered === block.items.length && right === block.items.length) {
+      motion.confetti(score, 20);
+      if (block.id) state.markPractice(block.id, block.title || 'Latihan memilah');   // V4: status Practice Center (tanpa XP)
+    }
   }
 
   function reset() {
@@ -319,6 +323,8 @@ export function renderBuilder(block, ctx) {
     preview.textContent = output || 'Isi kolom di atas untuk melihat hasil…';
     preview.classList.toggle('is-empty', !output);
     copyBtn.disabled = !output;
+    // V4: dicatat selesai (tanpa XP) saat hasil memenuhi semua syarat wajib
+    if (output && block.id && checks.every((c) => c.ok || c.soft)) state.markPractice(block.id, block.title || 'Builder');
     checksList.replaceChildren(...checks.map((c) =>
       h('li', { class: c.ok ? 'is-ok' : c.soft ? 'is-soft' : 'is-bad' },
         icon(c.ok ? 'check' : c.soft ? 'info' : 'x'), c.text,
@@ -338,5 +344,82 @@ export function renderBuilder(block, ctx) {
     h('div', { class: 'builder__result' },
       h('p', { class: 'text-sm text-soft' }, 'Hasil:'),
       h('div', { class: 'builder__row' }, preview, copyBtn)),
+    checksList);
+}
+
+/* ---------- GMAIL SIGNATURE PRACTICE (V4) ----------
+   Berdasarkan materi id-4: nama lengkap, peran/posisi atau jurusan & kampus,
+   nomor telepon aktif (format +62), tautan LinkedIn dan/atau portofolio;
+   singkat 3–5 baris, teks biasa. Tanpa XP; selesai dicatat lewat
+   state.markPractice saat semua syarat wajib terpenuhi. Tidak ada data yang
+   dikirim ke mana pun (isian tidak disimpan).                              */
+const SIG_FIELDS = [
+  { id: 'name', label: 'Nama lengkap', placeholder: 'cth. Rina Putri Andini', default: '@name' },
+  { id: 'role', label: 'Peran/posisi yang dituju atau jurusan & kampus', placeholder: 'cth. Frontend Developer | Lulusan Teknik Informatika' },
+  { id: 'phone', label: 'Nomor telepon aktif (format +62)', placeholder: 'cth. +62 8xx-xxxx-xxxx', type: 'tel' },
+  { id: 'linkedin', label: 'Tautan LinkedIn (opsional)', placeholder: 'cth. linkedin.com/in/namamu' },
+  { id: 'portfolio', label: 'Tautan portofolio (opsional)', placeholder: 'cth. Portofolio: (tautan Google Drive)' },
+];
+
+export function signatureChecks(v) {
+  const tidy = (x) => String(x || '').replace(/\s+/g, ' ').trim();
+  const lines = SIG_FIELDS.map((f) => tidy(v[f.id])).filter(Boolean);
+  const phone = tidy(v.phone).replace(/[\s-]/g, '');
+  return {
+    lines,
+    checks: [
+      { ok: tidy(v.name).split(' ').length >= 2, soft: tidy(v.name).length >= 2, text: 'Nama lengkap (bukan nama panggilan saja)' },
+      { ok: tidy(v.role).length >= 3, text: 'Peran/posisi yang dituju atau jurusan & kampus' },
+      { ok: /^\+62\d{8,13}$/.test(phone), text: 'Nomor telepon aktif berformat +62' },
+      { ok: Boolean(tidy(v.linkedin) || tidy(v.portfolio)), text: 'Ada tautan LinkedIn dan/atau portofolio' },
+      { ok: lines.length >= 3 && lines.length <= 5, text: `Singkat: 3–5 baris (sekarang ${lines.length})` },
+      { ok: lines.every((l) => l.length <= 70), soft: true, text: 'Setiap baris singkat (≤ 70 karakter), tanpa kutipan panjang' },
+    ],
+  };
+}
+
+export function renderSignature(block, ctx = {}) {
+  const values = {};
+  const preview = h('div', { class: 'sig__preview', 'aria-live': 'polite' });
+  const checksList = h('ul', { class: 'builder__checks', role: 'list' });
+  const copyBtn = h('button', { type: 'button', class: 'btn btn--secondary btn--sm', disabled: true }, icon('copy', 'icon--lead'), 'Salin tanda tangan');
+
+  const fields = SIG_FIELDS.map((f) => {
+    const id = uid(`sig-${f.id}`);
+    const initial = f.default === '@name' ? (ctx.userName || '') : '';
+    values[f.id] = initial;
+    const input = h('input', { class: 'input', id, type: f.type || 'text', value: initial, placeholder: f.placeholder, autocomplete: 'off', maxlength: '90' });
+    input.addEventListener('input', () => { values[f.id] = input.value; update(); });
+    return h('div', { class: 'field' }, h('label', { class: 'field__label', for: id }, f.label), input);
+  });
+
+  function update() {
+    const { lines, checks } = signatureChecks(values);
+    preview.replaceChildren(lines.length
+      ? h('div', { class: 'mail__signature' }, lines.map((line, i) => h('p', { class: i === 0 ? 'mail__signame' : null }, line)))
+      : h('p', { class: 'text-soft text-sm' }, 'Isi kolom di samping untuk melihat pratinjau tanda tangan…'));
+    copyBtn.disabled = !lines.length;
+    checksList.replaceChildren(...checks.map((c) =>
+      h('li', { class: c.ok ? 'is-ok' : c.soft ? 'is-soft' : 'is-bad' },
+        icon(c.ok ? 'check' : c.soft ? 'info' : 'x'), c.text,
+        h('span', { class: 'sr-only' }, c.ok ? '(terpenuhi)' : '(belum terpenuhi)'))));
+    if (lines.length && checks.every((c) => c.ok || c.soft)) state.markPractice(block.id || 'id-signature', block.title || 'Gmail Signature Practice');
+  }
+
+  copyBtn.addEventListener('click', async () => {
+    const ok = await copyText(signatureChecks(values).lines.join('\n'));
+    toast(ok ? 'Tanda tangan disalin. Tempel di Setelan Gmail → Umum → Tanda tangan.' : 'Gagal menyalin. Salin manual, ya.', { type: ok ? 'success' : 'error' });
+  });
+
+  update();
+  return h('div', { class: 'card card--flat builder sig exercise' },
+    h('p', { class: 'eyebrow' }, icon('edit'), block.title || 'Gmail Signature Practice'),
+    h('p', { class: 'text-sm text-soft' }, 'Susun tanda tangan email sesuai materi: singkat, teks biasa, dan memudahkan HRD menghubungimu. Isian tidak disimpan.'),
+    h('div', { class: 'sig__layout' },
+      h('div', { class: 'builder__fields' }, fields),
+      h('div', { class: 'sig__side' },
+        h('p', { class: 'text-sm text-soft' }, 'Pratinjau di akhir email:'),
+        h('div', { class: 'mail sig__mail' }, h('p', { class: 'sig__body text-soft' }, 'Hormat saya,'), preview),
+        copyBtn)),
     checksList);
 }

@@ -7,8 +7,8 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-AKuHoRMhFHvF1hncA0AFuLDk5oX6HcwQ9veNkX3TS/U='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Evaluasi Akhir · The Ultimate Job Application Pipeline</title>
-  <meta name="description" content="Evaluasi akhir lintas lima modul: 15 soal skenario acak dengan pembahasan, skor, dan kesempatan mengulang.">
+  <title>Evaluation · The Ultimate Job Application Pipeline</title>
+  <meta name="description" content="Lima kuis modul dan Evaluasi Akhir lintas modul: jumlah soal, nilai lulus, skor terbaik, dan status setiap evaluasi.">
   <meta name="theme-color" content="#FBF7F0">
   <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
 
@@ -40,8 +40,6 @@
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
-  <link rel="stylesheet" href="css/pages/modules.css">
-  <link rel="stylesheet" href="css/pages/learn.css">
   <link rel="stylesheet" href="css/pages/evaluation.css">
 
   <script defer src="vendor/gsap/gsap.min.js"></script>
@@ -55,11 +53,9 @@
   <link rel="modulepreload" href="js/core/state.js">
   <link rel="modulepreload" href="js/core/storage.js">
   <link rel="modulepreload" href="js/core/data.js">
-  <link rel="modulepreload" href="js/core/tracker-store.js">
   <link rel="modulepreload" href="js/core/loader.js">
   <link rel="modulepreload" href="js/core/background.js">
   <link rel="modulepreload" href="js/pages/evaluation.js">
-  <link rel="modulepreload" href="js/features/quiz.js">
   <link rel="preload" href="data/modules.json" as="fetch" crossorigin>
   <link rel="preload" href="data/evaluation.json" as="fetch" crossorigin>
 </head>
@@ -83,27 +79,12 @@
 
   <main id="main" class="container">
     <header class="page-head">
-      <p class="eyebrow" data-intro="fade">Final evaluation</p>
-      <h1 class="h1" data-intro="up">Evaluasi Akhir</h1>
-      <p class="lead" data-intro="up">Uji pemahamanmu di kelima modul lewat soal skenario. Soal diambil acak setiap percobaan, dan pembahasan tampil setelah kamu menjawab.</p>
+      <p class="eyebrow" data-intro="fade">Evaluation</p>
+      <h1 class="h1" data-intro="up">Evaluasi</h1>
+      <p class="lead" data-intro="up">Evaluasi formal terpisah dari latihan: lima kuis modul dan Evaluasi Akhir lintas modul. Skor terbaik disimpan dan ikut menentukan progres, badge, dan sertifikat. <span class="text-soft" data-eval-summary></span></p>
     </header>
 
-    <section class="eval-grid" aria-label="Ringkasan evaluasi" data-intro="up">
-      <div class="card eval-info">
-        <h2 class="h4">Aturan</h2>
-        <ul class="outcomes" role="list" data-eval-rules></ul>
-      </div>
-      <div class="card eval-info">
-        <h2 class="h4">Kesiapanmu</h2>
-        <ul class="eval-modules" role="list" data-eval-modules></ul>
-        <p class="text-soft text-sm" data-eval-hint></p>
-      </div>
-    </section>
-
-    <section class="card eval-stage" aria-labelledby="eval-quiz-title" data-intro="up">
-      <h2 class="sr-only" id="eval-quiz-title">Soal evaluasi</h2>
-      <div class="quiz-host" data-eval-quiz></div>
-    </section>
+    <ul class="eval-cards" role="list" data-eval-cards aria-label="Daftar evaluasi"></ul>
   </main>
 
   <footer class="footer">

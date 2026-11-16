@@ -7,7 +7,7 @@
    Tipe blok:
    objectives · p · h · list · callout · compare · steps · dodont · flags
    email · anatomy · flow · tree · stack · table · verify
-   checklist · recall · classify · builder   (interaktif → exercises.js)
+   checklist · recall · classify · builder · signature (interaktif → exercises.js)
    2.0: research · practice (fakta riset vs saran praktis)
         scenario · match · order · spot · keywords · worksheet ·
         presend · review · tool          (interaktif → activities.js)
@@ -17,7 +17,7 @@
    ===================================================================== */
 
 import { h, icon } from '../core/dom.js';
-import { renderChecklist, renderRecall, renderClassify, renderBuilder } from './exercises.js';
+import { renderChecklist, renderRecall, renderClassify, renderBuilder, renderSignature } from './exercises.js';
 import { renderScenario, renderMatch, renderOrder, renderSpot, renderKeywords, renderWorksheet, renderPresend, renderReview, renderTool } from './activities.js';
 import { renderSimulator } from './simulator.js';
 
@@ -138,14 +138,16 @@ const RENDERERS = {
   recall: (b) => renderRecall(b),
   classify: (b) => renderClassify(b),
   builder: (b, ctx) => renderBuilder(b, ctx),
+  signature: (b, ctx) => renderSignature(b, ctx),   // V4: Gmail Signature Practice
   scenario: (b) => renderScenario(b),
   match: (b) => renderMatch(b),
   order: (b) => renderOrder(b),
   spot: (b) => renderSpot(b),
   keywords: (b) => renderKeywords(b),
   worksheet: (b) => renderWorksheet(b),
-  presend: () => renderPresend(),
-  review: () => renderReview(),
+  // V4: di workspace Practice Center (ctx.practice) tautan ke dirinya sendiri disembunyikan
+  presend: (b, ctx) => renderPresend(ctx.practice ? { practiceHref: null } : undefined),
+  review: (b, ctx) => renderReview(ctx.practice ? { practiceHref: null } : undefined),
   tool: (b) => renderTool(b),
   simulator: () => {
     const host = h('div', { class: 'card card--flat exercise activity-card' });

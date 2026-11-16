@@ -7,8 +7,8 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-AKuHoRMhFHvF1hncA0AFuLDk5oX6HcwQ9veNkX3TS/U='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Progres · The Ultimate Job Application Pipeline</title>
-  <meta name="description" content="Detail progres belajar per modul, koleksi badge, XP, riwayat aktivitas, serta cadangan dan reset data.">
+  <title>Learning Progress · The Ultimate Job Application Pipeline</title>
+  <meta name="description" content="Analitik belajar: progres keseluruhan, modul selesai dan sedang dipelajari, skor kuis, performa aktivitas, riwayat, dan hasil Evaluasi Akhir.">
   <meta name="theme-color" content="#FBF7F0">
   <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
 
@@ -54,11 +54,10 @@
   <link rel="modulepreload" href="js/core/state.js">
   <link rel="modulepreload" href="js/core/storage.js">
   <link rel="modulepreload" href="js/core/data.js">
-  <link rel="modulepreload" href="js/core/tracker-store.js">
   <link rel="modulepreload" href="js/core/loader.js">
   <link rel="modulepreload" href="js/core/background.js">
-  <link rel="modulepreload" href="js/core/backup.js">
   <link rel="modulepreload" href="js/pages/progress-page.js">
+  <link rel="modulepreload" href="js/core/feedback-store.js">
   <link rel="preload" href="data/modules.json" as="fetch" crossorigin>
 </head>
 
@@ -80,183 +79,92 @@
   </noscript>
 
   <main id="main" class="container">
-    <header class="page-head">
-      <p class="eyebrow" data-intro="fade">Learning progress</p>
-      <h1 class="h1" data-intro="up">Progress &amp; Achievements</h1>
-      <p class="lead" data-intro="up">Rekap perjalanan belajarmu: progres per modul, nilai kuis, badge, XP, dan riwayat aktivitas. Di bagian bawah kamu bisa mencadangkan, memulihkan, atau mereset data.</p>
+    <header class="page-head page-head--row">
+      <div>
+        <p class="eyebrow" data-intro="fade">Learning progress</p>
+        <h1 class="h1" data-intro="up">Progres belajar</h1>
+        <p class="lead" data-intro="up">Analitik dari data belajarmu di perangkat ini. Bagian kosong berarti memang belum ada datanya.</p>
+      </div>
     </header>
 
-    <!-- 1. Ringkasan -->
+    <!-- Ringkasan selalu terlihat -->
     <section class="card prog-overview" aria-labelledby="overview-title" data-intro="up">
       <div class="prog-overview__main">
-        <div class="ring ring--xl" data-ring data-value="0" data-label="Progres belajar keseluruhan" data-overall-ring></div>
-        <div class="stack" style="--stack-gap: var(--s-3)">
+        <div class="ring ring--lg" data-ring data-value="0" data-label="Progres belajar keseluruhan" data-overall-ring></div>
+        <div class="stack" style="--stack-gap: var(--s-2)">
           <h2 class="h3" id="overview-title">Progres keseluruhan</h2>
-          <p class="text-soft" data-overall-text></p>
-          <a class="btn btn--primary" href="modules.html" data-next>Lanjutkan belajar<svg class="icon icon--trail" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+          <p class="text-soft text-sm" data-overall-text></p>
+          <a class="btn btn--primary btn--sm" href="modules.html" data-next>Lanjutkan belajar<svg class="icon icon--trail" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></a>
         </div>
       </div>
       <div class="prog-stats" data-stats></div>
     </section>
 
-    <!-- Final UX: analitik belajar (semua dari data tersimpan) -->
-    <section class="card prog-section" aria-labelledby="analytics-title" data-reveal="up">
-      <div class="section-head">
-        <div class="section-head__text">
-          <p class="eyebrow">Learning analytics</p>
-          <h2 class="h2" id="analytics-title">Analitik belajar</h2>
-          <p class="text-soft text-sm">Dihitung dari data di perangkat ini. Bagian kosong berarti memang belum ada datanya.</p>
+    <!-- V4: detail dibagi ke tab agar halaman tetap ringkas -->
+    <div class="tabs" data-tabs>
+      <div class="tabs__list" role="tablist" aria-label="Detail progres">
+        <button type="button" role="tab" id="tab-analytics" aria-controls="panel-analytics" aria-selected="true" class="tabs__tab">Analitik</button>
+        <button type="button" role="tab" id="tab-modules" aria-controls="panel-modules" aria-selected="false" tabindex="-1" class="tabs__tab">Per modul</button>
+        <button type="button" role="tab" id="tab-performance" aria-controls="panel-performance" aria-selected="false" tabindex="-1" class="tabs__tab">Performa</button>
+        <button type="button" role="tab" id="tab-history" aria-controls="panel-history" aria-selected="false" tabindex="-1" class="tabs__tab">Riwayat</button>
+        <button type="button" role="tab" id="tab-feedback" aria-controls="panel-feedback" aria-selected="false" tabindex="-1" class="tabs__tab">Feedback</button>
+      </div>
+
+      <section class="tabs__panel" role="tabpanel" id="panel-analytics" aria-labelledby="tab-analytics" tabindex="0">
+        <div class="analytics">
+          <figure class="analytics__block">
+            <figcaption class="analytics__title" id="quiz-chart-title">Skor kuis terbaik per modul</figcaption>
+            <ul class="hbar-chart" role="list" aria-labelledby="quiz-chart-title" data-quiz-chart></ul>
+            <p class="analytics__note" data-quiz-note></p>
+          </figure>
+          <figure class="analytics__block">
+            <figcaption class="analytics__title" id="lesson-chart-title">Materi selesai per modul</figcaption>
+            <ul class="hbar-chart" role="list" aria-labelledby="lesson-chart-title" data-lesson-chart></ul>
+          </figure>
+          <figure class="analytics__block">
+            <figcaption class="analytics__title" id="history-chart-title">Aktivitas 14 hari terakhir</figcaption>
+            <div class="col-chart" data-history-chart></div>
+            <p class="analytics__note" data-history-note></p>
+          </figure>
+          <div class="analytics__block analytics__eval" data-eval-card></div>
         </div>
-      </div>
-      <div class="analytics">
-        <figure class="analytics__block">
-          <figcaption class="analytics__title" id="quiz-chart-title">Skor kuis terbaik per modul</figcaption>
-          <ul class="hbar-chart" role="list" aria-labelledby="quiz-chart-title" data-quiz-chart></ul>
-          <p class="analytics__note" data-quiz-note></p>
-        </figure>
-        <figure class="analytics__block">
-          <figcaption class="analytics__title" id="lesson-chart-title">Materi selesai per modul</figcaption>
-          <ul class="hbar-chart" role="list" aria-labelledby="lesson-chart-title" data-lesson-chart></ul>
-        </figure>
-        <figure class="analytics__block">
-          <figcaption class="analytics__title" id="history-chart-title">Aktivitas 14 hari terakhir</figcaption>
-          <div class="col-chart" data-history-chart></div>
-          <p class="analytics__note" data-history-note></p>
-        </figure>
-        <div class="analytics__block analytics__eval" data-eval-card></div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 2.0 Skor belajar keseluruhan + aktivitas -->
-    <section class="card prog-section prog-score" aria-labelledby="score-title" data-reveal="up">
-      <div class="section-head">
-        <div class="section-head__text">
-          <p class="eyebrow">Overall learning score</p>
-          <h2 class="h2" id="score-title">Skor belajar keseluruhan</h2>
-          <p class="text-soft text-sm">Dihitung dari skor terbaikmu. Rumusnya transparan: setiap komponen dikalikan bobotnya.</p>
-        </div>
-        <p class="prog-score__total"><span class="num num--xl" data-score-total>0</span><span class="text-soft">/100</span></p>
-      </div>
-      <ul class="score-parts" role="list" data-score-parts></ul>
-      <h3 class="h4 prog-score__sub">Aktivitas latihan</h3>
-      <p class="text-soft text-sm" data-activity-summary></p>
-      <ul class="act-list" role="list" data-activity-list></ul>
-    </section>
+      <section class="tabs__panel" role="tabpanel" id="panel-modules" aria-labelledby="tab-modules" tabindex="0" hidden>
+        <ul class="prog-modules" role="list" data-module-list></ul>
+      </section>
 
-    <!-- 2. Per modul -->
-    <section class="prog-section" aria-labelledby="modules-title">
-      <div class="section-head">
-        <div class="section-head__text">
-          <p class="eyebrow">5 stasiun</p>
-          <h2 class="h2" id="modules-title">Progres per modul</h2>
-        </div>
-      </div>
-      <ul class="prog-modules" role="list" data-module-list data-stagger></ul>
-    </section>
-
-    <!-- 3. Badge -->
-    <section class="card prog-section" aria-labelledby="badges-title" data-reveal="up">
-      <div class="section-head">
-        <div class="section-head__text">
-          <p class="eyebrow">Achievements</p>
-          <h2 class="h2" id="badges-title">Koleksi badge</h2>
-          <p class="text-soft text-sm" data-badge-summary></p>
-        </div>
-      </div>
-      <ul class="prog-badges" role="list" data-badge-grid></ul>
-      <h3 class="h4 prog-score__sub">Milestone</h3>
-      <p class="text-soft text-sm">Pencapaian kecil di sepanjang perjalanan (termasuk badge versi sebelumnya).</p>
-      <ul class="prog-badges prog-badges--small" role="list" data-milestone-grid></ul>
-    </section>
-
-    <!-- 4. Riwayat -->
-    <section class="card prog-section" aria-labelledby="activity-title" data-reveal="up">
-      <div class="section-head">
-        <div class="section-head__text">
-          <p class="eyebrow">Riwayat</p>
-          <h2 class="h2" id="activity-title">Aktivitas terakhir</h2>
-          <p class="text-soft text-sm" data-activity-count></p>
-        </div>
-      </div>
-      <div data-activity></div>
-    </section>
-
-    <!-- Final UX: feedback peserta (lokal, bisa diubah/dihapus) -->
-    <section class="card prog-section" id="feedback" aria-labelledby="feedback-title" data-reveal="up">
-      <div class="section-head">
-        <div class="section-head__text">
-          <p class="eyebrow">Feedback</p>
-          <h2 class="h2" id="feedback-title" tabindex="-1">Feedback modul</h2>
-          <p class="text-soft text-sm">Opsional. Isi setelah menyelesaikan modul. Hanya tersimpan di perangkat ini dan tidak dikirim ke mana pun.</p>
-        </div>
-      </div>
-      <div data-feedback-list></div>
-    </section>
-
-    <!-- 5. Data & pengaturan -->
-    <section class="prog-section" id="data" aria-labelledby="data-title">
-      <div class="section-head">
-        <div class="section-head__text">
-          <p class="eyebrow">Settings</p>
-          <h2 class="h2" id="data-title">Pengaturan &amp; data</h2>
-        </div>
-      </div>
-
-      <div class="callout" data-storage-status></div>
-
-      <div class="prog-data">
-        <article class="card prog-data__card" aria-labelledby="pref-title">
-          <h3 class="h3" id="pref-title">Tampilan</h3>
-          <p class="text-soft text-sm" id="theme-pref-label">Tema warna</p>
-          <div class="segmented" role="radiogroup" aria-labelledby="theme-pref-label">
-            <label><input type="radio" name="theme-pref" value="system"><span>Ikuti sistem</span></label>
-            <label><input type="radio" name="theme-pref" value="light"><span>Terang</span></label>
-            <label><input type="radio" name="theme-pref" value="dark"><span>Gelap</span></label>
+      <section class="tabs__panel" role="tabpanel" id="panel-performance" aria-labelledby="tab-performance" tabindex="0" hidden>
+        <div class="prog-perf">
+          <div class="card card--flat prog-score">
+            <div class="prog-score__head">
+              <div>
+                <h2 class="h4" id="score-title">Skor belajar keseluruhan</h2>
+                <p class="text-soft text-sm">Dihitung dari skor terbaikmu: setiap komponen dikalikan bobotnya.</p>
+              </div>
+              <p class="prog-score__total"><span class="num num--lg" data-score-total>0</span><span class="text-soft">/100</span></p>
+            </div>
+            <ul class="score-parts" role="list" data-score-parts></ul>
           </div>
-          <p class="text-soft text-sm" id="font-pref-label">Ukuran huruf</p>
-          <div class="segmented" role="radiogroup" aria-labelledby="font-pref-label">
-            <label><input type="radio" name="font-pref" value="normal"><span>Normal</span></label>
-            <label><input type="radio" name="font-pref" value="large"><span>Besar</span></label>
-            <label><input type="radio" name="font-pref" value="xlarge"><span>Sangat besar</span></label>
+          <div class="card card--flat">
+            <h2 class="h4">Aktivitas latihan bernilai</h2>
+            <p class="text-soft text-sm" data-activity-summary></p>
+            <ul class="act-list" role="list" data-activity-list></ul>
           </div>
-          <p class="text-soft text-sm" id="motion-pref-label">Gerak animasi</p>
-          <div class="segmented" role="radiogroup" aria-labelledby="motion-pref-label">
-            <label><input type="radio" name="motion-pref" value="system"><span>Ikuti sistem</span></label>
-            <label><input type="radio" name="motion-pref" value="reduced"><span>Kurangi gerak</span></label>
-          </div>
-          <p class="text-soft text-sm" data-motion-status aria-live="polite"></p>
-          <a class="btn btn--ghost btn--sm" href="dashboard.html#panduan"><svg class="icon icon--lead" aria-hidden="true"><use href="assets/icons/sprite.svg#i-info"/></svg>Ulangi panduan pengguna baru</a>
-        </article>
+        </div>
+      </section>
 
-        <article class="card prog-data__card" aria-labelledby="backup-title">
-          <h3 class="h3" id="backup-title">Cadangan</h3>
-          <p class="text-soft text-sm">Simpan semua data ke file <span class="mono">.json</span>, lalu pulihkan di browser atau perangkat lain. File berisi nama dan data lamaranmu, jadi jangan dibagikan.</p>
-          <div class="cluster">
-            <button type="button" class="btn btn--secondary" data-export><svg class="icon icon--lead" aria-hidden="true"><use href="assets/icons/sprite.svg#i-download"/></svg>Unduh cadangan</button>
-            <button type="button" class="btn btn--ghost" data-import><svg class="icon icon--lead" aria-hidden="true"><use href="assets/icons/sprite.svg#i-upload"/></svg>Pulihkan dari file</button>
-          </div>
-          <input type="file" accept=".json,application/json" hidden data-import-file aria-label="Pilih file cadangan">
-        </article>
+      <section class="tabs__panel" role="tabpanel" id="panel-history" aria-labelledby="tab-history" tabindex="0" hidden>
+        <p class="text-soft text-sm" data-activity-count></p>
+        <div data-activity></div>
+      </section>
 
-        <article class="card prog-data__card prog-data__card--danger" aria-labelledby="reset-title">
-          <h3 class="h3" id="reset-title">Reset data</h3>
-          <fieldset class="prog-reset">
-            <legend class="text-soft text-sm">Pilih data yang ingin dihapus. Akan ada konfirmasi dan tombol Urungkan.</legend>
-            <label class="prog-radio"><input type="radio" name="reset-scope" value="progress" checked><span><strong>Progres belajar</strong><small>Bagian, kuis, modul, XP, badge, alat Latihan. Nama &amp; Tracker tetap.</small></span></label>
-            <label class="prog-radio"><input type="radio" name="reset-scope" value="tracker"><span><strong>Tracker lamaran</strong><small>Semua lamaran yang tercatat.</small></span></label>
-            <label class="prog-radio"><input type="radio" name="reset-scope" value="all"><span><strong>Semua data</strong><small>Progres, tracker, profil, feedback, dan preferensi.</small></span></label>
-          </fieldset>
-          <button type="button" class="btn btn--danger" data-reset><svg class="icon icon--lead" aria-hidden="true"><use href="assets/icons/sprite.svg#i-refresh"/></svg>Reset data…</button>
-        </article>
-
-        <article class="card prog-data__card" aria-labelledby="corrupt-title">
-          <h3 class="h3" id="corrupt-title">Salinan data rusak</h3>
-          <p class="text-soft text-sm">Bila data tersimpan rusak (misalnya diedit manual), aplikasi memulihkannya otomatis dan menyimpan salinan aslinya di sini.</p>
-          <p class="text-sm" data-corrupt-text aria-live="polite"></p>
-          <button type="button" class="btn btn--ghost btn--sm" data-corrupt-clear hidden><svg class="icon icon--lead" aria-hidden="true"><use href="assets/icons/sprite.svg#i-trash"/></svg>Hapus salinan rusak</button>
-        </article>
-      </div>
-    </section>
+      <section class="tabs__panel" role="tabpanel" id="panel-feedback" aria-labelledby="tab-feedback" tabindex="0" hidden>
+        <h2 class="h4" id="feedback-title" tabindex="-1">Feedback modul</h2>
+        <p class="text-soft text-sm">Opsional, diisi setelah modul selesai. Hanya tersimpan di perangkat ini dan tidak dikirim ke mana pun.</p>
+        <div data-feedback-list></div>
+      </section>
+    </div>
   </main>
 
   <footer class="footer">

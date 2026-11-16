@@ -7,15 +7,9 @@
    ===================================================================== */
 
 #main { display: flex; flex-direction: column; gap: clamp(32px, 5vw, 56px); }
-.practice-jump { margin-top: var(--s-2); }
-.practice-jump .chip-btn { text-decoration: none; }
-.practice-jump .icon { width: 16px; height: 16px; }
 
-.tool-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-6); scroll-margin-top: calc(var(--topbar-h) + 16px); }   /* 2.0: kolom minmax(0) agar konten lebar (simulator/review) tidak meluap di HP */
-.tool-card__head { display: flex; gap: var(--s-4); align-items: flex-start; }
-.tool-card__head .tool-tile__icon { flex: none; margin: 0; width: 52px; height: 52px; border-radius: 16px; }
-.tool-card__head > div { display: grid; gap: 6px; }
-.tool-section { scroll-margin-top: calc(var(--topbar-h) + 16px); }
+   /* 2.0: kolom minmax(0) agar konten lebar (simulator/review) tidak meluap di HP */
+
 .fmt { font-family: var(--font-mono); font-size: .85em; padding: 2px 8px; border-radius: 6px; background: var(--paper-2); overflow-wrap: anywhere; }
 
 /* ---------- Subject Generator ---------- */
@@ -88,41 +82,48 @@
 .gen-history__empty { color: var(--ink-soft); font-size: var(--fs-sm); padding: var(--s-3) 0; }
 
 /* ---------- Checklist pra-kirim ---------- */
-.presend-progress { display: flex; align-items: center; gap: var(--s-5); padding: var(--s-4) var(--s-5); border-radius: var(--r-lg); background: var(--mod-tint); }
-.presend-progress__body { flex: 1; display: grid; gap: 6px; }
-@media (max-width: 479px) { .presend-progress { flex-direction: column; align-items: stretch; text-align: left; } .presend-progress .ring { align-self: center; } }
-.presend-list { gap: var(--s-2); }
-@media (min-width: 900px) { .presend-list { grid-template-columns: 1fr 1fr; } }
-
-.presend-done {
-  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4);
-  padding: var(--s-4) var(--s-5);
-  border-radius: var(--r-lg);
-  border: var(--bw) solid var(--ink);
-  background: var(--signal-tint);
-  box-shadow: var(--sh-sticker);
-}
-.presend-done:focus { outline: none; }
-.presend-done > div { flex: 1; min-width: 200px; }
-.presend-done__stamp {
-  display: grid; place-items: center;
-  width: 52px; height: 52px; border-radius: 50%;
-  background: var(--signal); border: var(--bw) solid var(--ink);
-  rotate: -8deg;
-}
 
 /* ---------- Kuis ---------- */
-.quiz-grid { display: grid; gap: var(--s-4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); }
-.quiz-tile { display: grid; gap: var(--s-3); align-content: start; padding: var(--s-5); }
-.quiz-tile__top { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); }
-.quiz-tile__title { font-size: var(--fs-h3); }
-.quiz-tile__score { display: flex; align-items: baseline; gap: 6px; }
-.quiz-tile__score .num { font-size: var(--fs-h2); }
-.quiz-tile .btn { margin-top: auto; }
 
 /* Performa (Tahap 6): ruang awal untuk daftar yang dirender JS — cegah CLS */
 [data-presend-list]:empty { min-height: 520px; }
 @media (min-width: 900px) { [data-presend-list]:empty { min-height: 300px; } }
 [data-gen-checks]:empty { min-height: 168px; }
-.quiz-grid:empty { min-height: 240px; }
+
 [data-simulator]:empty { min-height: 900px; }   /* ruang awal simulator (dimuat saat mendekati layar) — cegah CLS */
+
+/* =====================================================================
+   V4 — Practice Center (direktori) & workspace satu latihan
+   ===================================================================== */
+.practice-tabs .tabs__tab { display: inline-flex; align-items: center; gap: 6px; }
+.practice-tabs .tabs__tab .code { height: 22px; font-size: 10px; }
+.practice-tab__count { font: 700 11px/1 var(--font-mono); color: var(--ink-soft); }
+@media (max-width: 899px) { .practice-tab__label { display: none; } }
+.practice-panel__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-2); margin-bottom: var(--s-3); }
+.practice-panel__head .h4 { margin: 0; }
+.practice-grid { display: grid; gap: var(--s-3); margin: 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+.practice-card { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: var(--s-4); border: 1.5px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+.practice-card.is-done { border-color: color-mix(in srgb, var(--success) 45%, var(--line)); }
+.practice-card__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.practice-card__icon { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--mod-tint, var(--cobalt-tint)); color: var(--mod-text, var(--cobalt-strong)); }
+.practice-card__title { margin: 0; font-size: var(--fs-body); font-weight: 800; line-height: 1.3; }
+.practice-card__desc { margin: 0; font-size: var(--fs-sm); color: var(--ink-soft); flex: 1; }
+.practice-card__status { margin: 0; font: 700 var(--fs-xs)/1.3 var(--font-mono); color: var(--ink-soft); }
+.practice-card__cta { align-self: flex-start; }
+
+.tool-head { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--s-4); padding-block: var(--s-3) var(--s-4); }
+.tool-head__icon { width: 52px; height: 52px; border-radius: 16px; }
+.tool-head__copy { display: grid; gap: 4px; flex: 1 1 360px; min-width: 0; }
+.tool-head__copy p { margin: 0; }
+.tool-head__copy .eyebrow { display: flex; align-items: center; gap: 6px; }
+.tool-head__title { margin: 0; font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2.1rem); }
+.tool-head__side { display: grid; gap: var(--s-2); justify-items: start; }
+.tool-workspace { padding: clamp(16px, 2.5vw, 32px); }
+.tool-workspace__body { display: flex; flex-direction: column; gap: var(--s-5); overflow-wrap: anywhere; }
+.tool-workspace__body > .exercise, .tool-workspace__body > .card { margin: 0; }
+.tool-pager { display: flex; justify-content: space-between; gap: var(--s-3); margin-top: var(--s-4); }
+.tool-pager .btn { min-height: 56px; text-align: left; max-width: 48%; }
+.tool-pager__next { text-align: right; }
+.tool-pager .btn > span { display: grid; gap: 2px; }
+.tool-pager__hint { font-size: var(--fs-xs); font-weight: 600; color: var(--ink-soft); }
+@media (max-width: 599px) { .tool-pager .btn { max-width: none; flex: 1; } .tool-pager .btn > span > span:last-child { display: none; } }

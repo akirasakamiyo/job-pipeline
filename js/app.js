@@ -27,15 +27,18 @@ const PAGES = {
   modules: () => import('./pages/modules.js'),
   module: () => import('./pages/module-detail.js'),
   practice: () => import('./pages/practice.js'),
-  tracker: () => import('./pages/tracker-page.js'),
   resources: () => import('./pages/resources-page.js'),   // Tahap 7 (sebelumnya placeholder)
   progress: () => import('./pages/progress-page.js'),     // Tahap 7 (sebelumnya placeholder)
   evaluation: () => import('./pages/evaluation.js'),      // 2.0: Evaluasi Akhir
   certificate: () => import('./pages/certificate.js'),    // final: sertifikat penyelesaian
+  settings: () => import('./pages/settings-page.js'),     // V4: halaman Settings
+  achievements: () => import('./pages/achievements-page.js'), // V4: Achievements & XP
+  'practice-tool': () => import('./pages/practice-tool.js'),  // V4: workspace satu latihan
+  quiz: () => import('./pages/quiz-page.js'),             // V4: runner kuis modul & Evaluasi Akhir
 };
 
 /* ---------- Notifikasi achievement ----------
-   Dipanggil setiap kali data progres/tracker berubah. Badge hanya muncul
+   Dipanggil setiap kali data progres berubah. Badge hanya muncul
    SEKALI, yaitu saat syaratnya pertama kali terpenuhi.                  */
 function announceAchievements() {
   // Kartu achievement beranimasi (antrean di ui.js, satu per satu)

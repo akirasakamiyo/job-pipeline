@@ -1358,3 +1358,40 @@
 .worksheet .field__label { justify-content: flex-start; gap: 4px; }
 .mail--annotated .mail__meta div { grid-template-columns: 96px 1fr; }   /* V3: ruang untuk penanda nomor bagian */
 .check__text { min-width: 0; overflow-wrap: anywhere; }   /* V3: nama file panjang tidak melebarkan checklist di HP 360px */
+
+/* =====================================================================
+   TABS (V4) — dipakai halaman Learning Progress & Evaluation
+   ===================================================================== */
+.tabs { margin-top: var(--s-4); }
+.tabs__list { display: flex; gap: 4px; overflow-x: auto; padding: 4px; border-radius: var(--r-md); background: var(--paper-2); scrollbar-width: thin; }
+.tabs__tab { flex: none; min-height: 40px; padding: 0 16px; border: 0; border-radius: var(--r-sm); background: transparent; color: var(--ink-soft); font: 700 var(--fs-sm)/1 var(--font-body); cursor: pointer; white-space: nowrap; transition: background-color var(--dur-2), color var(--dur-2); }
+.tabs__tab:hover { color: var(--ink); }
+.tabs__tab[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--sh-1); }
+.tabs__tab:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 2px; }
+.tabs__panel { padding-top: var(--s-4); }
+.tabs__panel:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 4px; border-radius: var(--r-sm); }
+.tabs__panel[hidden] { display: none; }
+
+/* ---------- V4: Gmail Signature Practice ---------- */
+.sig__layout { display: grid; gap: var(--s-4); }
+@media (min-width: 800px) { .sig__layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
+.sig__side { display: grid; gap: var(--s-2); justify-items: start; min-width: 0; }
+.sig__mail { width: 100%; padding: var(--s-4); }
+.sig__body { margin: 0 0 var(--s-2); }
+.sig__preview .mail__signature { margin: 0; }
+.sig__preview p { overflow-wrap: anywhere; }
+
+/* ---------- Tautan kembali (V4: global) ---------- */
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px; width: fit-content;
+  min-height: 40px;            /* target sentuh nyaman (≥ 24px WCAG 2.2, target kita 40px) */
+  color: var(--ink-soft); font-weight: 700; font-size: var(--fs-sm); text-decoration: none;
+}
+.back-link:hover { color: var(--ink); }
+.back-link .icon { width: 18px; height: 18px; }
+
+/* ---------- Chip status (V4: Practice, Evaluation, Achievements) ---------- */
+.practice-chip { font-size: 11px; }
+.practice-chip--done { background: var(--success-tint); color: var(--success-text); }
+.practice-chip--tried { background: var(--warning-tint); color: var(--warning-text); }
+.practice-chip--todo, .practice-chip--free { background: var(--paper-2); color: var(--ink-soft); }

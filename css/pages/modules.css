@@ -3,29 +3,12 @@
    dipakai bersama halaman lain). Komponen dari components.css.
    ===================================================================== */
 
-.page-head { display: flex; flex-direction: column; gap: var(--s-3); padding-block: clamp(24px, 5vw, 56px) var(--s-5); max-width: 64ch; }
+/* V4: .page-head dipindah ke layout.css (dipakai semua halaman, versi ringkas) */
 
 /* ---------- Daftar modul ---------- */
 .modules-grid { display: grid; gap: var(--s-4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); }
-.modules-filter { margin-bottom: var(--s-5); }
 
-/* ---------- Detail modul ---------- */
-.detail-hero { display: grid; gap: var(--s-6); align-items: center; padding-block: clamp(20px, 4vw, 48px) var(--s-6); }
-.detail-hero__copy { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
-.detail-hero__art { max-width: 420px; width: 100%; margin-inline: auto; padding: var(--s-4); border-radius: var(--r-xl); background: var(--mod-tint); }
-.detail-hero__stats { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-5); }
-.detail-hero__stats dl { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-5); margin: 0; }
-.detail-hero__stats dt { font-size: var(--fs-xs); font-weight: 700; color: var(--ink-soft); }
-.detail-hero__stats dd { font: 700 var(--fs-h3)/1.2 var(--font-display); }
-@media (min-width: 900px) { .detail-hero { grid-template-columns: 1.2fr .8fr; } }
-
-.back-link {
-  display: inline-flex; align-items: center; gap: 6px; width: fit-content;
-  min-height: 40px;            /* target sentuh nyaman (≥ 24px WCAG 2.2, target kita 40px) */
-  color: var(--ink-soft); font-weight: 700; font-size: var(--fs-sm); text-decoration: none;
-}
-.back-link:hover { color: var(--ink); }
-.back-link .icon { width: 18px; height: 18px; }
+/* V4: .back-link dipindah ke components.css (dipakai banyak halaman) */
 
 .notice {
   display: flex; gap: var(--s-3);
@@ -39,57 +22,14 @@
 }
 .notice > .icon { flex: none; color: var(--warning-text); margin-top: 1px; }
 
-.detail-grid { display: grid; gap: var(--s-4); }
-.detail-grid h2 { margin: var(--s-2) 0 var(--s-4); }
-@media (min-width: 900px) {
-  .detail-grid { grid-template-columns: .9fr 1.1fr; align-items: start; }
-  .detail-quiz { grid-column: 1 / -1; }
-}
-
 .outcomes { display: grid; gap: var(--s-3); margin: 0; padding: 0; list-style: none; }
 .outcomes li { display: flex; gap: var(--s-3); line-height: 1.45; }
 .outcomes .icon { flex: none; margin-top: 2px; color: var(--success-text); stroke-width: 2.6; }
 
-.lesson-list { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
-.lesson-item {
-  display: flex; align-items: center; gap: var(--s-3);
-  padding: 12px var(--s-3);
-  border: 1.5px solid var(--line);
-  border-radius: var(--r-md);
-  scroll-margin-top: calc(var(--topbar-h) + 24px);
-}
-.lesson-item__num {
-  flex: none; display: grid; place-items: center;
-  width: 32px; height: 32px; border-radius: 50%;
-  border: 2px solid var(--line-strong);
-  font: 700 12px/1 var(--font-mono); color: var(--ink-soft);
-}
-.lesson-item__num .icon { width: 16px; height: 16px; stroke-width: 3; }
-.lesson-item__body { display: flex; flex-direction: column; gap: 2px; }
-.lesson-item__title { font-weight: 700; font-size: var(--fs-sm); line-height: 1.35; }
-.lesson-item__meta { font-size: var(--fs-xs); color: var(--ink-soft); }
-.lesson-item.is-done { background: var(--mod-tint); border-color: transparent; }
-.lesson-item.is-done .lesson-item__num { background: var(--mod); border-color: var(--ink); color: #fff; }
-.lesson-item.is-next { border-color: var(--mod); box-shadow: 0 0 0 3px var(--mod-tint); }
-.lesson-item:target { outline: 3px solid var(--cobalt); outline-offset: 2px; }
-
-.detail-quiz { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--s-4); scroll-margin-top: calc(var(--topbar-h) + 24px); }
-.detail-quiz > div { flex: 1; min-width: 220px; }
-.detail-quiz h2 { margin: 0 0 var(--s-2); }
-.detail-quiz .tool-tile__icon { margin: 0; background: var(--surface); }
-
-.module-pager { display: grid; gap: var(--s-3); margin-top: var(--s-7); }
-@media (min-width: 600px) { .module-pager { grid-template-columns: 1fr 1fr; } }
-.pager-link {
-  display: flex; align-items: center; gap: var(--s-3);
-  padding: var(--s-4);
-  border: 1.5px solid var(--line);
-  border-radius: var(--r-lg);
-  background: var(--surface);
-  color: var(--ink); font-weight: 800; text-decoration: none;
-  transition: border-color var(--dur-2), translate var(--dur-2) var(--ease-out);
-}
-.pager-link:hover { border-color: var(--mod, var(--ink)); color: var(--ink); translate: 0 -2px; }
-.pager-link small { display: block; font-weight: 600; font-size: var(--fs-xs); color: var(--ink-soft); }
-.pager-link--next { justify-content: flex-end; text-align: right; }
-.pager-link .icon { flex: none; color: var(--mod-text, var(--ink)); }
+/* ---------- V4: katalog ringkas (5 modul ≈ satu layar di desktop) ---------- */
+@media (min-width: 1100px) { .modules-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.modules-grid .module-card { gap: var(--s-3); padding: var(--s-4) var(--s-5); }
+.modules-grid .module-card__art { aspect-ratio: 16 / 7; }
+.modules-grid .module-card__title { font-size: var(--fs-lg); }
+.modules-grid .module-card__desc { display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.modules-filter { margin-bottom: var(--s-4); }

@@ -53,11 +53,9 @@
   <link rel="modulepreload" href="js/core/state.js">
   <link rel="modulepreload" href="js/core/storage.js">
   <link rel="modulepreload" href="js/core/data.js">
-  <link rel="modulepreload" href="js/core/tracker-store.js">
   <link rel="modulepreload" href="js/core/loader.js">
   <link rel="modulepreload" href="js/core/background.js">
   <link rel="modulepreload" href="js/pages/dashboard.js">
-  <link rel="modulepreload" href="js/features/module-card.js">
   <link rel="preload" href="data/modules.json" as="fetch" crossorigin>
 </head>
 
@@ -80,144 +78,76 @@
     </p>
   </noscript>
 
-  <main id="main">
-    <!-- ================= HERO ================= -->
-    <section class="dash-hero container" aria-labelledby="dash-title">
+  <main id="main" class="container dash">
+    <!-- V4: dashboard = pusat kendali ringkas. Detail ada di halaman masing-masing. -->
+    <section class="card dash-hero" aria-labelledby="dash-title" data-intro="up">
       <div class="dash-hero__copy">
-        <div class="dash-greet" data-intro="fade">
-          <p class="dash-greet__text" data-greeting>Selamat datang!</p>
-          <button type="button" class="btn btn--ghost btn--sm" data-open-profile>
-            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-user"/></svg>
-            <span data-profile-label>Kenalan dulu</span>
-          </button>
-          <button type="button" class="btn btn--ghost btn--sm" data-open-guide>
-            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-info"/></svg>
-            <span>Panduan</span>
-          </button>
+        <div class="dash-greet">
+          <p class="eyebrow">The Ultimate Job Application Pipeline</p>
+          <div class="dash-greet__actions">
+            <button type="button" class="btn btn--ghost btn--sm" data-open-profile><svg class="icon icon--lead" aria-hidden="true"><use href="assets/icons/sprite.svg#i-user"/></svg><span data-profile-label>Kenalan dulu</span></button>
+            <button type="button" class="btn btn--ghost btn--sm" data-open-guide><svg class="icon icon--lead" aria-hidden="true"><use href="assets/icons/sprite.svg#i-info"/></svg><span>Panduan</span></button>
+          </div>
         </div>
-        <h1 class="display dash-hero__title" id="dash-title" data-intro="up">The Ultimate <span class="highlight">Job Application</span> Pipeline</h1>
-        <p class="hero-rec" data-intro="up" data-hero-rec></p>
-        <p class="lead" data-intro="up" data-hero-lead>Lima modul singkat yang memandumu dari membuat Gmail profesional sampai follow-up lamaran.</p>
-        <div class="dash-hero__cta" data-intro="up">
-          <a class="btn btn--primary btn--lg" href="modules.html" data-continue>
-            <span data-continue-label>Mulai belajar</span>
-            <svg class="icon icon--trail" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg>
-          </a>
-          <a class="btn btn--secondary btn--lg" href="#roadmap"><svg class="icon icon--lead" aria-hidden="true"><use href="assets/icons/sprite.svg#i-route"/></svg>Lihat peta belajar</a>
+        <h1 class="h1 dash-hero__title" id="dash-title" data-greeting>Selamat datang!</h1>
+        <p class="hero-rec" data-hero-rec></p>
+        <p class="dash-hero__lead" data-hero-lead></p>
+        <div class="dash-hero__cta">
+          <a class="btn btn--primary" href="modules.html" data-continue><span data-continue-label>Mulai belajar</span><svg class="icon icon--trail" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+          <a class="btn btn--secondary" href="modules.html"><svg class="icon icon--lead" aria-hidden="true"><use href="assets/icons/sprite.svg#i-book-open"/></svg>Semua modul</a>
         </div>
-        <!-- V3: ringkasan platform (angka dihitung dari katalog modul, bukan ditulis tangan) -->
-        <ul class="hero-facts" role="list" aria-label="Isi platform" data-intro="up" data-hero-stats></ul>
       </div>
-
-      <div class="dash-hero__art" data-intro="scale">
-        <img decoding="async" fetchpriority="high" src="assets/illustrations/career-path.svg" alt="Ilustrasi kereta melewati lima stasiun menuju gedung kantor" width="440" height="320" data-float="6">
-        <a class="continue-card" href="modules.html" data-continue-card data-float="8"></a>
+      <div class="dash-hero__stats" data-progress-panel>
+        <div class="ring ring--lg" data-ring data-value="0" data-label="Persentase penyelesaian seluruh modul" data-overall-ring></div>
+        <div class="dash-hero__nums">
+          <p class="dash-hero__pcttitle" data-progress-title>Perjalananmu</p>
+          <p class="text-soft text-sm" data-steps-caption>0 dari 0 langkah selesai</p>
+          <dl class="dash-mini" data-counts></dl>
+        </div>
       </div>
+      <img class="dash-hero__art" decoding="async" src="assets/illustrations/career-path.svg" alt="" width="220" height="160">
     </section>
 
-    <!-- ================= PROGRES + ROADMAP ================= -->
-    <section class="container dash-section" aria-labelledby="progress-title">
-      <div class="dash-progress">
-        <article class="card progress-panel" data-reveal="up" data-progress-panel>
-          <header class="progress-panel__head">
-            <p class="eyebrow">Progres belajar</p>
-            <h2 class="h2" id="progress-title" data-progress-title>Perjalananmu</h2>
-          </header>
-          <div class="progress-panel__main">
-            <div class="ring ring--xl" data-ring data-value="0" data-label="Persentase penyelesaian seluruh modul" data-overall-ring></div>
-            <div class="progress-panel__counts" data-counts></div>
-          </div>
-          <div class="progress-panel__bar">
-            <div class="progress-panel__barhead">
-              <span class="text-sm" data-steps-caption>0 dari 0 langkah selesai</span>
-              <span class="mono text-sm" data-overall-pct>0%</span>
-            </div>
-            <div class="bar bar--lg" data-overall-bar role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Penyelesaian seluruh modul"><span class="bar__fill"></span></div>
-          </div>
-          <!-- Final UX: target belajar harian (opsional, tanpa streak/penalti) -->
-          <section class="goal" aria-labelledby="goal-title" data-goal>
-            <h3 class="goal__title" id="goal-title">Target hari ini</h3>
-            <div data-goal-body></div>
-          </section>
-        </article>
+    <div class="dash-row">
+      <article class="card dash-card dash-active" aria-labelledby="active-title" data-reveal="up">
+        <p class="eyebrow" id="active-title">Modul aktif</p>
+        <a class="dash-active__link" href="modules.html" data-continue-card></a>
+      </article>
 
-        <article class="card roadmap" id="roadmap" data-reveal="up" aria-labelledby="roadmap-title">
-          <header>
-            <p class="eyebrow">Learning roadmap</p>
-            <h2 class="h2" id="roadmap-title">Peta perjalanan</h2>
-          </header>
-          <div class="route roadmap__route" role="img" data-roadmap-route></div>
-          <ol class="roadmap__steps" role="list" data-roadmap-steps></ol>
-          <a class="roadmap__next" href="modules.html" data-roadmap-next></a>
-        </article>
-      </div>
-    </section>
+      <article class="card dash-card" aria-labelledby="goal-title" data-reveal="up">
+        <section class="goal" aria-labelledby="goal-title" data-goal>
+          <h2 class="eyebrow goal__title" id="goal-title">Target hari ini</h2>
+          <div data-goal-body></div>
+        </section>
+      </article>
 
-    <!-- ================= KARTU MODUL ================= -->
-    <section class="container dash-section" aria-labelledby="modules-title">
-      <div class="section-head" data-reveal="up">
-        <div class="section-head__text">
-          <p class="eyebrow">5 modul · 5 stasiun</p>
-          <h2 id="modules-title">Modul pembelajaran</h2>
-        </div>
-        <a class="section-head__link" href="modules.html">Semua modul <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></a>
-      </div>
-      <div class="module-rail" data-module-rail data-stagger tabindex="0" role="region" aria-label="Daftar lima modul (geser untuk melihat semua)"></div>
-      <!-- V3: kontrol geser untuk tampilan carousel (HP) -->
-      <div class="rail-controls" data-rail-controls>
-        <button type="button" class="btn btn--secondary btn--icon" data-rail-prev aria-label="Modul sebelumnya"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-left"/></svg></button>
-        <ol class="rail-dots" role="list" data-rail-dots aria-label="Posisi kartu modul"></ol>
-        <button type="button" class="btn btn--secondary btn--icon" data-rail-next aria-label="Modul berikutnya"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></button>
-      </div>
-    </section>
-
-    <!-- ================= ALAT, AKTIVITAS, PENCAPAIAN, RESOURCES ================= -->
-    <div class="container dash-section dash-grid">
-      <section class="card dash-tools" aria-labelledby="tools-title" data-reveal="up">
-        <div class="section-head">
-          <div class="section-head__text">
-            <p class="eyebrow">Akses cepat</p>
-            <h2 class="h3" id="tools-title">Alat bantu melamar</h2>
-          </div>
-          <a class="section-head__link" href="practice.html">Practice Center <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></a>
-        </div>
-        <div class="tools-grid" data-tools></div>
-      </section>
-
-      <section class="card dash-activity" aria-labelledby="activity-title" data-reveal="up">
-        <div class="section-head">
-          <div class="section-head__text">
-            <p class="eyebrow">Riwayat</p>
-            <h2 class="h3" id="activity-title">Aktivitas terbaru</h2>
-          </div>
-        </div>
-        <div data-activity></div>
-      </section>
-
-      <section class="card dash-achievements" aria-labelledby="achieve-title" data-reveal="up">
-        <div class="section-head">
-          <div class="section-head__text">
-            <p class="eyebrow">Pencapaian</p>
-            <h2 class="h3" id="achieve-title"><span data-badge-count>0</span> dari <span data-badge-total>10</span> badge</h2>
-          </div>
-          <div class="xp-pill"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-flame"/></svg><span class="num" data-xp>0</span> XP</div>
-        </div>
-        <div class="bar bar--thin" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" aria-label="Badge utama yang sudah didapat" data-badge-bar><span class="bar__fill"></span></div>
-        <p class="text-soft text-sm" data-next-badge></p>
-        <ul class="dash-badges" role="list" data-badges tabindex="0" aria-label="Daftar badge (geser untuk melihat semua)"></ul>
-      </section>
-
-      <section class="card dash-resources" aria-labelledby="res-title" data-reveal="up">
-        <div class="section-head">
-          <div class="section-head__text">
-            <p class="eyebrow">Referensi</p>
-            <h2 class="h3" id="res-title">Resources pilihan</h2>
-          </div>
-          <a class="section-head__link" href="resources.html">Resources &amp; Guides <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></a>
-        </div>
-        <ul class="link-list" role="list" data-resources></ul>
-      </section>
+      <article class="card dash-card" aria-labelledby="ach-title" data-reveal="up">
+        <p class="eyebrow" id="ach-title">Pencapaian</p>
+        <div class="dash-ach" data-dash-ach></div>
+        <a class="btn btn--ghost btn--sm dash-card__more" href="achievements.html">Achievements &amp; XP<svg class="icon icon--trail" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+      </article>
     </div>
+
+    <section class="dash-modules" aria-labelledby="modules-title" data-reveal="up">
+      <div class="dash-modules__head">
+        <h2 class="h4" id="modules-title">Lima modul</h2>
+        <a class="link-more" href="modules.html">Katalog modul<svg class="icon icon--sm" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+      </div>
+      <ol class="dash-shortcuts" role="list" data-module-shortcuts></ol>
+    </section>
+
+    <nav class="dash-quick" aria-label="Akses cepat" data-reveal="up">
+      <a class="dash-quick__tile" href="practice.html">
+        <span class="dash-quick__icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-dumbbell"/></svg></span>
+        <span class="dash-quick__body"><strong>Practice Center</strong><span data-quick-practice>Latihan interaktif per modul</span></span>
+        <svg class="icon dash-quick__arrow" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg>
+      </a>
+      <a class="dash-quick__tile" href="evaluation.html">
+        <span class="dash-quick__icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#i-clipboard-check"/></svg></span>
+        <span class="dash-quick__body"><strong>Evaluation</strong><span data-quick-eval>5 kuis modul + Evaluasi Akhir</span></span>
+        <svg class="icon dash-quick__arrow" aria-hidden="true"><use href="assets/icons/sprite.svg#i-arrow-right"/></svg>
+      </a>
+    </nav>
   </main>
 
   <footer class="footer">

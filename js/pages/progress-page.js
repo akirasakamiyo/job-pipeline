@@ -1,38 +1,26 @@
 /* =====================================================================
-   pages/progress-page.js — Halaman "Detail progres" (Tahap 7)
+   pages/progress-page.js — Learning Progress (V4)
    ---------------------------------------------------------------------
-   1. Ringkasan: progres keseluruhan, modul, bagian, kuis, XP, badge
-   2. Progres per modul (bagian, kuis terbaik, percobaan, status)
-   3. Koleksi badge (semua, termasuk yang masih terkunci)
-   4. Riwayat aktivitas (maks. 30 entri tersimpan)
-   5. Data & pengaturan:
-      - preferensi gerak (ikuti sistem / kurangi gerak)
-      - unduh cadangan · pulihkan dari cadangan (dengan pratinjau isi)
-      - reset per cakupan (progres / tracker / semua) + Urungkan
-      - salinan data rusak yang dikarantina storage.js
-
-   Final UX (Progress & Achievements):
-   6. Analitik belajar: skor kuis per modul (garis nilai lulus), materi
-      selesai per modul, aktivitas 14 hari dari riwayat, Evaluasi Akhir
-      + status sertifikat
-   7. Feedback modul (lokal): lihat, ubah (di halaman modul), hapus
-   8. Pengaturan tampilan: tema & ukuran huruf (prefs.js), ulangi panduan
-
-   Semua angka berasal dari state.getSummary() → sama persis dengan
-   Dashboard. Tidak ada angka yang dikarang di halaman ini.
+   Satu halaman = satu fungsi: ANALITIK BELAJAR saja.
+   - Ringkasan (selalu terlihat): progres keseluruhan, modul, bagian, kuis, XP
+   - Tab Analitik: skor kuis per modul (garis nilai lulus), materi selesai,
+     aktivitas 14 hari, hasil Evaluasi Akhir
+   - Tab Per modul: status, bagian, kuis terbaik & percobaan
+   - Tab Performa: skor belajar keseluruhan + status 13 aktivitas bernilai
+   - Tab Riwayat: aktivitas terakhir (maks. 30 tersimpan)
+   - Tab Feedback: feedback modul (lihat / ubah / hapus)
+   Badge & XP pindah ke achievements.html; pengaturan & data ke settings.html.
+   Semua angka berasal dari state.getSummary(). Tidak ada angka karangan.
    ===================================================================== */
 
 import { $, $$, h, icon } from '../core/dom.js';
 import * as state from '../core/state.js';
-import * as storage from '../core/storage.js';
 import * as motion from '../core/motion.js';
-import * as backup from '../core/backup.js';
 import * as feedback from '../core/feedback-store.js';
-import * as prefs from '../core/prefs.js';
-import { initRings, setProgress, toast, confirmDialog } from '../core/ui.js';
+import { initRings, setProgress, toast, confirmDialog, initTabs } from '../core/ui.js';
 
 const rtf = new Intl.RelativeTimeFormat('id', { numeric: 'auto' });
-const ACTIVITY_ICON = { lesson: 'check', 'quiz-pass': 'target', quiz: 'target', module: 'trophy', start: 'flame', badge: 'star', tracker: 'briefcase', checklist: 'send' };
+const ACTIVITY_ICON = { lesson: 'check', 'quiz-pass': 'target', quiz: 'target', module: 'trophy', start: 'flame', badge: 'star', tracker: 'briefcase', checklist: 'send', practice: 'spark' };
 const STATUS = {
   done: { label: 'Selesai', chip: 'chip--done', cta: 'Ulas kembali' },
   ready: { label: 'Siap ditandai selesai', chip: 'chip--warn', cta: 'Tandai selesai' },
@@ -57,7 +45,6 @@ const ACTIVITY_INFO = {
   'tr-best-message': ['Choose the Best Follow-Up Message', 'tr', 'tr-15'],
 };
 
-const UNDO_MS = 12000;      // waktu tombol "Urungkan" tetap tersedia
 let firstRender = true;
 
 function timeAgo(iso) {
@@ -73,7 +60,7 @@ const fullDate = (iso) => new Date(iso).toLocaleString('id-ID', { day: 'numeric'
 
 export function init() {
   render(state.getSummary());
-  initDataPanel();
+  initTabs($('[data-tabs]'), { storageKey: 'progress-tab' });
   initFeedbackList();
   state.subscribe((summary) => render(summary));
   feedback.subscribe(() => renderFeedback(state.getSummary()));
@@ -89,10 +76,8 @@ function render(s) {
   renderAnalytics(s);
   renderModules(s);
   renderScore(s);
-  renderBadges(s);
   renderActivity(s);
   renderFeedback(s);
-  renderCorrupt();
 }
 
 function renderOverview(s) {
@@ -124,8 +109,8 @@ function renderOverview(s) {
 
   const next = $('[data-next]');
   if (s.allDone) {
-    next.href = 'tracker.html';
-    next.replaceChildren('Buka Tracker lamaran', icon('arrow-right', 'icon--trail'));
+    next.href = s.evaluation.passed ? 'achievements.html' : 'evaluation.html';
+    next.replaceChildren(s.evaluation.passed ? 'Lihat pencapaian' : 'Ke Evaluation', icon('arrow-right', 'icon--trail'));
   } else {
     next.href = s.next?.href || 'modules.html';
     next.replaceChildren(s.isNew ? 'Mulai belajar' : 'Lanjutkan belajar', icon('arrow-right', 'icon--trail'));
@@ -178,27 +163,6 @@ function renderScore(s) {
   $('[data-activity-summary]').textContent = `${s.activitiesPassed} dari ${s.activitiesTotal} aktivitas lulus · Simulator: ${s.simulator.attempts ? `terbaik ${s.simulator.best}` : 'belum dicoba'} · Evaluasi Akhir: ${s.evaluation.attempts ? `terbaik ${s.evaluation.best}` : 'belum dicoba'}`;
 }
 
-function badgeItem(b) {
-  return h('li', { class: `badge${b.earned ? '' : ' is-locked'}`, 'data-module': b.module || null },
-    h('div', { class: 'badge__seal' }, icon(b.icon), h('span', { class: 'badge__lock' }, icon('lock'))),
-    h('div', {},
-      h('p', { class: 'badge__name' }, b.name),
-      h('p', { class: 'badge__desc' }, b.desc),
-      b.earned
-        ? h('p', { class: 'badge__desc badge__when' }, b.earnedAt ? `Didapat ${new Date(b.earnedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}` : 'Didapat')
-        : null,
-      h('span', { class: 'sr-only' }, b.earned ? '(sudah didapat)' : '(terkunci)')));
-}
-
-function renderBadges(s) {
-  const main = s.badges.filter((b) => b.main);
-  const milestones = s.badges.filter((b) => !b.main);
-  const earned = main.filter((b) => b.earned);
-  $('[data-badge-summary]').textContent = `${earned.length} dari ${main.length} badge utama sudah didapat · ${milestones.filter((b) => b.earned).length}/${milestones.length} milestone.`;
-  $('[data-badge-grid]').replaceChildren(...main.map(badgeItem));
-  $('[data-milestone-grid]').replaceChildren(...milestones.map(badgeItem));
-}
-
 function renderActivity(s) {
   const host = $('[data-activity]');
   $('[data-activity-count]').textContent = s.activity.length ? `${s.activity.length} aktivitas terakhir (maks. 30 disimpan)` : '';
@@ -206,7 +170,7 @@ function renderActivity(s) {
     host.replaceChildren(h('div', { class: 'empty-state' },
       h('span', { class: 'empty-state__icon' }, icon('clock')),
       h('p', { class: 'empty-state__title' }, 'Belum ada aktivitas'),
-      h('p', {}, 'Bagian, kuis, modul, badge, dan lamaran yang kamu catat akan muncul di sini.')));
+      h('p', {}, 'Bagian, kuis, modul, latihan, dan badge yang kamu selesaikan akan muncul di sini.')));
     return;
   }
   host.replaceChildren(h('ol', { class: 'activity', role: 'list' }, s.activity.map((a) =>
@@ -214,149 +178,6 @@ function renderActivity(s) {
       h('span', { class: 'activity__icon' }, icon(ACTIVITY_ICON[a.type] || 'check')),
       h('p', { class: 'activity__text' }, a.text,
         h('time', { class: 'activity__time', datetime: a.at, title: fullDate(a.at) }, timeAgo(a.at)))))));
-}
-
-/* =====================================================================
-   DATA & PENGATURAN
-   ===================================================================== */
-
-function initDataPanel() {
-  // Status penyimpanan: jujur bila data hanya tersimpan sementara
-  const persist = $('[data-storage-status]');
-  if (storage.isPersistent()) {
-    persist.className = 'callout callout--tip';
-    persist.replaceChildren(
-      h('span', { class: 'callout__icon' }, icon('shield')),
-      h('div', {},
-        h('p', { class: 'callout__title' }, 'Data tersimpan di browser ini'),
-        h('p', {}, 'Progres dan tracker tersimpan di LocalStorage perangkat ini saja: tidak dikirim ke server mana pun. Data tidak ikut pindah ke browser/perangkat lain dan akan hilang bila data situs dihapus, jadi unduh cadangan secara berkala.')));
-  } else {
-    persist.className = 'callout callout--warn';
-    persist.replaceChildren(
-      h('span', { class: 'callout__icon' }, icon('alert')),
-      h('div', {},
-        h('p', { class: 'callout__title' }, 'Data hanya tersimpan sementara'),
-        h('p', {}, 'Browser memblokir LocalStorage (misalnya mode private atau penyimpanan penuh). Progres akan hilang saat tab ditutup. Unduh cadangan sebelum menutup halaman.')));
-  }
-
-  initMotionPref();
-  initAppearancePrefs();
-
-  $('[data-export]').addEventListener('click', () => {
-    try {
-      const name = backup.downloadBackup();
-      toast(`File "${name}" sedang diunduh. Simpan di tempat aman: file ini berisi nama dan data lamaranmu.`, { type: 'success', title: 'Cadangan dibuat', duration: 7000 });
-    } catch (error) {
-      console.error('[progress] ekspor gagal:', error);
-      toast('Cadangan gagal dibuat di browser ini.', { type: 'error' });
-    }
-  });
-
-  const fileInput = $('[data-import-file]');
-  $('[data-import]').addEventListener('click', () => fileInput.click());
-  fileInput.addEventListener('change', async () => {
-    const file = fileInput.files?.[0];
-    fileInput.value = '';                         // izinkan memilih file yang sama lagi
-    if (!file) return;
-    const result = await backup.readBackupFile(file);
-    if (!result.ok) {
-      toast(result.error, { type: 'error', title: 'Cadangan tidak bisa dipakai', duration: 8000 });
-      return;
-    }
-    const { info } = result;
-    const when = result.exportedAt && !Number.isNaN(Date.parse(result.exportedAt)) ? ` (dibuat ${fullDate(result.exportedAt)})` : '';
-    const ok = await confirmDialog({
-      title: 'Pulihkan dari cadangan?',
-      message: `File "${file.name}"${when} berisi ${info.lessons} bagian selesai, ${info.completed} modul selesai, ${info.xp} XP, dan ${info.trackerItems} lamaran. Data di browser ini akan DIGANTI dengan isi file tersebut. Kamu masih bisa mengurungkan sesaat setelahnya.`,
-      confirmLabel: 'Ya, pulihkan',
-    });
-    if (!ok) return;
-    const before = backup.applyBackup(result.backup);
-    motion.init();
-    offerUndo(before, 'Data dipulihkan dari cadangan.', 'Pemulihan dibatalkan. Data kembali seperti sebelumnya.');
-  });
-
-  $('[data-reset]').addEventListener('click', async () => {
-    const scope = $('input[name="reset-scope"]:checked')?.value || 'progress';
-    const s = state.getSummary();
-    const messages = {
-      progress: `Semua progres belajar akan dihapus: ${s.lessonsDone} bagian selesai, nilai kuis, ${s.completed} modul selesai, ${s.xp} XP, badge, checklist pra-kirim, dan riwayat subject. Nama profil dan Tracker lamaran TIDAK ikut dihapus.`,
-      tracker: `Seluruh ${s.trackerCount} lamaran di Tracker akan dihapus. Progres belajar tidak berubah.`,
-      all: `SEMUA data aplikasi di browser ini akan dihapus: progres belajar, XP, badge, ${s.trackerCount} lamaran, nama profil, dan preferensi tampilan.`,
-    };
-    const ok = await confirmDialog({
-      title: `Reset ${backup.RESET_SCOPES[scope].toLowerCase()}?`,
-      message: `${messages[scope]} Disarankan mengunduh cadangan terlebih dulu.`,
-      confirmLabel: 'Ya, reset',
-      danger: true,
-    });
-    if (!ok) return;
-    const before = backup.resetData(scope);
-    if (scope === 'all') motion.init();
-    offerUndo(before, `${backup.RESET_SCOPES[scope]} sudah direset.`, 'Reset dibatalkan. Data kembali seperti sebelumnya.');
-  });
-
-  $('[data-corrupt-clear]').addEventListener('click', async () => {
-    const count = backup.listCorruptCopies().length;
-    if (!count) return;
-    const ok = await confirmDialog({
-      title: 'Hapus salinan data rusak?',
-      message: `${count} salinan data yang tidak valid akan dihapus permanen. Data aktif (progres & tracker) tidak terpengaruh.`,
-      confirmLabel: 'Ya, hapus',
-      danger: true,
-    });
-    if (!ok) return;
-    const removed = backup.removeCorruptCopies();
-    renderCorrupt();
-    toast(`${removed} salinan data rusak dihapus.`, { type: 'success' });
-  });
-}
-
-/** Toast dengan tombol Urungkan untuk aksi yang mengganti/menghapus data */
-function offerUndo(before, doneText, undoText) {
-  toast(doneText, {
-    type: 'success',
-    duration: UNDO_MS,
-    action: {
-      label: 'Urungkan',
-      onClick: () => {
-        backup.restore(before);
-        motion.init();
-        toast(undoText, { type: 'info' });
-      },
-    },
-  });
-}
-
-function initMotionPref() {
-  const radios = $$('input[name="motion-pref"]');
-  const status = $('[data-motion-status]');
-  const describe = () => {
-    const osReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    status.textContent = motion.isReduced()
-      ? `Gerak minimal aktif${osReduced ? ' (mengikuti setelan perangkat)' : ''}: animasi dekoratif dimatikan.`
-      : 'Animasi penuh aktif.';
-  };
-  const sync = () => {
-    const pref = motion.getMotionPref();
-    radios.forEach((r) => { r.checked = r.value === pref; });
-    describe();
-  };
-  sync();
-  radios.forEach((r) => r.addEventListener('change', () => {
-    motion.setMotionPref(r.value);
-    describe();
-    toast(r.value === 'reduced' ? 'Gerak dikurangi di seluruh LMS.' : 'Gerak mengikuti setelan sistem.', { type: 'success' });
-  }));
-  storage.subscribe('prefs', sync);
-}
-
-function renderCorrupt() {
-  const count = backup.listCorruptCopies().length;
-  $('[data-corrupt-text]').textContent = count
-    ? `${count} salinan data tidak valid disimpan sebagai cadangan otomatis. Hapus bila tidak diperlukan.`
-    : 'Tidak ada salinan data rusak.';
-  $('[data-corrupt-clear]').hidden = count === 0;
 }
 
 /* =====================================================================
@@ -474,26 +295,4 @@ function initFeedbackList() {
     toast('Feedback dihapus.', { type: 'success' });
     $('#feedback-title')?.focus();
   });
-}
-
-/* =====================================================================
-   TAMPILAN: tema & ukuran huruf (Final UX)
-   ===================================================================== */
-
-function initAppearancePrefs() {
-  const sync = () => {
-    const p = prefs.getPrefs();
-    $$('input[name="theme-pref"]').forEach((r) => { r.checked = r.value === p.theme; });
-    $$('input[name="font-pref"]').forEach((r) => { r.checked = r.value === p.font; });
-  };
-  sync();
-  $$('input[name="theme-pref"]').forEach((r) => r.addEventListener('change', () => {
-    prefs.setPref('theme', r.value);
-    toast(`Tema: ${prefs.THEMES[r.value]}.`, { type: 'success' });
-  }));
-  $$('input[name="font-pref"]').forEach((r) => r.addEventListener('change', () => {
-    prefs.setPref('font', r.value);
-    toast(`Ukuran huruf: ${prefs.FONTS[r.value]}.`, { type: 'success' });
-  }));
-  storage.subscribe('prefs', sync);
 }

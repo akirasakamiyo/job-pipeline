@@ -5,7 +5,6 @@
    ===================================================================== */
 
 #main { display: flex; flex-direction: column; gap: var(--s-5); padding-bottom: var(--s-7); }
-.page-head { padding-bottom: 0; }
 .res-notice { max-width: 860px; }
 
 .res-panel { display: grid; gap: var(--s-4); }
@@ -41,3 +40,4 @@
 [data-module-filter]:empty { min-height: 136px; }
 @media (min-width: 768px) { [data-module-filter]:empty { min-height: 88px; } }
 [data-kind-filter]:empty { min-height: 40px; }
+.res-count { font-size: var(--fs-sm); font-weight: 700; color: var(--ink-soft); }   /* V4: dulu .tracker-count di tracker.css */

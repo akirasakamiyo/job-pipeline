@@ -2,7 +2,9 @@
    state.js — Sumber kebenaran progres belajar & gamifikasi
    ---------------------------------------------------------------------
    Semua angka di dashboard DIHITUNG dari data tersimpan (LocalStorage
-   key "ujap:progress" & "ujap:tracker") + katalog modul (modules.json).
+   key "ujap:progress") + katalog modul (modules.json).
+   V4: Job Tracker dihapus dari LMS. Key lama "ujap:tracker" tidak dibaca
+   lagi oleh progres/badge (tetap dibiarkan; dikelola di halaman Settings).
 
    Skema ujap:progress (versi 2):
    {
@@ -31,6 +33,8 @@
      daily: { date: 'YYYY-MM-DD', lesson, activity, quiz }   ← hitungan HARI INI saja,
                                     dipakai untuk target; tanpa streak & tanpa penalti
      certificate: { id, name, issuedAt } | null             ← sertifikat lokal (final)
+     practice: { [toolId]: ISO }            ← V4: latihan tanpa nilai yang pernah
+                                    diselesaikan (builder, pilah, tanda tangan) — tanpa XP
      xp: number,
      achievements: { [badgeId]: ISO },      ← badge yang sudah DIBERIKAN
      lastVisited: { module, lesson } | null,
@@ -42,7 +46,6 @@
    ===================================================================== */
 
 import * as storage from './storage.js';
-import * as tracker from './tracker-store.js';
 import { loadJSON } from './data.js';
 
 const KEY = 'progress';
@@ -86,7 +89,7 @@ export const SCORED_ACTIVITIES = [
   'tr-status', 'tr-timing', 'tr-best-message',
 ];
 
-/** CV & Portfolio Review (halaman Latihan + Modul 2) */
+/** CV & Portfolio Review (Practice Center + Modul 2) */
 export const REVIEW_ITEMS = [
   { id: 'rv-pdf', text: 'CV tersimpan sebagai PDF (atau format yang diminta)', hint: 'Teks bisa diseleksi, bukan hasil foto/scan.' },
   { id: 'rv-name', text: 'Nama file: CV_NamaLengkap_Posisi.pdf', hint: 'Tanpa spasi berlebih atau kata "final".' },
@@ -100,7 +103,7 @@ export const REVIEW_ITEMS = [
   { id: 'rv-sync', text: 'CV dan profil LinkedIn konsisten', hint: 'Nama, peran, dan periode pengalaman sama.' },
 ];
 
-/** Checklist persiapan sebelum mengirim lamaran (halaman Latihan) */
+/** Checklist persiapan sebelum mengirim lamaran (Practice Center + Modul 4) */
 export const PRESEND_ITEMS = [
   { id: 'ps-email', text: 'Email address profesional', hint: 'Format nama asli, khusus karier (Modul 1).' },
   { id: 'ps-pdf', text: 'CV sudah dalam format PDF', hint: 'Kecuali lowongan meminta format lain.' },
@@ -130,8 +133,9 @@ export const BADGES = [
     test: (s) => topicsDone(s, 'tx', ['m1', 'm2', 'm3', 'm4']) && passed(s, 'tx-subject-challenge') && passed(s, 'tx-anatomy') },
   { id: 'email-etiquette', main: true, module: 'tx', name: 'Email Etiquette Specialist', desc: 'Selesaikan Materi 5–6 Modul 4 + lulus CC/BCC Scenario & Find the Mistakes', icon: 'shield',
     test: (s) => topicsDone(s, 'tx', ['m5', 'm6']) && passed(s, 'tx-ccbcc') && passed(s, 'tx-mistakes') },
-  { id: 'pipeline-manager', main: true, module: 'tr', name: 'Application Pipeline Manager', desc: 'Selesaikan Modul 5 + catat ≥1 lamaran dengan tanggal follow-up', icon: 'kanban',
-    test: (s) => doneOf(s, 'tr') && s.tracker.withFollowUp >= 1 },
+  // V4: Job Tracker dihapus → syarat diganti dua aktivitas pengelolaan lamaran di Modul 5 (id badge tetap)
+  { id: 'pipeline-manager', main: true, module: 'tr', name: 'Application Pipeline Manager', desc: 'Selesaikan Modul 5 + lulus Application Status Management & Follow-Up Timing Scenario', icon: 'kanban',
+    test: (s) => doneOf(s, 'tr') && passed(s, 'tr-status') && passed(s, 'tr-timing') },
   { id: 'email-writer', main: true, name: 'Email Writing Champion', desc: 'Skor rubrik Email Writing Simulator ≥ 80', icon: 'edit', test: (s) => s.simulator.passed },
   { id: 'strategist', main: true, name: 'Job Hunting Strategist', desc: 'Lengkapi CV & Portfolio Review, Company Research Worksheet, dan checklist pra-kirim', icon: 'target',
     test: (s) => s.tools.review.complete && s.worksheetsDone.includes('li-research') && s.tools.presend.everCompleted },
@@ -143,7 +147,8 @@ export const BADGES = [
   { id: 'first-step', name: 'Langkah Pertama', desc: 'Selesaikan 1 bagian materi', icon: 'star', test: (s) => s.lessonsDone >= 1 },
   { id: 'quiz-ace', name: 'Nilai Sempurna', desc: 'Skor 100 di kuis modul', icon: 'target', test: (s) => s.modules.some((m) => m.quizBest === 100) },
   { id: 'presend', name: 'Siap Kirim', desc: 'Lengkapi checklist pra-kirim', icon: 'check', test: (s) => s.tools.presend.done === s.tools.presend.total },
-  { id: 'tracker-1', name: 'Lamaran Pertama', desc: 'Catat 1 lamaran di Tracker', icon: 'briefcase', test: (s) => s.tracker.total >= 1 },
+  // V4: milestone lama (Job Tracker sudah dihapus). Tidak bisa diraih lagi; hanya tampil bila pernah diraih.
+  { id: 'tracker-1', retired: true, name: 'Lamaran Pertama', desc: 'Pencapaian dari Job Tracker versi lama', icon: 'briefcase', test: () => false },
   { id: 'tx-done', module: 'tx', name: 'Modul 4 Selesai', desc: 'Selesaikan Modul 4', icon: 'send', test: (s) => doneOf(s, 'tx') },
   { id: 'tr-done', module: 'tr', name: 'Modul 5 Selesai', desc: 'Selesaikan Modul 5', icon: 'kanban', test: (s) => doneOf(s, 'tr') },
   { id: 'master', name: 'Lima Modul Selesai', desc: 'Selesaikan kelima modul', icon: 'flame', test: (s) => s.allDone },
@@ -187,6 +192,7 @@ function emptyState() {
     goal: null,
     daily: { date: null, lesson: 0, activity: 0, quiz: 0 },
     certificate: null,
+    practice: {},
     xp: 0,
     achievements: {},
     lastVisited: null,
@@ -292,6 +298,9 @@ function sanitizeState(raw) {
     certificate: isObj(raw.certificate) && isStr(raw.certificate.id) && isoOrNull(raw.certificate.issuedAt)
       ? { id: raw.certificate.id.slice(0, 40), name: isStr(raw.certificate.name) ? raw.certificate.name.slice(0, 60) : '', issuedAt: raw.certificate.issuedAt }
       : null,
+    practice: isObj(raw.practice)
+      ? Object.fromEntries(Object.entries(raw.practice).filter(([k, v]) => /^[a-z0-9-]{2,40}$/.test(k) && isoOrNull(v)))
+      : {},
     xp: Math.round(num(raw.xp, 0)),
     achievements,
     lastVisited: isObj(raw.lastVisited) && isStr(raw.lastVisited.module)
@@ -327,7 +336,7 @@ function log(state, entry) {
   state.activity = state.activity.slice(0, MAX_ACTIVITY);
 }
 
-/** Mencatat aktivitas dari fitur lain (mis. Tracker) */
+/** Mencatat aktivitas dari fitur lain */
 export function logActivity(entry) {
   return save((state) => log(state, entry));
 }
@@ -586,6 +595,19 @@ export function recordEvaluation(score) {
   return { firstPass };
 }
 
+/* ---------- Latihan tanpa nilai (V4) ----------
+   Builder, latihan memilah, dan Gmail Signature Practice tidak memberi XP.
+   Statusnya hanya dicatat sekali (waktu pertama selesai) agar Practice
+   Center bisa menampilkan "Selesai" berdasarkan aktivitas nyata.        */
+export function markPractice(id, title = 'Latihan') {
+  if (!/^[a-z0-9-]{2,40}$/.test(id) || getState().practice[id]) return false;
+  save((state) => {
+    state.practice[id] = new Date().toISOString();
+    log(state, { type: 'practice', text: `Menyelesaikan latihan: ${title}` });
+  });
+  return true;
+}
+
 /* ---------- Target belajar (final enhancement) ---------- */
 
 /** type: kunci GOAL_TYPES atau null (tanpa target); count 1–10 */
@@ -686,8 +708,6 @@ export function normalizeStored() {
 /* ---------- Ringkasan (semua angka dashboard berasal dari sini) ---------- */
 
 export function getSummary(state = getState()) {
-  const trackerItems = tracker.getItems();
-  const trackerStats = tracker.getStats(trackerItems);
 
   const modules = getCatalog().map((meta) => {
     const ms = state.modules[meta.id] || {};
@@ -780,7 +800,7 @@ export function getSummary(state = getState()) {
     overallPct: stepsTotal ? Math.round((stepsDone / stepsTotal) * 100) : 0,
     current,
     next,
-    // Pengguna "baru" = belum ada progres belajar (aktivitas Tracker/Latihan tidak dihitung)
+    // Pengguna "baru" = belum ada progres belajar (aktivitas Latihan tidak dihitung)
     isNew: stepsDone === 0 && !state.activity.some((a) => ['lesson', 'quiz', 'quiz-pass', 'module', 'activity'].includes(a.type)),
     allDone: modules.length > 0 && completed === modules.length,
     tools: {
@@ -801,8 +821,7 @@ export function getSummary(state = getState()) {
     certificate: state.certificate,
     evaluation: { best: state.evaluation?.best ?? null, attempts: state.evaluation?.attempts ?? 0, passed: Boolean(state.evaluation?.passedAt) },
     score,
-    tracker: trackerStats,
-    trackerCount: trackerStats.total,
+    practice: state.practice,
   };
 
   // Badge: "earned" bila sudah pernah diberikan (tersimpan) ATAU syarat terpenuhi saat ini
@@ -811,6 +830,38 @@ export function getSummary(state = getState()) {
     return { ...b, earnedAt, earned: Boolean(earnedAt) || Boolean(b.test(summary)) };
   });
   return summary;
+}
+
+/* ---------- Rincian syarat badge utama (V4, halaman Achievements & XP) ----------
+   Hanya untuk ditampilkan: syarat yang terpenuhi dihitung dari data nyata.
+   Badge tetap diberikan oleh BADGES[].test (sumber kebenaran).           */
+const modSteps = (s, id) => {
+  const m = s.modules.find((x) => x.id === id);
+  if (!m) return [];
+  return [
+    { label: `Semua bagian selesai (${m.lessonsDone}/${m.lessonsTotal})`, ok: m.lessonsDone === m.lessonsTotal },
+    { label: 'Kuis modul lulus', ok: m.quizPassed },
+    { label: 'Modul ditandai selesai', ok: m.status === 'done' },
+  ];
+};
+const actStep = (s, id, label) => ({ label: `Lulus ${label}`, ok: passed(s, id) });
+const topicStep = (s, mod, ids, label) => ({ label, ok: topicsDone(s, mod, ids) });
+const BADGE_STEPS = {
+  'id-done': (s) => modSteps(s, 'id'),
+  'cv-done': (s) => modSteps(s, 'cv'),
+  'li-done': (s) => modSteps(s, 'li'),
+  'email-fund': (s) => [topicStep(s, 'tx', ['m1', 'm2', 'm3', 'm4'], 'Materi 1–4 Modul 4 selesai'), actStep(s, 'tx-subject-challenge', 'Subject Challenge'), actStep(s, 'tx-anatomy', 'Email Anatomy Challenge')],
+  'email-etiquette': (s) => [topicStep(s, 'tx', ['m5', 'm6'], 'Materi 5–6 Modul 4 selesai'), actStep(s, 'tx-ccbcc', 'CC/BCC Scenario'), actStep(s, 'tx-mistakes', 'Find the Mistakes')],
+  'pipeline-manager': (s) => [{ label: 'Modul 5 selesai', ok: doneOf(s, 'tr') }, actStep(s, 'tr-status', 'Application Status Management'), actStep(s, 'tr-timing', 'Follow-Up Timing Scenario')],
+  'email-writer': (s) => [{ label: `Skor Email Writing Simulator ≥ 80 (terbaik ${s.simulator.best ?? '—'})`, ok: s.simulator.passed }],
+  strategist: (s) => [{ label: 'CV & Portfolio Review lengkap', ok: s.tools.review.complete }, { label: 'Company Research Worksheet selesai', ok: s.worksheetsDone.includes('li-research') }, { label: 'Checklist pra-kirim lengkap', ok: s.tools.presend.everCompleted }],
+  communicator: (s) => [{ label: `Kelima kuis modul lulus (${s.modules.filter((m) => m.quizPassed).length}/${s.modules.length})`, ok: s.modules.length > 0 && s.modules.every((m) => m.quizPassed) }, { label: `Evaluasi Akhir ≥ 80 (terbaik ${s.evaluation.best ?? '—'})`, ok: (s.evaluation.best ?? 0) >= 80 }],
+  'pipeline-complete': (s) => [{ label: `Kelima modul selesai (${s.completed}/${s.modules.length})`, ok: s.allDone }, { label: 'Evaluasi Akhir lulus', ok: s.evaluation.passed }],
+};
+
+/** → [{label, ok}] untuk badge utama; [] untuk milestone */
+export function badgeSteps(badgeId, summary = getSummary()) {
+  return BADGE_STEPS[badgeId] ? BADGE_STEPS[badgeId](summary) : [];
 }
 
 /* ---------- Achievement ---------- */
@@ -838,9 +889,8 @@ export function syncAchievements() {
   return legacy ? [] : fresh;
 }
 
-/** Berlangganan perubahan progres & tracker (termasuk dari tab lain) */
+/** Berlangganan perubahan progres (termasuk dari tab lain) */
 export function subscribe(callback) {
   const offProgress = storage.subscribe(KEY, () => callback(getSummary()));
-  const offTracker = storage.subscribe('tracker', () => callback(getSummary()));
-  return () => { offProgress(); offTracker(); };
+  return offProgress;
 }

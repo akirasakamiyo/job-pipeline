@@ -64,7 +64,7 @@ function render(s) {
         elig.modulesDone
           ? h('a', { class: 'btn btn--primary', href: 'evaluation.html' }, 'Ikuti Evaluasi Akhir', icon('arrow-right', 'icon--trail'))
           : h('a', { class: 'btn btn--primary', href: s.next?.href || 'modules.html' }, 'Lanjutkan modul', icon('arrow-right', 'icon--trail')),
-        h('a', { class: 'btn btn--ghost', href: 'progress.html' }, 'Lihat Progress & Achievements'))));
+        h('a', { class: 'btn btn--ghost', href: 'achievements.html' }, 'Lihat Achievements & XP'))));
     return;
   }
 

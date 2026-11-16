@@ -387,3 +387,52 @@ function nextAchievement() {
     .fromTo(shine, { xPercent: -100 }, { xPercent: 100, duration: 0.9, ease: 'power2.inOut' }, 0.45)
     .add(() => motion.confetti(seal, 30), 0.35);
 }
+
+/* =====================================================================
+   TABS (V4) — tablist aksesibel (WAI-ARIA Tabs, aktivasi otomatis)
+   Markup: [data-tabs] > [role=tablist] > [role=tab][aria-controls]
+           + [role=tabpanel] (hidden bila tidak aktif)
+   - Klik / panah kiri-kanan / Home / End memindah tab
+   - URL #nama-panel (mis. progress.html#feedback → panel-feedback) membuka tab itu
+   - storageKey: tab terakhir diingat per sesi (sessionStorage; aman bila diblokir)
+   ===================================================================== */
+export function initTabs(root, { storageKey = null, onChange = null } = {}) {
+  if (!root) return null;
+  const tabs = [...root.querySelectorAll('[role="tab"]')];
+  const panelOf = (tab) => document.getElementById(tab.getAttribute('aria-controls'));
+  const select = (tab, { focus = false, remember = true } = {}) => {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      const panel = panelOf(t);
+      if (panel) panel.hidden = !on;
+    });
+    if (focus) tab.focus();
+    if (remember && storageKey) { try { sessionStorage.setItem(`ujap:${storageKey}`, tab.id); } catch { /* diblokir: abaikan */ } }
+    onChange?.(tab);
+  };
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(tab));
+    tab.addEventListener('keydown', (e) => {
+      const map = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+      if (!(e.key in map)) return;
+      e.preventDefault();
+      select(tabs[(map[e.key] + tabs.length) % tabs.length], { focus: true });
+    });
+  });
+  const fromHash = () => {
+    const name = window.location.hash.slice(1);
+    const tab = name && tabs.find((t) => t.getAttribute('aria-controls') === `panel-${name}`);
+    if (tab) { select(tab, { remember: false }); return true; }
+    return false;
+  };
+  if (!fromHash()) {
+    let saved = null;
+    try { saved = storageKey ? sessionStorage.getItem(`ujap:${storageKey}`) : null; } catch { /* abaikan */ }
+    const tab = tabs.find((t) => t.id === saved) || tabs.find((t) => t.getAttribute('aria-selected') === 'true') || tabs[0];
+    select(tab, { remember: false });
+  }
+  window.addEventListener('hashchange', fromHash);
+  return { select };
+}

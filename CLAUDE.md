@@ -7,11 +7,14 @@ LMS statis untuk GitHub Pages: HTML5, CSS3, vanilla JS (ES modules), GSAP 3.12.5
 - Inti: `js/core/`
   - `storage.js`: semua key memakai awalan `ujap:`; data rusak dikarantina ke `ujap:<key>:rusak-<ts>`.
   - `state.js`: progres, XP, badge, dan `sanitizeState`. Juga `goal`/`daily` (target harian tanpa streak), `certificate` (ID lokal), `getRecommendation()`.
-  - `tracker-store.js`, `backup.js` (cadangan berisi `progress`, `tracker`, `prefs`, `feedback`).
+  - `backup.js` (cadangan berisi `progress`, `prefs`, `feedback`, plus `tracker` lama bila masih ada). Job Tracker dihapus di V4: jangan menambah UI/kode Tracker lagi; key lama `ujap:tracker` hanya dikelola di Settings (unduh/hapus atas persetujuan pengguna).
   - `feedback-store.js`: feedback modul di `ujap:feedback` (opsional, lokal).
   - `prefs.js`: tema (`light`/`dark`/`system`) & ukuran huruf di `ujap:prefs`; dipasang lebih dulu oleh skrip boot (`data-theme`, `data-font`). Status panduan di `ujap:prefs.onboarding`.
-  - `navigation.js`: sidebar kiri global (V3), dirender ke placeholder `[data-topbar]` di setiap halaman. Menu diatur di `NAV_GROUPS`. Lebar dan mode diatur CSS (`.appnav` di `layout.css`): ≥1200 penuh/ciut, 768–1199 ikon + overlay, <768 drawer. Preferensi ciut ada di `ujap:prefs.sidebar` dan dipasang oleh skrip boot `<head>` (`data-nav-pref`).
-  - `motion.js`, `ui.js`.
+  - `navigation.js`: sidebar kiri global, dirender ke placeholder `[data-topbar]` di setiap halaman. Menu V4 (8 menu, 5 grup, ikon Lucide) diatur di `NAV_GROUPS`; halaman turunan dipetakan di `PAGE_TO_NAV`. Lebar dan mode diatur CSS (`.appnav` di `layout.css`): ≥1200 penuh/ciut, 768–1199 ikon + overlay, <768 drawer. Preferensi ciut ada di `ujap:prefs.sidebar` dan dipasang oleh skrip boot `<head>` (`data-nav-pref`).
+  - `motion.js`, `ui.js` (termasuk `initTabs` untuk tab aksesibel).
+- V4: satu halaman = satu fungsi. Dashboard hanya pusat kendali ringkas (muat satu layar di 1440×900); detail ada di halaman masing-masing: `modules`, `module` (tanpa hash = detail, dengan hash = lesson player 100dvh), `practice` + `practice-tool`, `evaluation` + `quiz`, `progress`, `achievements`, `certificate`, `resources`, `settings`.
+- Lesson player (`js/pages/module-detail.js`): bagian panjang dipecah otomatis per kelompok blok (`paginate()`); jangan meringkas teks materi agar muat. Bar Sebelumnya/Berikutnya harus selalu terlihat tanpa scroll halaman. Fullscreen API hanya lewat klik.
+- Practice Center: daftar latihan di `js/features/practice-catalog.js` merujuk blok materi (`section` + `blockId`); jangan menyalin soal. Latihan tanpa nilai dicatat lewat `state.markPractice` (tanpa XP).
 - Materi berbasis data:
   - Daftar bagian dan pengelompokan materi (`topics`): `data/modules.json`.
   - Aktivitas interaktif: `js/features/activities.js`. Simulator: `js/features/simulator.js` + `data/simulator.json`. Evaluasi akhir: `data/evaluation.json`.
@@ -33,5 +36,6 @@ LMS statis untuk GitHub Pages: HTML5, CSS3, vanilla JS (ES modules), GSAP 3.12.5
 
 ## Uji
 - Jalankan `python3 -m http.server 8000`.
+- Halaman baru: salin `<head>` (CSP + skrip boot dengan hash yang sama) dari halaman yang ada.
 - Uji dengan Playwright: layout di 1440/1024/768/390, axe WCAG 2.1 AA, dan alur fungsional (lihat `docs/QA-REPORT.md`).
 - Konsol harus bersih dari error dan pelanggaran CSP.

@@ -852,7 +852,7 @@
       "code": "TR",
       "title": "Post-Send Strategy & Tracking",
       "headline": "Manajemen Lamaran & Etika Follow-Up",
-      "tagline": "Follow-up & Job Tracker",
+      "tagline": "Follow-up & Tracking Lamaran",
       "description": "Catat setiap lamaran di tracker, pahami arti status seleksi, tentukan waktu follow-up yang wajar, dan tulis pesan follow-up, terima kasih, serta respons undangan atau penolakan secara profesional.",
       "illustration": "assets/illustrations/portfolio.svg",
       "outcomes": [
@@ -983,7 +983,7 @@
             "tr-16",
             "tr-11"
           ],
-          "objective": "Membuat dan memakai tracker lamaran di Google Sheets, Notion, atau Job Tracker.",
+          "objective": "Membuat dan memakai tracker lamaran di Google Sheets atau Notion.",
           "summary": [
             "Kolom inti: Company, Position, Application Date, Status, HR Contact, Follow-Up Date, Notes.",
             "Dropdown status menjaga konsistensi.",

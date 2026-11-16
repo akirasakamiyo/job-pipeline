@@ -3,7 +3,8 @@
    ---------------------------------------------------------------------
    Semua data aplikasi hanya ada di LocalStorage perangkat pengguna.
    Modul ini memberi pengguna kendali penuh atasnya:
-   - downloadBackup()  → file JSON berisi progres, tracker, preferensi
+   - downloadBackup()  → file JSON berisi progres, preferensi, feedback
+                         (+ data Job Tracker lama bila masih tersimpan; V4)
    - readBackupFile()  → membaca & MEMVALIDASI file sebelum dipakai
    - applyBackup()     → mengganti data (mengembalikan snapshot untuk Urungkan)
    - resetData()       → menghapus data per cakupan (juga mengembalikan snapshot)
@@ -14,12 +15,15 @@
    * Setiap aksi yang menghapus/mengganti data mengembalikan snapshot,
      sehingga pengguna bisa membatalkan dari toast.
    * File impor tidak pernah dieksekusi: hanya JSON.parse, dicek bentuknya,
-     lalu dinormalkan oleh state.js & tracker-store.js seperti data biasa.
+     lalu dinormalkan oleh state.js seperti data biasa.
+
+   V4: Job Tracker dihapus dari LMS. Key lama "ujap:tracker" TIDAK dihapus
+   diam-diam: ikut cadangan apa adanya bila ada, dan bisa diunduh/dihapus
+   pengguna dari halaman Settings (legacyTracker*).
    ===================================================================== */
 
 import * as storage from './storage.js';
 import * as state from './state.js';
-import * as tracker from './tracker-store.js';
 
 export const APP_ID = 'ujap';
 export const BACKUP_VERSION = 1;
@@ -27,6 +31,33 @@ const DATA_KEYS = ['progress', 'tracker', 'prefs', 'feedback'];   // final: + fe
 const MAX_IMPORT_BYTES = 1024 * 1024;     // 1 MB — jauh di atas ukuran data normal
 
 const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
+const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+
+/* ---------- Data Job Tracker lama (V4) ---------- */
+
+/** Jumlah lamaran di key lama "ujap:tracker" (0 bila tidak ada / tidak valid) */
+export function legacyTrackerCount() {
+  const raw = storage.get('tracker', null);
+  const items = Array.isArray(raw) ? raw : Array.isArray(raw?.items) ? raw.items : [];
+  return items.filter(isObj).length;
+}
+
+/** Mengunduh data Tracker lama sebagai JSON (tanpa diubah) */
+export function downloadLegacyTracker() {
+  const blob = new Blob([JSON.stringify({ app: APP_ID, kind: 'legacy-tracker', exportedAt: new Date().toISOString(), data: storage.get('tracker', null) }, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url; link.download = `ujap-tracker-lama-${todayISO()}.json`; link.hidden = true;
+  document.body.append(link); link.click(); link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+/** Menghapus data Tracker lama (hanya atas konfirmasi pengguna); → snapshot untuk Urungkan */
+export function removeLegacyTracker() {
+  const before = snapshot(['tracker']);
+  storage.remove('tracker');
+  return before;
+}
 
 /* ---------- Snapshot (untuk Urungkan) ---------- */
 
@@ -53,16 +84,17 @@ export function buildBackup() {
     exportedAt: new Date().toISOString(),
     data: {
       progress: state.getState(),
-      tracker: { version: 1, items: tracker.getItems() },
       prefs: storage.get('prefs', {}),
       feedback: storage.get('feedback', null),
+      // Data Job Tracker versi lama (bila masih ada) disertakan tanpa diubah
+      ...(legacyTrackerCount() ? { tracker: storage.get('tracker', null) } : {}),
     },
   };
 }
 
 /** Mengunduh file cadangan; mengembalikan nama file */
 export function downloadBackup() {
-  const filename = `ujap-cadangan-${tracker.todayISO()}.json`;
+  const filename = `ujap-cadangan-${todayISO()}.json`;
   const blob = new Blob([JSON.stringify(buildBackup(), null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
@@ -88,7 +120,7 @@ function describe(data) {
     lessons,
     completed,
     xp: Number.isFinite(Number(data.progress?.xp)) ? Math.max(0, Math.round(Number(data.progress.xp))) : 0,
-    trackerItems: rawItems.length,
+    trackerItems: rawItems.length,   // data Tracker lama di file cadangan (bila ada)
   };
 }
 
@@ -132,8 +164,8 @@ export function applyBackup(backup) {
   storage.set('progress', isObj(progress) ? progress : {});
   state.normalizeStored();                         // buang field tak dikenal / tipe salah
 
-  storage.set('tracker', trackerData ?? { version: 1, items: [] });
-  tracker.getItems();                              // entri tidak valid dipindah ke cadangan
+  // Data Job Tracker lama dari cadangan versi sebelumnya: disimpan apa adanya (tidak dipakai UI)
+  if (Array.isArray(trackerData) || (isObj(trackerData) && Array.isArray(trackerData.items) && trackerData.items.length)) storage.set('tracker', trackerData);
 
   // Preferensi: hanya field yang dikenal (lihat sanitizePrefs)
   storage.set('prefs', sanitizePrefs(prefs));
@@ -160,29 +192,26 @@ export function sanitizePrefs(prefs) {
 
 export const RESET_SCOPES = {
   progress: 'Progres belajar',
-  tracker: 'Tracker lamaran',
   all: 'Semua data',
 };
 
 /**
- * scope: 'progress' | 'tracker' | 'all'
+ * scope: 'progress' | 'all'
  * - progress: bagian, kuis, modul, XP, badge, alat Latihan, riwayat (nama profil tetap)
- * - tracker : seluruh lamaran di Tracker
- * - all     : keduanya + profil + preferensi + feedback
+ * - all     : progres + profil + preferensi + feedback + data Tracker lama
  * Mengembalikan snapshot sebelum reset (untuk Urungkan).
  */
 export function resetData(scope) {
   if (!RESET_SCOPES[scope]) throw new Error(`Cakupan reset tidak dikenal: ${scope}`);
   const before = snapshot();
   if (scope === 'progress' || scope === 'all') state.resetProgress({ keepProfile: scope !== 'all' });
-  if (scope === 'tracker' || scope === 'all') storage.set('tracker', { version: 1, items: [] });
-  if (scope === 'all') { storage.remove('prefs'); storage.remove('feedback'); }
+  if (scope === 'all') { storage.remove('prefs'); storage.remove('feedback'); storage.remove('tracker'); }
   return before;
 }
 
 /* ---------- Salinan data rusak ---------- */
 
-/** Key cadangan otomatis yang dibuat storage.js / tracker-store.js saat data rusak */
+/** Key cadangan otomatis yang dibuat storage.js saat data rusak */
 export const listCorruptCopies = () => storage.keys().filter((key) => /:rusak-\d+$/.test(key));
 
 export function removeCorruptCopies() {

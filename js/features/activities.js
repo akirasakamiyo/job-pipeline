@@ -9,9 +9,9 @@
      spot      : temukan kesalahan di email/CV (klik bagian yang salah)
      keywords  : simulasi pencocokan kata kunci lowongan (ATS sederhana)
      worksheet : lembar kerja isian tersimpan + salin sebagai teks
-     presend   : checklist pra-kirim (sama dengan halaman Latihan)
-     review    : CV & Portfolio Review (sama dengan halaman Latihan)
-     tool      : kartu menuju alat nyata (mis. Job Tracker) + status live
+     presend   : checklist pra-kirim (sama dengan Practice Center)
+     review    : CV & Portfolio Review (sama dengan Practice Center)
+     tool      : kartu tautan menuju halaman lain di LMS
 
    Prinsip:
    - Kunci jawaban TIDAK ditulis ke DOM sebelum peserta menjawab;
@@ -24,7 +24,6 @@
 import { $, $$, h, icon, uid, debounce } from '../core/dom.js';
 import { toast, setProgress, initRings } from '../core/ui.js';
 import * as state from '../core/state.js';
-import * as tracker from '../core/tracker-store.js';
 import * as motion from '../core/motion.js';
 import { copyText } from './clipboard.js';
 
@@ -587,24 +586,24 @@ function sharedChecklist({ items, getSaved, setItem, xpLabel, title, practiceHre
       h('label', { class: 'check' }, input,
         h('span', { class: 'check__box' }, checkSvg()),
         h('span', { class: 'check__text' }, h('span', { class: 'check__title' }, item.text), item.hint ? h('span', { class: 'check__hint' }, item.hint) : null))))),
-    practiceHref ? h('a', { class: 'btn btn--ghost btn--sm', href: practiceHref }, 'Buka di halaman Latihan', icon('arrow-right', 'icon--trail')) : null);
+    practiceHref ? h('a', { class: 'btn btn--ghost btn--sm', href: practiceHref }, 'Buka di Practice Center', icon('arrow-right', 'icon--trail')) : null);
   initRings(wrap);
   update(false);
   return wrap;
 }
 
-export function renderPresend() {
+export function renderPresend({ practiceHref = 'practice-tool.html?id=tx-presend' } = {}) {
   return sharedChecklist({
     items: state.PRESEND_ITEMS,
     getSaved: () => state.getState().tools.presend,
     setItem: state.setPresendItem,
     xpLabel: 'Checklist pra-kirim',
     title: 'Checklist pra-kirim',
-    practiceHref: 'practice.html#checklist',
+    practiceHref,
   });
 }
 
-export function renderReview({ practiceHref = 'practice.html#review' } = {}) {
+export function renderReview({ practiceHref = 'practice-tool.html?id=cv-review' } = {}) {
   return sharedChecklist({
     items: state.REVIEW_ITEMS,
     getSaved: () => state.getState().tools.review,
@@ -616,25 +615,14 @@ export function renderReview({ practiceHref = 'practice.html#review' } = {}) {
 }
 
 /* =====================================================================
-   TOOL — kartu menuju alat nyata + status live
+   TOOL — kartu tautan ke halaman lain
    ===================================================================== */
 
 export function renderTool(block) {
-  const status = h('p', { class: 'text-sm' });
-  const refresh = () => {
-    if (block.tool === 'tracker') {
-      const s = tracker.getStats();
-      status.replaceChildren(s.withFollowUp
-        ? h('span', { class: 'chip chip--done' }, icon('check'), `${s.withFollowUp} lamaran punya tanggal follow-up`)
-        : h('span', { class: 'chip' }, s.total ? `${s.total} lamaran tercatat, belum ada tanggal follow-up` : 'Belum ada lamaran tercatat'));
-    }
-  };
-  refresh();
-  // Lepas langganan saat kartu sudah tidak ada di halaman (bagian materi berganti)
-  const off = state.subscribe(() => (status.isConnected ? refresh() : off()));
+  // V4: kartu tautan generik (status live Job Tracker dihapus bersama fiturnya)
   return h('div', { class: 'card card--flat tool-link' },
-    h('span', { class: 'tool-tile__icon' }, icon('kanban')),
-    h('div', { class: 'tool-link__body' }, h('p', { class: 'activity-card__title' }, block.title), h('p', { class: 'text-soft text-sm' }, block.text), status),
+    h('span', { class: 'tool-tile__icon' }, icon(block.icon || 'arrow-right')),
+    h('div', { class: 'tool-link__body' }, h('p', { class: 'activity-card__title' }, block.title), h('p', { class: 'text-soft text-sm' }, block.text)),
     h('a', { class: 'btn btn--primary btn--sm', href: block.href }, 'Buka', icon('arrow-right', 'icon--trail')));
 }
 

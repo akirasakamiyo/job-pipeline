@@ -11,23 +11,25 @@ profil LinkedIn, email lamaran, serta follow-up dan pelacakan lamaran.
 
 ---
 
-## Fitur
+## Fitur (V4: aplikasi ringkas, satu halaman = satu fungsi)
 
-| Area | Isi |
+| Halaman | Isi |
 |---|---|
-| Navigasi (V3) | Sidebar kiri di semua halaman: grup *Learning* & *Career Tools*, status aktif, profil, progres ringkas. Bisa diciutkan (tersimpan) di desktop, rel ikon + overlay di tablet, drawer + hamburger di HP |
-| Dashboard | **Panduan pengguna baru** 3 langkah (Explore → Practice → Complete; bisa dilewati/diulang), **rekomendasi personal** di hero (lanjut materi / ulang kuis / tandai modul selesai / evaluasi / sertifikat) yang tujuannya berbeda dari kartu status di sampingnya, **target harian** opsional (1 bagian materi / 1 latihan / 1 kuis, tanpa streak & penalti), statistik platform dari data, panel progres (selesai/tersisa/modul aktif), roadmap + tujuan berikutnya, carousel modul dengan panah & titik di HP, 7 alat cepat, aktivitas + "terakhir dibuka", 10 badge utama |
-| 5 modul (2.0) | 25 materi dalam 89 bagian; tiap materi punya tujuan & ringkasan. Kuis 8 soal per modul (nilai lulus 70), "Mark as completed" |
-| Aktivitas (2.0) | 13 aktivitas bernilai: studi kasus, drag & drop anatomi email, urutkan, temukan kesalahan, simulasi kata kunci ATS; plus lembar kerja, builder, dan checklist |
-| Latihan | Email Subject Generator (`[Posisi] - [Nama Lengkap] - [Keahlian]`), **Email Writing Simulator** dengan rubrik transparan, checklist pra-kirim, **CV & Portfolio Review**, daftar kuis |
-| Evaluasi Akhir (2.0) | 15 soal skenario acak dari bank 20 soal lintas modul, nilai lulus 75 |
-| Tracker | Tambah/ubah/hapus (+ urungkan), cari, saring status, urutkan, **tanggal follow-up + penanda jatuh tempo**, ringkasan |
-| Gamifikasi | XP (bagian 10, kuis 50, modul 100, checklist 20, aktivitas 15, lembar kerja 15, simulator 40, evaluasi 150) — sekali per aktivitas; 10 badge utama + 7 milestone; **skor belajar keseluruhan** dengan rumus terbuka |
-| Resources | 11 sumber, saring per modul/jenis, pencarian, label "Perlu verifikasi", pembeda fakta riset vs saran praktis |
-| Progress & Achievements | **Analitik belajar** (skor kuis per modul dengan garis nilai lulus, materi selesai per modul, aktivitas 14 hari, hasil Evaluasi Akhir), skor belajar, status aktivitas, rekap per modul, badge & milestone, riwayat, **feedback modul** (lihat/ubah/hapus) |
-| Pengaturan | Tema terang/gelap/ikuti sistem, ukuran huruf (normal/besar/sangat besar), gerak animasi, ulangi panduan, cadangan/pemulihan JSON, reset (dengan konfirmasi + urungkan) |
-| Feedback | Opsional setelah modul selesai: 3 pertanyaan (Ya/Cukup/Tidak) + bagian yang perlu diperbaiki. Hanya tersimpan lokal (`ujap:feedback`) |
-| Sertifikat | `certificate.html`: terbuka setelah 5 modul selesai + Evaluasi Akhir lulus. PDF dibuat di browser (nama, pelatihan, tanggal, ringkasan hasil, ID lokal). **Bukan sertifikasi resmi** dan tidak bisa diverifikasi pihak lain (lihat Batasan hosting statis) |
+| Sidebar global | 8 menu dalam 5 grup (*Overview, Learning, My Progress, Resources, Settings*) dengan ikon Lucide. Desktop: tetap & bisa diciutkan (264 → 80px, tersimpan). Tablet: rel ikon + overlay. HP: drawer + hamburger + backdrop |
+| Dashboard | Pusat kendali satu layar: sapaan, **rekomendasi aksi berikutnya** (lanjut materi / ulang kuis / tandai modul selesai / evaluasi / sertifikat), progres keseluruhan, modul aktif, **target harian** opsional (tanpa streak & penalti), ringkasan XP & badge, pintasan 5 modul, akses cepat Practice & Evaluation. **Panduan pengguna baru** 3 langkah (bisa dilewati/diulang) |
+| Learning Modules | Katalog 5 modul: nomor, judul, deskripsi, ilustrasi, durasi, status, progres, tombol Mulai/Lanjutkan |
+| Detail modul | `module.html?id=…`: ringkasan modul, progres, daftar materi & bagian, kuis, ringkasan & selesai, feedback |
+| **Lesson player** | `module.html?id=…#bagian`: layout 100dvh, **satu bagian per layar**; bagian panjang dibagi otomatis menjadi beberapa layar per kelompok blok (teks materi tidak diubah). Bar bawah tetap: Sebelumnya · `03 / 25` · Berikutnya/Selesai. Aktivitas bernilai harus dikerjakan sebelum lanjut. Daftar bagian, mode fokus, tombol layar penuh (hanya lewat klik) |
+| Practice Center | Direktori 29 latihan dalam 5 tab per modul; setiap latihan punya workspace sendiri (`practice-tool.html?id=…`) yang memakai blok materi yang sama (hasil & XP tercatat sekali). Termasuk **Gmail Signature Practice** (baru, tanpa XP) dan Email Subject Generator |
+| Evaluation | 5 kuis modul + Evaluasi Akhir (15 soal acak dari 20, lulus 75): jumlah soal, nilai lulus, skor terbaik, percobaan, Mulai/Ulangi → `quiz.html?id=…` |
+| Learning Progress | Analitik dalam tab: skor kuis per modul (garis nilai lulus), materi selesai, aktivitas 14 hari, Evaluasi Akhir, per modul, skor belajar & 13 aktivitas bernilai, riwayat, **feedback modul** (lihat/ubah/hapus) |
+| Achievements & XP | Total XP, 10 badge utama (Didapat / Sedang berjalan / Terkunci + rincian syarat), badge berikutnya, milestone, tabel XP, status sertifikat |
+| Sertifikat | `certificate.html`: terbuka setelah 5 modul selesai + Evaluasi Akhir lulus. PDF dibuat di browser (nama, pelatihan, tanggal, ringkasan hasil, ID lokal). **Bukan sertifikasi resmi** (lihat Batasan hosting statis) |
+| Resources & Guides | 11 sumber, saring per modul/jenis, pencarian, label "Perlu verifikasi" |
+| Settings | Tema terang/gelap/sistem, ukuran huruf, gerak animasi, profil, ulangi panduan, cadangan/pemulihan JSON, reset (konfirmasi + urungkan), salinan data rusak, **data Job Tracker versi lama** (unduh/hapus, hanya tampil bila ada) |
+| Gamifikasi | XP (bagian 10, kuis 50, modul 100, checklist 20, aktivitas 15, lembar kerja 15, simulator 40, evaluasi 150), sekali per aktivitas; 10 badge utama + milestone |
+
+**Job Tracker dihapus di V4.** Halaman, menu, kartu, dan kodenya sudah tidak ada. Data lama di `ujap:tracker` tidak dihapus otomatis: Settings menampilkannya dengan pilihan unduh atau hapus (dengan konfirmasi), dan cadangan tetap menyertakannya. Badge *Application Pipeline Manager* kini mensyaratkan Modul 5 selesai + lulus *Application Status Management* & *Follow-Up Timing Scenario*.
 
 ## Struktur folder
 
@@ -36,16 +38,18 @@ ujap/
 ├── index.html            ← pintu masuk (mengalihkan ke dashboard.html)
 ├── 404.html              ← halaman "tidak ditemukan" mandiri untuk GitHub Pages
 ├── dashboard.html  modules.html  module.html  practice.html
-├── tracker.html  resources.html  progress.html  evaluation.html  certificate.html  styleguide.html
+├── resources.html  progress.html  achievements.html  evaluation.html  quiz.html
+├── practice-tool.html  certificate.html  settings.html  styleguide.html
 ├── .nojekyll             ← GitHub Pages menyajikan file apa adanya (tanpa Jekyll)
-├── assets/  (icons/sprite.svg · illustrations/ · deco/ · images/favicon.svg)
+├── assets/  (icons/sprite.svg + LICENSE-lucide.txt · illustrations/ · deco/ · images/favicon.svg)
 ├── css/     (tokens · base · layout · components · animations · pages/*)
 ├── data/    (modules.json · content/{id,cv,li,tx,tr}.json · references.json · resources.json ·
 │             simulator.json · evaluation.json)
 ├── js/
 │   ├── app.js            ← satu titik masuk; memuat modul halaman via <body data-page>
-│   ├── core/             ← storage, state, tracker-store, feedback-store, prefs, backup, navigation, motion, ui, …
-│   ├── features/         ← lesson-renderer, quiz, exercises, activities, simulator, module-card, clipboard, pdf-certificate
+│   ├── core/             ← storage, state, feedback-store, prefs, backup, navigation, motion, ui, …
+│   ├── features/         ← lesson-renderer, quiz, exercises, activities, simulator, module-card, clipboard,
+│   │                        pdf-certificate, practice-catalog, subject-generator
 │   └── pages/            ← satu file per halaman
 ├── vendor/gsap/          ← GSAP & ScrollTrigger (lokal, tanpa CDN)
 └── docs/                 ← screenshot & laporan QA
@@ -154,7 +158,7 @@ Progres deploy bisa dipantau di tab **Actions** (alur kerja *pages build and dep
 Setelah situs online, lakukan pengecekan ini:
 
 - [ ] Halaman utama terbuka dan langsung pindah ke Dashboard.
-- [ ] Semua menu sidebar (Dashboard, Learning Modules, Practice Center, Evaluation, Job Tracker, Achievements, Resources & Guides) bisa dibuka, termasuk lewat drawer di HP.
+- [ ] Semua menu sidebar (Dashboard, Learning Modules, Practice Center, Evaluation, Learning Progress, Achievements & XP, Resources & Guides, Settings) bisa dibuka, termasuk lewat drawer di HP.
 - [ ] Ilustrasi dan ikon tampil. Kalau ada yang hilang, periksa huruf besar/kecil nama file.
 - [ ] Selesaikan satu bagian modul, muat ulang halaman, lalu pastikan progres tetap tersimpan.
 - [ ] Buka alamat yang tidak ada (misalnya `/job-pipeline/abc`). Halaman 404 harus muncul dengan tombol ke Dashboard.
@@ -209,9 +213,8 @@ python3 -c "import re,hashlib,base64;s=open('dashboard.html').read();print(base6
 ```
 
 - Tautan eksternal memakai `target="_blank" rel="noopener noreferrer"`, dan hanya URL `https://` yang dirender sebagai tautan.
-- Data yang disimpan hanya yang diperlukan fitur: nama panggilan (opsional), progres, dan isi Tracker. Data ini hanya ada di perangkat pengguna.
+- Data yang disimpan hanya yang diperlukan fitur: nama panggilan (opsional), progres, preferensi, dan feedback. Data ini hanya ada di perangkat pengguna.
   - File cadangan berisi data tersebut, jadi simpan dengan aman.
-  - Jangan menulis data sensitif seperti nomor KTP atau kata sandi di catatan Tracker.
 
 ## Panduan perawatan
 
@@ -228,21 +231,25 @@ python3 -c "import re,hashlib,base64;s=open('dashboard.html').read();print(base6
 | Menambah referensi | `data/references.json`, lalu cantumkan `id`-nya di `references` pada file konten modul |
 | Mengubah warna/tipografi | `css/tokens.css` (design token). Pratinjau di `styleguide.html` |
 | Menambah ikon | `assets/icons/sprite.svg` (`<symbol id="i-nama">`), lalu pakai `icon('nama')` |
+| Menambah/mengubah latihan di Practice Center | `js/features/practice-catalog.js` (id, judul, ikon, sumber blok materi, cara menghitung status). Latihan memakai blok materi yang sama, jadi jangan menyalin soal |
+| Mengubah segmentasi layar lesson player | `paginate()` di `js/pages/module-detail.js` (dibagi per kelompok blok sesuai tinggi panel) |
+| Mengubah menu sidebar | `NAV_GROUPS` di `js/core/navigation.js`; ikon baru ditambah ke `assets/icons/sprite.svg` |
 | Mengubah langkah panduan / logika rekomendasi | `guideSteps()` di `js/pages/dashboard.js` · `getRecommendation()` di `js/core/state.js` |
 | Mengubah isi/tampilan sertifikat PDF | `js/pages/certificate.js` (data & teks batasan) · `js/features/pdf-certificate.js` (tata letak PDF, hanya karakter Latin/WinAnsi) |
 | Mengubah warna mode gelap | blok `html[data-theme="dark"]` di `css/tokens.css` |
-| Mengubah skema LocalStorage | `js/core/state.js` (`sanitizeState`) dan `js/core/tracker-store.js` (`sanitize`). Selalu buat field baru opsional agar data lama tetap terbaca. |
+| Mengubah skema LocalStorage | `js/core/state.js` (`sanitizeState`) dan `js/core/feedback-store.js`. Selalu buat field baru opsional agar data lama tetap terbaca. |
 | Memperbarui GSAP | Ganti file di `vendor/gsap/`, lalu uji ulang animasi dan mode gerak minimal |
 
 Sebelum setiap rilis:
 
 - [ ] Jalankan server lokal, lalu buka semua halaman dengan DevTools → Console terbuka. Pastikan tidak ada error merah.
-- [ ] Coba alur utama: selesaikan bagian, kerjakan kuis, tambah lamaran, lalu unduh cadangan.
+- [ ] Coba alur utama: buka modul, maju-mundur di lesson player, kerjakan satu latihan di Practice Center dan satu kuis di Evaluation, lalu unduh cadangan dari Settings.
 - [ ] Periksa tampilan di lebar HP (DevTools → Toggle device toolbar, 390px).
 - [ ] Unduh cadangan secara berkala bila memakai situs untuk diri sendiri.
 
 ## Lisensi pihak ketiga
 
+- Ikon navigasi & pemutar V4 dari [Lucide](https://lucide.dev) (lisensi ISC, `assets/icons/LICENSE-lucide.txt`).
 - **GSAP 3.12.5 & ScrollTrigger:** © GreenSock, dipakai sesuai [GSAP Standard License](https://gsap.com/standard-license) (gratis untuk proyek seperti ini).
 - **Google Fonts:** Fraunces, Plus Jakarta Sans, JetBrains Mono (SIL Open Font License).
-- Ikon, ilustrasi, dan dekorasi dibuat khusus untuk proyek ini.
+- Ikon lain, ilustrasi, dan dekorasi dibuat khusus untuk proyek ini.

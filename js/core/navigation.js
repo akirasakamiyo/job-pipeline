@@ -1,9 +1,9 @@
 /* =====================================================================
-   navigation.js — Navigasi global: SIDEBAR KIRI (Dashboard V3)
+   navigation.js — Navigasi global: SIDEBAR KIRI (V3, struktur menu V4)
    ---------------------------------------------------------------------
    Satu implementasi untuk SEMUA halaman. Setiap halaman cukup memiliki
    placeholder <div data-topbar></div>; modul ini merender:
-     1. <aside class="appnav">  — sidebar (brand, 2 grup menu, profil,
+     1. <aside class="appnav">  — sidebar (brand, 5 grup menu, profil,
                                   progres, tombol ciutkan/perluas)
      2. <header class="mobilebar"> — header HP dengan tombol hamburger
      3. backdrop untuk drawer (HP) & overlay (tablet)
@@ -27,18 +27,25 @@ import { initRings, setProgress } from './ui.js';
 
 export const HOME_HREF = 'dashboard.html';
 
-/** Struktur menu: 2 grup sesuai arsitektur informasi V3 */
+/** Struktur menu V4: 5 grup, 8 halaman (satu halaman = satu fungsi). Ikon Lucide. */
 export const NAV_GROUPS = [
-  { id: 'learning', label: 'Learning', items: [
-    { id: 'dashboard', label: 'Dashboard', href: 'dashboard.html', icon: 'home' },
-    { id: 'modules', label: 'Learning Modules', href: 'modules.html', icon: 'route' },
-    { id: 'practice', label: 'Practice Center', href: 'practice.html', icon: 'spark' },
-    { id: 'evaluation', label: 'Evaluation', href: 'evaluation.html', icon: 'target' },
+  { id: 'overview', label: 'Overview', items: [
+    { id: 'dashboard', label: 'Dashboard', href: 'dashboard.html', icon: 'layout-dashboard' },
   ] },
-  { id: 'career', label: 'Career Tools', items: [
-    { id: 'tracker', label: 'Job Tracker', href: 'tracker.html', icon: 'kanban' },
-    { id: 'achievements', label: 'Progress & Achievements', href: 'progress.html', icon: 'trophy' },
-    { id: 'resources', label: 'Resources & Guides', href: 'resources.html', icon: 'book' },
+  { id: 'learning', label: 'Learning', items: [
+    { id: 'modules', label: 'Learning Modules', href: 'modules.html', icon: 'book-open' },
+    { id: 'practice', label: 'Practice Center', href: 'practice.html', icon: 'dumbbell' },
+    { id: 'evaluation', label: 'Evaluation', href: 'evaluation.html', icon: 'clipboard-check' },
+  ] },
+  { id: 'my-progress', label: 'My Progress', items: [
+    { id: 'progress', label: 'Learning Progress', href: 'progress.html', icon: 'chart-combined' },
+    { id: 'achievements', label: 'Achievements & XP', href: 'achievements.html', icon: 'lucide-trophy' },
+  ] },
+  { id: 'resources', label: 'Resources', items: [
+    { id: 'resources', label: 'Resources & Guides', href: 'resources.html', icon: 'library' },
+  ] },
+  { id: 'settings', label: 'Settings', items: [
+    { id: 'settings', label: 'Settings', href: 'settings.html', icon: 'settings' },
   ] },
 ];
 
@@ -49,7 +56,7 @@ export const NAV_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
 export const isSoon = () => false;
 
 /* Halaman → menu yang aktif (halaman turunan menandai induknya) */
-const PAGE_TO_NAV = { module: 'modules', progress: 'achievements', certificate: 'achievements' };
+const PAGE_TO_NAV = { module: 'modules', 'practice-tool': 'practice', quiz: 'evaluation', certificate: 'achievements' };
 const currentNav = () => {
   const page = document.body.dataset.page || '';
   return PAGE_TO_NAV[page] || page;
